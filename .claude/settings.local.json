@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:3001/)",
+      "Bash(curl -s http://localhost:3001/health)",
+      "Bash(curl -s \"http://localhost:3001/api/auth/login\" -X POST -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"test\"\",\"\"password\"\":\"\"test\"\"}')",
+      "Bash(curl -s http://localhost:3001/api/properties/featured)",
+      "Bash(curl -sv \"http://localhost:3001/api/users/notifications/stream?token=test\")",
+      "Bash(curl -sv \"http://localhost:3001/api/admin/notifications/stream?token=test\")",
+      "Bash(curl -s \"http://localhost:3001/health/deep\")",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(curl -s \"http://localhost:3001/api/admin/auth/login\" -X POST -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"superadmin\"\",\"\"password\"\":\"\"123456\"\"}')",
+      "Bash(curl -s \"http://localhost:3001/api/auth/login\" -X POST -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"cap0001\"\",\"\"password\"\":\"\"123456\"\"}')",
+      "Bash(curl -s \"http://localhost:3001/api/auth/login\" -X POST -H \"Content-Type: application/json\" -d \"{\"\"username\"\":\"\"ภัคจิรา\"\",\"\"password\"\":\"\"123456\"\"}\")",
+      "Bash(curl -s \"http://localhost:3001/api/admin/auth/login\" -X POST -H \"Content-Type: application/json\" -d '{\"\"username\"\":\"\"superadmin\"\",\"\"password\"\":\"\"Admin@LoanDD2026\"\"}')",
+      "Bash(node -e \"const bcrypt=require\\(''bcryptjs''\\); [''password'',''123456'',''admin'',''12345678'',''LoanDD2026'',''Admin@LoanDD2026'',''loandd'',''admin123''].forEach\\(async p=>{const m=await bcrypt.compare\\(p,''$2a$10$/xHvBTmSCIw3l2xKBH7Z1OUevoD48Z9ivG.T6wdU9MHllAARRpI4W''\\);if\\(m\\)console.log\\(''MATCH:'',p\\);}\\)\")",
+      "Bash(node -e \":*)",
+      "Bash(curl -s \"http://localhost:3001/api/properties/stats\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5173/\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s -X POST http://localhost:3001/api/inquiries -H \"Content-Type: application/json\" -d '{\"\"property_id\"\":1,\"\"name\"\":\"\"แฟ\"\",\"\"phone\"\":\"\"0956504157\"\",\"\"email\"\":\"\"fae@test.com\"\",\"\"message\"\":\"\"สนใจทรัพย์: ชลบุรี\"\"}')",
+      "Bash(curl -s \"http://localhost:3001/api/properties?limit=1\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d[''''data''''][0][''''id''''] if d.get\\(''''data''''\\) else ''''no data''''\\)\")",
+      "Bash(curl -s http://localhost:3001/api/properties?limit=1)",
+      "Bash(curl -s -X POST http://localhost:3001/api/inquiries -H \"Content-Type: application/json\" -d '{\"\"property_id\"\":7,\"\"name\"\":\"\"แฟ\"\",\"\"phone\"\":\"\"0956504157\"\",\"\"email\"\":\"\"fae@test.com\"\",\"\"message\"\":\"\"สนใจทรัพย์: ชลบุรี\"\"}')",
+      "Bash(mysql -u root -e 'SHOW CREATE TABLE property_db.property_inquiries\\\\G')",
+      "Bash(mysql -u root property_db -e \"SHOW CREATE TABLE property_inquiries\\\\G\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"SHOW CREATE TABLE property_inquiries\\\\G\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"SELECT id, name, phone, message FROM property_inquiries ORDER BY id DESC LIMIT 5\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"SHOW VARIABLES LIKE ''character_set%''; SHOW VARIABLES LIKE ''collation%'';\")",
+      "Bash(curl -s -X POST http://localhost:3001/api/admin/login -H 'Content-Type: application/json' -d '{\"\"\"\"username\"\"\"\":\"\"\"\"superadmin\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"LoanDD2026\"\"\"\"}')",
+      "Bash(curl -s -X POST http://localhost:3001/api/admin/auth/login -H 'Content-Type: application/json' -d '{\"\"\"\"username\"\"\"\":\"\"\"\"superadmin\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"LoanDD2026\"\"\"\"}')",
+      "Bash(node -e \"let d='''''''';process.stdin.on\\(''''data'''',c=>d+=c\\);process.stdin.on\\(''''end'''',\\(\\)=>{const j=JSON.parse\\(d\\);console.log\\(j.token?j.token.substring\\(0,30\\)+''''...'''':JSON.stringify\\(j\\)\\)}\\)\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"SET NAMES utf8mb4; SELECT id, HEX\\(name\\) as hex_name, name FROM property_inquiries ORDER BY id DESC LIMIT 3\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"DELETE FROM property_inquiries WHERE HEX\\(name\\) = ''3F3F''\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"SET NAMES utf8mb4; SELECT id, name, phone, message FROM property_inquiries ORDER BY id DESC\")",
+      "Bash(\"C:/xampp/mysql/bin/mysql.exe\" -u root property_db -e \"UPDATE property_inquiries SET status=''new'' WHERE id=1\")"
+    ]
+  }
+}

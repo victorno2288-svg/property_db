@@ -1,0 +1,211 @@
+/* ═══════════════════════════════════════════════════════════════
+   adminMobile.css — Mobile-responsive helpers for Admin pages
+   Import this file in any admin page that needs mobile support
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Admin Navbar ─────────────────────────────────────────── */
+.admin-nav-username {
+  display: inline;
+}
+.admin-nav-addBtn {
+  display: inline-flex;
+}
+
+/* ─── Pill Tab Bar ─────────────────────────────────────────── */
+.admin-pill-nav {
+  display: inline-flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  scrollbar-width: none;
+}
+.admin-pill-nav::-webkit-scrollbar { display: none; }
+
+/* ─── Page Header ──────────────────────────────────────────── */
+.admin-page-header {
+  padding: 24px 32px 20px;
+}
+
+/* ─── Content Wrapper ──────────────────────────────────────── */
+.admin-content-wrap {
+  padding: 20px 32px 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── Stats grid (Dashboard) ───────────────────────────────── */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* ─── Filter bar ───────────────────────────────────────────── */
+.admin-filter-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ─── Table wrapper ────────────────────────────────────────── */
+.admin-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─── Property card grid (for mobile card view) ────────────── */
+.admin-prop-cards {
+  display: none;
+}
+
+/* ─── User table ───────────────────────────────────────────── */
+.admin-users-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Inquiry 2-col grid */
+.inq-grid {
+  grid-template-columns: 1fr 380px;
+}
+
+/* Dashboard chart + sidebar grid */
+.dash-grid {
+  grid-template-columns: 1fr 290px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLET  ≤ 900px
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .admin-page-header {
+    padding: 16px 20px 14px;
+  }
+  .admin-content-wrap {
+    padding: 14px 16px 24px;
+  }
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .inq-grid {
+    grid-template-columns: 1fr;
+  }
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE  ≤ 600px
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* Navbar */
+  .admin-nav-username {
+    display: none !important;
+  }
+  .admin-nav-addBtn span {
+    display: none;
+  }
+
+  /* Page header */
+  .admin-page-header {
+    padding: 12px 14px 10px;
+  }
+  .admin-page-header h1 {
+    font-size: 1.1rem !important;
+  }
+
+  /* Content */
+  .admin-content-wrap {
+    padding: 10px 12px 20px;
+  }
+
+  /* Pill nav — scrollable row */
+  .admin-pill-nav {
+    width: 100%;
+  }
+  .admin-pill-nav a,
+  .admin-pill-nav button {
+    padding: 8px 14px !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Stats grid */
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Filter bar */
+  .admin-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .admin-filter-bar input,
+  .admin-filter-bar select,
+  .admin-filter-bar button {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Tables: hide non-essential columns */
+  .admin-col-hide-mobile {
+    display: none !important;
+  }
+
+  /* Property card layout on mobile */
+  .admin-prop-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .admin-prop-table {
+    display: none;
+  }
+
+  /* Action buttons — compact */
+  .admin-action-btns {
+    flex-wrap: wrap;
+  }
+
+  /* Form layout */
+  .admin-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Sub-tabs (password requests) */
+  .admin-subtab-bar {
+    flex-wrap: wrap;
+  }
+  .admin-subtab-bar button {
+    font-size: 0.8rem !important;
+    padding: 10px 14px !important;
+  }
+
+  /* Request cards — stack */
+  .admin-request-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .admin-request-actions {
+    width: 100%;
+  }
+  .admin-request-actions button {
+    width: 100% !important;
+  }
+
+  /* Modal */
+  .admin-modal-box {
+    max-height: 95vh;
+    border-radius: 10px 10px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,66 @@
+/* ================================================================
+   Register.css — หน้าสมัครสมาชิก LoanDD
+   สีหลัก: #04AA6D (เขียว เหมือนหน้า Login)
+   ใช้คู่กับ auth-container / auth-card / auth-input / auth-btn จาก App.css
+   ================================================================ */
+
+/* ============ พื้นหลังหน้าสมัคร ============ */
+.register-bg {
+  background: linear-gradient(135deg, #e8f5e9 0%, #f0f2f5 100%);
+}
+
+/* ============ หัวข้อ ============ */
+.register-title {
+  color: #04AA6D;
+  font-weight: 700;
+}
+
+.register-subtitle {
+  color: #888;
+  font-size: 14px;
+}
+
+
+/* ============ ปุ่ม Submit ============ */
+.register-submit-btn {
+  background: linear-gradient(135deg, #04AA6D, #2ecc71) !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(4, 170, 109, 0.3);
+  color: #fff !important;
+  transition: all 0.3s ease;
+}
+
+.register-submit-btn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(4, 170, 109, 0.4);
+  transform: translateY(-1px);
+}
+
+.register-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ============ Link กลับหน้า Login ============ */
+.register-login-link {
+  color: #04AA6D !important;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-login-link:hover {
+  text-decoration: underline;
+}
+
+/* ============ โลโก้ ============ */
+.register-logo {
+  height: 70px;
+  object-fit: contain;
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 576px) {
+  .register-toggle-btn {
+    font-size: 13px;
+    padding: 9px 6px;
+  }
+}
