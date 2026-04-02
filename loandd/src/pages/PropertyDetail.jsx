@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 import { formatPrice, propertyTypeLabel } from '../components/PropertyCard';
 
@@ -30,6 +30,7 @@ const amenityIconMap = {
 function PropertyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [property, setProperty]     = useState(null);
   const [loading, setLoading]       = useState(true);
@@ -178,8 +179,8 @@ function PropertyDetail() {
     });
   };
 
-  // โหลดข้อมูลทรัพย์
-  useEffect(() => {
+  // โหลดข้อมูลทรัพย์ — re-fetch เมื่อ navigate กลับมา (real-time update)
+  const fetchProperty = () => {
     setLoading(true);
     setNotFound(false);
     fetch(`${API_BASE}/api/properties/${id}`)
@@ -190,7 +191,18 @@ function PropertyDetail() {
       .then(data => { if (data) setProperty(data); })
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchProperty();
     window.scrollTo(0, 0);
+  }, [id, location.key]);
+
+  // Re-fetch เมื่อ user สลับแท็บกลับมา (เช่น จากหน้า admin)
+  useEffect(() => {
+    const onFocus = () => fetchProperty();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
   }, [id]);
 
   // ===== Auto-request GPS เมื่อ property โหลดเสร็จ =====

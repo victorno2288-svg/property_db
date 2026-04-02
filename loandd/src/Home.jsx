@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import bigLogo from './pic/big-logo.png';
 import imgSukhumvit  from './pic/สุขุมวิท.jpg';
@@ -29,6 +29,7 @@ const Home = () => {
   const brandGreen = '#04AA6D';
   const API_URL = `${API_BASE}/api/properties`;
   const navigate = useNavigate();
+  const location = useLocation();
 
   // State
   const [featuredProperties, setFeaturedProperties] = useState([]);
@@ -118,37 +119,46 @@ const Home = () => {
     } catch (e) { /* ignore */ }
   }, []);
 
-  // Fetch data
+  // Fetch data — re-fetch เมื่อ navigate กลับมาหน้านี้ หรือ focus กลับมาที่แท็บ (real-time update)
+  const fetchData = async () => {
+    try {
+      const [featuredRes, latestRes, provinceRes, statsRes] = await Promise.all([
+        fetch(`${API_URL}/featured`),
+        fetch(`${API_URL}/latest?limit=8`),
+        fetch(`${API_URL}/province-counts`),
+        fetch(`${API_URL}/stats`),
+      ]);
+      const featured  = await featuredRes.json();
+      const latest    = await latestRes.json();
+      const provinces = await provinceRes.json();
+      const statsData = await statsRes.json();
+
+      const featuredList = Array.isArray(featured) ? featured : [];
+      const latestList   = Array.isArray(latest)   ? latest   : [];
+      const featuredIds  = new Set(featuredList.map(p => p.id));
+
+      setFeaturedProperties(featuredList);
+      const filtered = latestList.filter(p => !featuredIds.has(p.id));
+      setLatestProperties(filtered.length > 0 ? filtered : latestList);
+      setProvinceCounts(Array.isArray(provinces) ? provinces : []);
+      if (statsData && statsData.total != null) setStats(statsData);
+    } catch (err) {
+      console.error('Error fetching properties:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Re-fetch ทุกครั้งที่ navigate กลับมาหน้านี้
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [featuredRes, latestRes, provinceRes, statsRes] = await Promise.all([
-          fetch(`${API_URL}/featured`),
-          fetch(`${API_URL}/latest?limit=8`),
-          fetch(`${API_URL}/province-counts`),
-          fetch(`${API_URL}/stats`),
-        ]);
-        const featured  = await featuredRes.json();
-        const latest    = await latestRes.json();
-        const provinces = await provinceRes.json();
-        const statsData = await statsRes.json();
-
-        const featuredList = Array.isArray(featured) ? featured : [];
-        const latestList   = Array.isArray(latest)   ? latest   : [];
-        const featuredIds  = new Set(featuredList.map(p => p.id));
-
-        setFeaturedProperties(featuredList);
-        const filtered = latestList.filter(p => !featuredIds.has(p.id));
-        setLatestProperties(filtered.length > 0 ? filtered : latestList);
-        setProvinceCounts(Array.isArray(provinces) ? provinces : []);
-        if (statsData && statsData.total != null) setStats(statsData);
-      } catch (err) {
-        console.error('Error fetching properties:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
+  }, [location.key]);
+
+  // Re-fetch เมื่อ user สลับแท็บกลับมา (เช่น จากหน้า admin)
+  useEffect(() => {
+    const onFocus = () => fetchData();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
   }, []);
 
 

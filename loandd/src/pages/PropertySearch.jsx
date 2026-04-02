@@ -190,6 +190,13 @@ function PropertySearch() {
 
   useEffect(() => { fetchProperties(); }, [fetchProperties]);
 
+  // Re-fetch เมื่อ user สลับแท็บกลับมา (real-time update หลังอัพโหลดรูป/แก้ไขทรัพย์)
+  useEffect(() => {
+    const onFocus = () => fetchProperties();
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, [fetchProperties]);
+
   // --- Sync URL → filters (รับค่าจาก navbar link หรือ back/forward) ---
   useEffect(() => {
     const fromURL = {
