@@ -1,5 +1,5 @@
 # LoanDD Project — Dev Progress Memory
-_อัพเดทล่าสุด: 2026-04-01_
+_อัพเดทล่าสุด: 2026-04-02_
 
 ## Tech Stack
 - **Frontend**: React + Vite (`lond/loandd/src/`) — port 5173
@@ -390,3 +390,51 @@ lond/add_audit_trail.sql     — เพิ่ม column created_by_admin, update
 - [ ] **Badge "ว่างอยู่"** + วันอัพเดท — Priority 1
 - [ ] **Province Grid** + จำนวนทรัพย์ — Priority 2
 - [ ] **Photo Counter** บน card — Priority 2
+
+## Facebook Competitor Research ✅ (2026-04-02)
+- **รีเสิร์ช Facebook เพจอสังหา TOP 20** — วิเคราะห์คู่แข่งในตลาด
+- **ไฟล์**: `สรุป-Facebook-คู่แข่ง-อสังหา-TOP20.html`
+- **ข้อมูลที่รวบรวม**:
+  - 20 เพจ แบ่ง Tier: S (1M+), A (500K-999K), B (100K-499K), C (<100K)
+  - Tier S: AP Thai (2M), Sansiri (1.6M), Supalai (1.2M)
+  - Tier A: SC Asset (950K), DDproperty (880K), Land & Houses (780K), ThinkofLiving (630K)
+  - Tier B: Q House (430K), Ananda (~400K), Origin (~350K), Noble (260K), บ้านพฤกษา/AssetWise (200K), MQDC (180K), Baania/LivingInsider (170K/150K)
+  - Tier C: AP Thai Home (91K), Raimon Land (65K), CBRE (61K), JameInfinite (31K)
+- **วิเคราะห์**: 5 Pattern Analysis, 15 กลยุทธ์สำหรับ LoanDD, Weekly Content Calendar
+- **ไฟล์ก่อนหน้า**: `สรุป-Facebook-คู่แข่ง-อสังหา.html` (6 เพจแรก)
+
+## เว็บคู่แข่ง ขายฝาก/จำนอง Research ✅ (2026-04-02)
+- **รีเสิร์ชเว็บ + Facebook เพจขายฝาก/จำนอง** — วิเคราะห์คู่แข่งตรงในตลาด LoanDD
+- **ไฟล์**: `สรุป-เว็บคู่แข่ง-ขายฝาก-จำนอง.html`
+- **เว็บไซต์ 12 แห่ง แบ่ง Tier**:
+  - **Tier S**: SMARTFINN (Matching Platform, 46K+ sellers, 5.1K+ buyers, 43K+ properties, 6B+ THB, Next.js, Thai Fintech Assoc.)
+  - **Tier A**: LandForLoan (SEO #1, WordPress, blog), Home for Cash (โค้ชเต๊ะ, 15+ yrs, Elementor, video), มิตรเมืองไทย (Social Enterprise, 77 provinces, FB 5.3K)
+  - **Tier B**: Homecash2u, Toonnasub, Baanleasing, ThaiTopLoan (FB 2.5K, 26 reviews 100%)
+  - **Tier C**: LandFin247, Property Smile Club, Cashpital, นายทุนบ้าน
+- **Facebook เพจ 8 แห่ง**: วิเคราะห์ pattern + engagement
+- **เปรียบเทียบ Features**: 15 features × 6 platforms — LoanDD unique: OCR Gemini AI, Google Maps embed, BTS/MRT auto-detect, SSE realtime
+- **SWOT Analysis**: Strengths (tech), Weaknesses (no blog/video/LINE OA), Opportunities (tech-first platform), Threats (SMARTFINN network effect, banks)
+- **กลยุทธ์ 20+**: แบ่ง High/Mid/Low priority, Weekly Content Calendar
+- **คู่แข่งหลักที่ต้องจับตา**: SMARTFINN (เทคโนโลยี + network effect สูงสุด)
+
+## แกะละเอียดโมเดลธุรกิจ TOP 4 Deep-Dive ✅ (2026-04-02)
+- **ไฟล์**: `แกะละเอียด-โมเดลธุรกิจ-ขายฝาก-TOP4.html`
+- **วิเคราะห์เชิงลึก 4 เว็บ**: SMARTFINN, LandForLoan, Home for Cash, มิตรเมืองไทย
+- **ครอบคลุม**: Business Model Canvas, Revenue Model, Tech Stack, SEO, UX Flow, จุดแข็ง/จุดอ่อน
+- **SMARTFINN**: Two-Sided Marketplace, 3.99% fee (min 45K), Next.js, Schema.org, endorsement จาก Thai Fintech Assoc.
+- **LandForLoan**: Direct Lender + Matching + Education, FB Group 90K+, 100+ blog articles, WordPress+Elementor
+- **Home for Cash**: Personal Brand (โค้ชเต๊ะ), Video Marketing, ประเมินฟรี, WordPress
+- **มิตรเมืองไทย**: Social Enterprise, 77 จังหวัด, Customer Segmentation ชัดเจน, WordPress
+- **เพิ่ม sections**: Tech Stack & SEO comparison (12 metrics × 5 platforms), Feature Matrix (25+ features), Competitive Positioning Map (CSS visualization), What LoanDD Can Learn (16 strategies), LoanDD Unique Advantages (6 AI/Tech advantages), Recommended Action Plan (11 actions, prioritized Quick Wins / Strategic / Long-term)
+- **LoanDD unique advantages**: AI OCR Gemini, SSE Realtime, Auto BTS/MRT, Next.js 14+Supabase, Interactive Map, Custom Admin — ไม่มีคู่แข่งรายใดมี
+
+## แกะละเอียดโมเดลธุรกิจอสังหาริมทรัพย์ 14 แพลตฟอร์ม ✅ (2026-04-02)
+- **ไฟล์**: `แกะละเอียด-โมเดลธุรกิจ-อสังหาริมทรัพย์.html`
+- **4 กลุ่มธุรกิจ × 14 แพลตฟอร์ม**:
+  - **เว็บประกาศขาย/เช่า (5)**: DDproperty (Tier S, PropertyGuru, $68M rev), Baania (credit-based), Hipflat (Lifull group), Livinginsider (4M+ users), FazWaz (commission marketplace)
+  - **สินเชื่อบ้าน/Refinance (3)**: Refinn (Tier S, 1.59M users, 15 banks, Nuxt.js), CheckRaka (multi-category comparison), MoneyGuru (CheckRaka subsidiary)
+  - **Developer (3)**: Sansiri (Tier S, #1 developer, AI BIM, $2.2B projects), AP Thai (THB 65B projects), LPN (economy condos, $233M rev)
+  - **นายหน้า/Agent (3)**: PropertyHub (agent portal), RE/MAX (global franchise 22+ offices), Century 21 (80+ countries)
+- **ครอบคลุม**: Revenue Model comparison, Tech Stack & SEO, Feature Matrix 20+ features, Competitive Positioning Map, What LoanDD Can Learn, LoanDD's Position, Action Plan
+- **Key insights**: Refinn = Nuxt.js (คู่แข่งสินเชื่อที่ tech สูงสุด), DDproperty = ครองตลาด property portal, Sansiri = AI BIM + Big Data, CheckRaka = #1 price comparison Thailand
+- **LoanDD positioning**: "FinTech + PropTech" bridge — ขายฝากอยู่ตรงกลางระหว่าง property portal กับ loan platform ไม่มีใครทำจุดนี้โดยเฉพาะ
