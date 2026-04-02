@@ -355,6 +355,27 @@ lond/add_audit_trail.sql     — เพิ่ม column created_by_admin, update
 - Search input ใน navbar ที่ collapse เป็น icon บนมือถือ
 - Submit → ไปหน้า `/search?search=...`
 
+## MySQL Pool Fix ✅ (2026-04-02)
+- **ปัญหา**: server ใช้ `mysql.createConnection()` (single connection) → พอ SSE + หลาย query พร้อมกัน → ทุก request ค้าง
+- **แก้**: `config/db.js` → เปลี่ยนเป็น `mysql.createPool()` connectionLimit: 20
+  - เพิ่ม `connectTimeout: 10000`, `enableKeepAlive: true`
+  - เพิ่ม pool event log: `pool.on('connection', ...)` เพื่อ debug
+- **app.js**: เพิ่ม request timeout middleware (30 วินาที, ยกเว้น SSE)
+- **app.js**: เพิ่ม `/health` + `/health/deep` endpoints สำหรับตรวจสอบระบบ
+- **สาเหตุหลัก**: server ไม่ได้ restart หลังแก้ code → ต้อง `taskkill /F /IM node.exe` แล้ว `node app.js` ใหม่
+
+## Registration Unique Validation ✅ (2026-04-02)
+- **authController.js** `register()`:
+  - บังคับกรอก email + phone (เดิมไม่บังคับ)
+  - เช็คซ้ำก่อน INSERT: username, email, phone แยกแต่ละ field
+  - Error message ชัดเจน: "ชื่อผู้ใช้นี้ถูกใช้แล้ว" / "อีเมลนี้ถูกใช้แล้ว" / "เบอร์โทรนี้ถูกใช้แล้ว"
+  - Fallback: ถ้า race condition → ดัก `ER_DUP_ENTRY` + เช็ค message includes field name
+- **DB**: ตาราง users มี UNIQUE KEY บน `username`, `email`, `phone` อยู่แล้ว
+
+## Helper Files ✅ (2026-04-02)
+- `server/diagnose.js` — ตรวจสอบ DB/ตาราง/passwords + auto-reset
+- `server/restart.bat` — Windows batch ปิด node ทั้งหมดแล้วเริ่มใหม่
+
 ---
 
 ## Pending (ยังไม่ได้ทำ)

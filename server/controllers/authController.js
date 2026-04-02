@@ -13,23 +13,54 @@ exports.register = (req, res) => {
     if (!username || !password) {
         return res.status(400).json({ error: 'กรุณากรอก username และ password' });
     }
+    if (!email || !email.trim()) {
+        return res.status(400).json({ error: 'กรุณากรอกอีเมล' });
+    }
+    if (!phone || !phone.trim()) {
+        return res.status(400).json({ error: 'กรุณากรอกเบอร์โทรศัพท์' });
+    }
 
-    bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
-        if (hashErr) {
-            console.error('Hash error:', hashErr);
+    // ─── เช็คซ้ำก่อน INSERT (username, email, phone) ───
+    const checkSql = `
+      SELECT
+        SUM(username = ?) AS dup_username,
+        SUM(email = ?)    AS dup_email,
+        SUM(phone = ?)    AS dup_phone
+      FROM users
+      WHERE username = ? OR email = ? OR phone = ?
+    `;
+    db.query(checkSql, [username, email, phone, username, email, phone], (checkErr, rows) => {
+        if (checkErr) {
+            console.error('Register check error:', checkErr);
             return res.status(500).json({ error: 'Server Error' });
         }
 
-        const sql = `INSERT INTO users (username, password_hash, email, phone, role) VALUES (?, ?, ?, ?, ?)`;
-        db.query(sql, [username, hashedPassword, email || null, phone || null, 'borrower'], (err, result) => {
-            if (err) {
-                console.error('Register error:', err);
-                if (err.code === 'ER_DUP_ENTRY') {
-                    return res.status(400).json({ error: 'ชื่อผู้ใช้หรืออีเมลนี้ถูกใช้แล้ว' });
-                }
-                return res.status(500).json({ error: 'สมัครสมาชิกไม่สำเร็จ' });
+        const dup = rows[0];
+        if (dup.dup_username > 0) return res.status(400).json({ error: 'ชื่อผู้ใช้นี้ถูกใช้แล้ว' });
+        if (dup.dup_email > 0)    return res.status(400).json({ error: 'อีเมลนี้ถูกใช้แล้ว' });
+        if (dup.dup_phone > 0)    return res.status(400).json({ error: 'เบอร์โทรนี้ถูกใช้แล้ว' });
+
+        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+            if (hashErr) {
+                console.error('Hash error:', hashErr);
+                return res.status(500).json({ error: 'Server Error' });
             }
-            res.json({ message: 'สมัครสมาชิกสำเร็จ!', userId: result.insertId });
+
+            const sql = `INSERT INTO users (username, password_hash, email, phone, role) VALUES (?, ?, ?, ?, ?)`;
+            db.query(sql, [username.trim(), hashedPassword, email.trim(), phone.trim(), 'borrower'], (err, result) => {
+                if (err) {
+                    console.error('Register error:', err);
+                    if (err.code === 'ER_DUP_ENTRY') {
+                        // Fallback: ถ้าผ่าน check แต่ยัง dup (race condition)
+                        if (err.message.includes('username'))  return res.status(400).json({ error: 'ชื่อผู้ใช้นี้ถูกใช้แล้ว' });
+                        if (err.message.includes('email'))     return res.status(400).json({ error: 'อีเมลนี้ถูกใช้แล้ว' });
+                        if (err.message.includes('phone'))     return res.status(400).json({ error: 'เบอร์โทรนี้ถูกใช้แล้ว' });
+                        return res.status(400).json({ error: 'ข้อมูลซ้ำกับสมาชิกอื่น' });
+                    }
+                    return res.status(500).json({ error: 'สมัครสมาชิกไม่สำเร็จ' });
+                }
+                res.json({ message: 'สมัครสมาชิกสำเร็จ!', userId: result.insertId });
+            });
         });
     });
 };
