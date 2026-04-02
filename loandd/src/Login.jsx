@@ -44,7 +44,7 @@ const Login = () => {
     <div className="container mt-5" style={{ maxWidth: '400px' }}>
       <div className="card shadow">
         <div className="card-body">
-          <h3 className="text-center mb-4">เข้าสู่ระบบ LoanDD</h3>
+          <h3 className="text-center mb-4">เข้าสู่ระบบ บ้าน D มีเชง</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label>Username</label>

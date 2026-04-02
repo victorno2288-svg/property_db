@@ -93,7 +93,7 @@ const UserLogin = () => {
         <div className="text-center mb-4">
             <img 
               src={bigLogo} 
-              alt="LoanDD Logo" 
+              alt="บ้าน D มีเชง Logo" 
               className="img-fluid mb-3"
               style={{ maxHeight: '90px' }} 
             />

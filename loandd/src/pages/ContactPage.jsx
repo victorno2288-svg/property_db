@@ -59,7 +59,7 @@ const ContactPage = () => {
             📞 ติดต่อเรา
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', margin: 0 }}>
-            มีคำถามเรื่องทรัพย์? สนใจซื้อหรือเช่า? ทีมงาน LoanDD พร้อมช่วยคุณเสมอ
+            มีคำถามเรื่องทรัพย์? สนใจซื้อหรือเช่า? ทีมงาน บ้าน D มีเชง พร้อมช่วยคุณเสมอ
           </p>
         </div>
       </section>
@@ -132,7 +132,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.78rem', color: '#888', marginBottom: 2 }}>Facebook</div>
-                    <div style={{ fontWeight: 700, color: navy, fontSize: '0.95rem' }}>LoanDD</div>
+                    <div style={{ fontWeight: 700, color: navy, fontSize: '0.95rem' }}>บ้าน D มีเชง</div>
                     <div style={{ fontSize: '0.78rem', color: '#1877F2' }}>ติดตามข่าวสาร & แชทได้</div>
                   </div>
                 </div>
@@ -146,8 +146,8 @@ const ContactPage = () => {
                 <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>ที่ตั้งสำนักงาน</span>
               </div>
               <iframe
-                title="LoanDD Office Map"
-                src="https://www.google.com/maps?q=LoanDD+กรุงเทพมหานคร+ไทย&z=14&output=embed"
+                title="บ้าน D มีเชง Office Map"
+                src="https://www.google.com/maps?q=บ้าน D มีเชง+กรุงเทพมหานคร+ไทย&z=14&output=embed"
                 width="100%"
                 height="220"
                 style={{ display: 'block', border: 'none' }}
@@ -340,7 +340,7 @@ const ContactPage = () => {
 
       {/* Footer strip */}
       <footer style={{ background: navy, color: 'rgba(255,255,255,0.6)', textAlign: 'center', padding: '20px 16px', fontSize: '0.82rem', marginTop: 60 }}>
-        © {new Date().getFullYear()} LoanDD Co., Ltd. · <a href={`tel:${PHONE}`} style={{ color: 'rgba(255,255,255,0.8)' }}>{PHONE}</a>
+        © {new Date().getFullYear()} บ้าน D มีเชง Co., Ltd. · <a href={`tel:${PHONE}`} style={{ color: 'rgba(255,255,255,0.8)' }}>{PHONE}</a>
       </footer>
     </div>
   );

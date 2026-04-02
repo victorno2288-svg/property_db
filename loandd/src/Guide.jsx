@@ -37,10 +37,10 @@ const Guide = () => {
     }
   ];
 
-  // จุดเด่นของ LoanDD
+  // จุดเด่นของ บ้าน D มีเชง
   const features = [
     { icon: 'fa-shield-alt',      title: 'ทรัพย์ตรวจสอบแล้วทุกรายการ',   desc: 'ทีมงานตรวจโฉนด ภาระผูกพัน และเอกสารก่อนนำขึ้นประกาศทุกรายการ' },
-    { icon: 'fa-user-tie',        title: 'ซื้อตรงจาก LoanDD ไม่ผ่านคนกลาง', desc: 'LoanDD รีโนเวทและขายเอง ราคาเป็นธรรม ไม่มีค่าคอมมิชชันแอบแฝง' },
+    { icon: 'fa-user-tie',        title: 'ซื้อตรงจาก บ้าน D มีเชง ไม่ผ่านคนกลาง', desc: 'บ้าน D มีเชง รีโนเวทและขายเอง ราคาเป็นธรรม ไม่มีค่าคอมมิชชันแอบแฝง' },
     { icon: 'fa-map-marker-alt',  title: 'ครอบคลุมทุกทำเล ทั่วไทย',       desc: 'ทรัพย์หลากหลายประเภท ทุกจังหวัด เลือกได้ตามไลฟ์สไตล์' },
     { icon: 'fa-headset',         title: 'ทีมงานพร้อมดูแล 7 วัน',         desc: 'ปรึกษาฟรีทุกขั้นตอน ตั้งแต่หาทรัพย์จนถึงโอนกรรมสิทธิ์' },
     { icon: 'fa-chart-line',      title: 'ข้อมูลราคาตลาดแม่นยำ',           desc: 'เปรียบเทียบราคาทรัพย์ใกล้เคียง ตัดสินใจได้มั่นใจขึ้น' },
@@ -49,7 +49,7 @@ const Guide = () => {
   // ขั้นตอนซื้อบ้าน
   const buyingSteps = [
     { step: '01', icon: 'fa-search', title: 'ค้นหาทรัพย์', desc: 'กรองตามทำเล ราคา ประเภท และเงื่อนไขที่ต้องการ' },
-    { step: '02', icon: 'fa-calendar-check', title: 'นัดชมสถานที่', desc: 'ดูทรัพย์จริง ตรวจสภาพ สอบถามทีม LoanDD โดยตรง' },
+    { step: '02', icon: 'fa-calendar-check', title: 'นัดชมสถานที่', desc: 'ดูทรัพย์จริง ตรวจสภาพ สอบถามทีม บ้าน D มีเชง โดยตรง' },
     { step: '03', icon: 'fa-handshake', title: 'ต่อรองราคา', desc: 'ตกลงเงื่อนไข วางเงินมัดจำ ทำสัญญาจะซื้อจะขาย' },
     { step: '04', icon: 'fa-university', title: 'โอนกรรมสิทธิ์', desc: 'ชำระเงินส่วนที่เหลือ โอนที่กรมที่ดิน รับกุญแจ' },
   ];
@@ -68,16 +68,16 @@ const Guide = () => {
             คู่มือผู้ซื้อ-ขายอสังหาฯ
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', margin: 0 }}>
-            ทุกสิ่งที่ต้องรู้ก่อนซื้ออสังหาริมทรัพย์จาก LoanDD — เตรียมตัวให้พร้อม ไม่พลาดทุกดีล
+            ทุกสิ่งที่ต้องรู้ก่อนซื้ออสังหาริมทรัพย์จาก บ้าน D มีเชง — เตรียมตัวให้พร้อม ไม่พลาดทุกดีล
           </p>
         </div>
       </section>
 
-      {/* === จุดเด่น LoanDD === */}
+      {/* === จุดเด่น บ้าน D มีเชง === */}
       <section className="py-5" style={{ background: '#f8faf9' }}>
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="fw-bold">ทำไมต้องเลือก<span style={{ color: brandGreen }}> LoanDD</span></h2>
+            <h2 className="fw-bold">ทำไมต้องเลือก<span style={{ color: brandGreen }}> บ้าน D มีเชง</span></h2>
             <p className="text-muted">แพลตฟอร์มอสังหาริมทรัพย์ที่เชื่อถือได้ ดูแลคุณทุกขั้นตอน</p>
           </div>
 
@@ -107,7 +107,7 @@ const Guide = () => {
         <div className="container">
           <div className="text-center mb-5">
             <h2 className="fw-bold">ขั้นตอนซื้อบ้าน<span style={{ color: brandGreen }}> ง่ายๆ 4 ขั้น</span></h2>
-            <p className="text-muted">จากการค้นหาจนถึงรับกุญแจ LoanDD ดูแลทุกขั้นตอน</p>
+            <p className="text-muted">จากการค้นหาจนถึงรับกุญแจ บ้าน D มีเชง ดูแลทุกขั้นตอน</p>
           </div>
           <div className="row g-4 justify-content-center">
             {buyingSteps.map((s, i) => (
@@ -139,11 +139,11 @@ const Guide = () => {
         </div>
       </section>
 
-      {/* === ประเภทอสังหาที่ LoanDD มี === */}
+      {/* === ประเภทอสังหาที่ บ้าน D มีเชง มี === */}
       <section className="py-5" style={{ background: '#f8faf9' }}>
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="fw-bold">ประเภทอสังหาฯ<span style={{ color: brandGreen }}> ที่ LoanDD มี</span></h2>
+            <h2 className="fw-bold">ประเภทอสังหาฯ<span style={{ color: brandGreen }}> ที่ บ้าน D มีเชง มี</span></h2>
           </div>
           <div className="row g-3 justify-content-center">
             {[
@@ -268,7 +268,7 @@ const Guide = () => {
             <i className="fab fa-line fa-lg mx-2"></i>
             <i className="fas fa-phone-alt fa-lg mx-2"></i>
           </div>
-          <p className="mb-0 small text-white-50">&copy; 2026 LoanDD Co., Ltd. All rights reserved.</p>
+          <p className="mb-0 small text-white-50">&copy; 2026 บ้าน D มีเชง Co., Ltd. All rights reserved.</p>
         </div>
       </footer>
     </div>

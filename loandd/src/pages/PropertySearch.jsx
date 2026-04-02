@@ -269,10 +269,10 @@ function PropertySearch() {
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <h1 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, marginBottom: 6 }}>
-            อสังหาริมทรัพย์จาก LoanDD
+            อสังหาริมทรัพย์จาก บ้าน D มีเชง
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', marginBottom: 18 }}>
-            ทรัพย์คุณภาพ คัดสรรโดยทีม LoanDD — ราคาดี ทำเลสวย
+            ทรัพย์คุณภาพ คัดสรรโดยทีม บ้าน D มีเชง — ราคาดี ทำเลสวย
           </p>
 
           {/* Search Bar */}

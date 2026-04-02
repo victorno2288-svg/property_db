@@ -514,7 +514,7 @@ function PropertyDetail() {
             const handleQSave = () => {
               toggleSave();
             };
-            const shareData = { title: property.title, text: `ดูทรัพย์นี้บน LoanDD: ${property.title}`, url: window.location.href };
+            const shareData = { title: property.title, text: `ดูทรัพย์นี้บน บ้าน D มีเชง: ${property.title}`, url: window.location.href };
             return (
               <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
                 <button onClick={() => navigate(-1)} style={qBtnStyle(false)}>
@@ -1330,7 +1330,7 @@ function PropertyDetail() {
                 property.province && `อสังหา${property.province}`,
                 property.district && `ทรัพย์${property.district}`,
                 property.bts_station && `ใกล้BTS${property.bts_station.replace(/\s/g,'')}`,
-                `LoanDD`,
+                `บ้าน D มีเชง`,
                 `ราคาดี`,
               ].filter(Boolean);
               return (
@@ -1364,7 +1364,7 @@ function PropertyDetail() {
                 borderBottom: '1.5px solid #c8ead8',
               }}>
                 <div style={{ fontWeight: 800, fontSize: '1rem', marginBottom: 2, color: '#04AA6D' }}>สนใจทรัพย์นี้?</div>
-                <div style={{ fontSize: '0.78rem', color: '#777' }}>ทีม LoanDD พร้อมให้บริการ 7 วัน</div>
+                <div style={{ fontSize: '0.78rem', color: '#777' }}>ทีม บ้าน D มีเชง พร้อมให้บริการ 7 วัน</div>
               </div>
 
               {/* Inquiry Form */}

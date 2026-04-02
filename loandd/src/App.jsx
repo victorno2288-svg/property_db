@@ -10,7 +10,7 @@ import Dashboard from './Dashboard'; // หน้าแดชบอร์ด (Ad
 import UserLogin from './UserLogin'; // หน้าล็อกอินลูกค้า
 import AdminLogin from './AdminLogin'; // หน้าล็อกอินเจ้าหน้าที่
 import Register from './Register';   // หน้าสมัครสมาชิก
-// ListProperty (ขายฝาก/จำนอง) ถูกลบออกแล้ว — เว็บนี้ขายเองโดย LoanDD เท่านั้น
+// ListProperty (ขายฝาก/จำนอง) ถูกลบออกแล้ว — เว็บนี้ขายเองโดย บ้าน D มีเชง เท่านั้น
 import PropertySearch from './pages/PropertySearch'; // หน้าค้นหา/แสดงทรัพย์สินทั้งหมด
 import PropertyDetail from './pages/PropertyDetail'; // หน้ารายละเอียดทรัพย์สิน
 import AdminProperties from './pages/admin/AdminProperties'; // Admin: รายการทรัพย์
@@ -93,7 +93,7 @@ function App() {
         {/* /list-property ถูกลบออกแล้ว — ไม่มีระบบลงประกาศจากภายนอก */}
 
         {/* ========== PROPERTY SHOWCASE ========== */}
-        {/* หน้าค้นหา/แสดงทรัพย์สินทั้งหมดของ LoanDD */}
+        {/* หน้าค้นหา/แสดงทรัพย์สินทั้งหมดของ บ้าน D มีเชง */}
         <Route path="/search" element={<PropertySearch />} />
 
         {/* หน้ารายละเอียดทรัพย์สินแต่ละชิ้น */}

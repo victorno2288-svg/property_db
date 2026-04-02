@@ -210,7 +210,7 @@ function ListProperty() {
             <i className="fas fa-check-circle"></i>
           </div>
           <h2>ส่งข้อมูลเรียบร้อยแล้ว!</h2>
-          <p>ทีมงาน LoanDD จะติดต่อกลับภายใน 24 ชั่วโมง</p>
+          <p>ทีมงาน บ้าน D มีเชง จะติดต่อกลับภายใน 24 ชั่วโมง</p>
           <p className="lp-success-sub">เลขอ้างอิง: #LP{Date.now().toString().slice(-6)}</p>
           <div className="lp-success-buttons">
             <button className="btn-lp-primary" onClick={() => navigate('/')}>

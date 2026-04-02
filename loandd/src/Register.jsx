@@ -68,11 +68,11 @@ const Register = () => {
 
         {/* --- โลโก้ --- */}
         <div className="text-center mb-3">
-          <img src={bigLogo} alt="LoanDD Logo" className="register-logo" />
+          <img src={bigLogo} alt="บ้าน D มีเชง Logo" className="register-logo" />
         </div>
 
         <h3 className="text-center register-title mb-2">สมัครสมาชิก</h3>
-        <p className="text-center register-subtitle mb-3">สร้างบัญชีใหม่เพื่อใช้งานระบบ LoanDD</p>
+        <p className="text-center register-subtitle mb-3">สร้างบัญชีใหม่เพื่อใช้งานระบบ บ้าน D มีเชง</p>
 
         {/* ============ แบบฟอร์ม ============ */}
         <form onSubmit={handleSubmit}>

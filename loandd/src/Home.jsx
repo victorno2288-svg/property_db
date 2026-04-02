@@ -190,10 +190,10 @@ const Home = () => {
           {/* Headline */}
           <h1 style={{ color:'#fff', fontWeight:900, fontSize:'clamp(1.8rem, 5vw, 3rem)', lineHeight:1.25, marginBottom:12 }}>
             ทรัพย์รีโนเวทพร้อมอยู่<br />
-            <span style={{ color:'#4ade80' }}>โดย LoanDD</span>
+            <span style={{ color:'#4ade80' }}>โดย บ้าน D มีเชง</span>
           </h1>
           <p style={{ color:'rgba(255,255,255,0.75)', fontSize:'1rem', maxWidth:520, margin:'0 auto 36px', lineHeight:1.7 }}>
-            อสังหาริมทรัพย์ที่ LoanDD รีโนเวทเอง คุณภาพครบ ราคาเป็นธรรม ตรวจสอบโฉนดแล้วทุกรายการ
+            อสังหาริมทรัพย์ที่ บ้าน D มีเชง รีโนเวทเอง คุณภาพครบ ราคาเป็นธรรม ตรวจสอบโฉนดแล้วทุกรายการ
           </p>
 
           {/* Hero tab row — เหนือ search bar */}
@@ -725,7 +725,7 @@ const Home = () => {
       <section style={{ background: '#fff', borderTop: '1px solid #eef0f3', padding: '32px 0 28px' }}>
         <div className="container">
           <p style={{ textAlign:'center', fontSize:'0.78rem', color:'#aaa', fontWeight:600, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:18 }}>
-            มาตรฐานที่ LoanDD ยึดถือทุกรายการ
+            มาตรฐานที่ บ้าน D มีเชง ยึดถือทุกรายการ
           </p>
           <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'8px 24px' }}>
             {[
@@ -733,7 +733,7 @@ const Home = () => {
               { icon:'fa-landmark',       color:'#1a3c6e', label:'ผ่านกรมที่ดิน' },
               { icon:'fa-file-contract',  color:'#7c3aed', label:'สัญญาถูกกฎหมาย 100%' },
               { icon:'fa-university',     color:'#0891b2', label:'รับชำระผ่านธนาคาร' },
-              { icon:'fa-user-shield',    color:'#d97706', label:'ซื้อตรงจาก LoanDD ไม่ผ่านคนกลาง' },
+              { icon:'fa-user-shield',    color:'#d97706', label:'ซื้อตรงจาก บ้าน D มีเชง ไม่ผ่านคนกลาง' },
               { icon:'fa-headset',        color:'#059669', label:'ทีมงานตอบ 1 ชม.' },
             ].map((b,i) => (
               <div key={i} style={{ display:'flex', alignItems:'center', gap:7, color:'#555', fontSize:'0.82rem', fontWeight:600 }}>
@@ -754,7 +754,7 @@ const Home = () => {
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
               <h3 className="fw-bold mb-1">ทรัพย์สิน<span style={{ color: brandGreen }}>แนะนำ</span></h3>
-              <p className="text-muted mb-0">ทรัพย์ที่ LoanDD รีโนเวทเองทุกหลัง พร้อมเข้าอยู่</p>
+              <p className="text-muted mb-0">ทรัพย์ที่ บ้าน D มีเชง รีโนเวทเองทุกหลัง พร้อมเข้าอยู่</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               {[{ dir: -1, icon: 'fa-chevron-left' }, { dir: 1, icon: 'fa-chevron-right' }].map(({ dir, icon }) => (
@@ -870,13 +870,13 @@ const Home = () => {
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: 36 }}>
             <h2 style={{ fontWeight: 800, margin: '0 0 8px', fontSize: 'clamp(1.1rem,3vw,1.5rem)', color: '#1a2d4a' }}>
-              ทำไมต้องเลือก <span style={{ color: brandGreen }}>LoanDD</span>?
+              ทำไมต้องเลือก <span style={{ color: brandGreen }}>บ้าน D มีเชง</span>?
             </h2>
-            <p style={{ color: '#888', margin: 0, fontSize: '0.9rem' }}>ทรัพย์ทุกหลังผ่านมือ LoanDD รีโนเวทเอง พร้อมทีมดูแลคุณตลอดกระบวนการ</p>
+            <p style={{ color: '#888', margin: 0, fontSize: '0.9rem' }}>ทรัพย์ทุกหลังผ่านมือ บ้าน D มีเชง รีโนเวทเอง พร้อมทีมดูแลคุณตลอดกระบวนการ</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
             {[
-              { emoji: '🔨', title: 'LoanDD รีโนเวทเอง',      desc: 'ทุกหลังผ่านการปรับปรุงโดยทีม LoanDD ไม่รับฝากขายจากบุคคลภายนอก' },
+              { emoji: '🔨', title: 'บ้าน D มีเชง รีโนเวทเอง',      desc: 'ทุกหลังผ่านการปรับปรุงโดยทีม บ้าน D มีเชง ไม่รับฝากขายจากบุคคลภายนอก' },
               { emoji: '📋', title: 'โฉนดถูกต้อง 100%',      desc: 'ตรวจสอบเอกสารทุกรายการ ผ่านกรมที่ดิน สัญญาถูกกฎหมาย' },
               { emoji: '💰', title: 'ราคาเป็นธรรม',           desc: 'ประเมินราคาด้วยทีมผู้เชี่ยวชาญ คุ้มค่าทุกรายการ' },
               { emoji: '👨💼', title: 'ทีมผู้เชี่ยวชาญ',       desc: 'ดูแลตั้งแต่ต้นจนปิดดีล ทราบผลใน 24 ชม.' },
@@ -913,7 +913,7 @@ const Home = () => {
             <i className="fab fa-line fa-lg mx-2"></i>
             <i className="fas fa-phone-alt fa-lg mx-2"></i>
           </div>
-          <p className="mb-0 small text-white-50">&copy; 2026 LoanDD Co., Ltd. All rights reserved.</p>
+          <p className="mb-0 small text-white-50">&copy; 2026 บ้าน D มีเชง Co., Ltd. All rights reserved.</p>
         </div>
       </footer>
     </div>

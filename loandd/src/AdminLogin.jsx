@@ -66,12 +66,12 @@ export default function AdminLogin() {
       {/* ── ซ้าย: Brand Panel ── */}
       <div style={css.brand}>
         <div style={css.brandInner}>
-          <img src={bigLogo} alt="LoanDD" style={{ height: 64, objectFit: 'contain', marginBottom: 28 }} />
+          <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 64, objectFit: 'contain', marginBottom: 28 }} />
           <h1 style={{ margin: '0 0 8px', fontSize: '1.6rem', fontWeight: 800, color: '#fff' }}>
             Property Admin
           </h1>
           <p style={{ margin: '0 0 36px', color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', lineHeight: 1.6 }}>
-            ระบบจัดการอสังหาริมทรัพย์<br />สำหรับเจ้าหน้าที่ LoanDD เท่านั้น
+            ระบบจัดการอสังหาริมทรัพย์<br />สำหรับเจ้าหน้าที่ บ้าน D มีเชง เท่านั้น
           </p>
 
           {/* Feature list */}
@@ -107,7 +107,7 @@ export default function AdminLogin() {
               เข้าสู่ระบบ
             </h2>
             <p style={{ margin: 0, color: '#9ca3af', fontSize: '0.83rem' }}>
-              ใช้บัญชีเจ้าหน้าที่ LoanDD ในการเข้าสู่ระบบ
+              ใช้บัญชีเจ้าหน้าที่ บ้าน D มีเชง ในการเข้าสู่ระบบ
             </p>
           </div>
 
@@ -207,7 +207,7 @@ export default function AdminLogin() {
               🔒 AUTHORIZED PERSONNEL ONLY
             </p>
             <p style={{ margin: 0, fontSize: '0.72rem', color: '#d1d5db' }}>
-              © LoanDD Property System 2026
+              © บ้าน D มีเชง Property System 2026
             </p>
           </div>
         </div>

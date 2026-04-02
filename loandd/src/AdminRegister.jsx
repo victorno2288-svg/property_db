@@ -95,12 +95,12 @@ export default function AdminRegister() {
       {/* ── ซ้าย: Brand Panel ── */}
       <div style={css.brand}>
         <div style={css.brandInner}>
-          <img src={bigLogo} alt="LoanDD" style={{ height: 64, objectFit: 'contain', marginBottom: 28 }} />
+          <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 64, objectFit: 'contain', marginBottom: 28 }} />
           <h1 style={{ margin: '0 0 8px', fontSize: '1.5rem', fontWeight: 800, color: '#fff' }}>
             เพิ่มบัญชีแอดมิน
           </h1>
           <p style={{ margin: '0 0 32px', color: 'rgba(255,255,255,0.65)', fontSize: '0.87rem', lineHeight: 1.7 }}>
-            สร้างบัญชีเจ้าหน้าที่ LoanDD<br />สำหรับจัดการระบบอสังหาริมทรัพย์
+            สร้างบัญชีเจ้าหน้าที่ บ้าน D มีเชง<br />สำหรับจัดการระบบอสังหาริมทรัพย์
           </p>
 
           {/* Features list */}
@@ -250,7 +250,7 @@ export default function AdminRegister() {
         </div>
 
         <p style={{ marginTop: 14, textAlign: 'center', fontSize: '0.72rem', color: '#d1d5db' }}>
-          🔒 สำหรับเจ้าหน้าที่ LoanDD เท่านั้น
+          🔒 สำหรับเจ้าหน้าที่ บ้าน D มีเชง เท่านั้น
         </p>
       </div>
     </div>

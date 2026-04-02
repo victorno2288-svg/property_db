@@ -245,9 +245,9 @@ useEffect(() => {
 
         <Link className="navbar-brand d-flex align-items-center me-0 me-lg-3 py-2" to="/" onClick={closeAll}>
           <div className="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm navbar-brand-logo">
-            <img src={bigLogo} alt="LoanDD" />
+            <img src={bigLogo} alt="บ้าน D มีเชง" />
           </div>
-          <span className="ms-2 fw-bold text-white d-none d-sm-inline navbar-brand-text">LoanDD</span>
+          <span className="ms-2 fw-bold text-white d-none d-sm-inline navbar-brand-text">บ้าน D มีเชง</span>
         </Link>
 
         {/* มือถือ: bell + avatar + hamburger (ขวา) */}
@@ -412,15 +412,15 @@ useEffect(() => {
               <div className="mob-head-avatar">{user?.username?.charAt(0)?.toUpperCase() || 'U'}</div>
               <div>
                 <div className="mob-head-name">{user.username}</div>
-                <div className="mob-head-role">สมาชิก LoanDD</div>
+                <div className="mob-head-role">สมาชิก บ้าน D มีเชง</div>
               </div>
             </div>
           ) : (
             <div className="mob-head-brand">
               <div className="bg-white rounded-circle d-flex align-items-center justify-content-center" style={{ width: 38, height: 38, flexShrink: 0 }}>
-                <img src={bigLogo} alt="LoanDD" style={{ height: 28 }} />
+                <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 28 }} />
               </div>
-              <span>LoanDD</span>
+              <span>บ้าน D มีเชง</span>
             </div>
           )}
         </div>
