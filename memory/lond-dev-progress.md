@@ -1,5 +1,18 @@
-# LoanDD Project — Dev Progress Memory
-_อัพเดทล่าสุด: 2026-04-02_
+# บ้าน D มีเชง (เดิม: LoanDD) — Dev Progress Memory
+_อัพเดทล่าสุด: 2026-04-04_
+
+## ⚠️ สิ่งสำคัญที่ต้องจำ (2026-04-04)
+- **ชื่อแบรนด์เปลี่ยนจาก "LoanDD" เป็น "บ้าน D มีเชง"** ทุก JSX/CSS (18 ไฟล์) ยกเว้น LINE ID @LoanDD
+- **`http://localhost:3001` ถูกลบออกจากทุกไฟล์** → ใช้ relative URL `''` แทน (เพื่อ production)
+- **เพิ่ม Vite proxy** ใน `vite.config.js` เพื่อให้ local dev ทำงานได้ (`/api` → `localhost:3001`)
+- **Favicon เปลี่ยน** จาก `vite.svg` → `loandd-logo.png` ใน `public/`
+- **Title เปลี่ยน** เป็น "บ้าน D มีเชง — ขายฝาก จำนอง อสังหาริมทรัพย์"
+- **Real-time re-fetch** เพิ่มใน Home.jsx, PropertyDetail.jsx, PropertySearch.jsx (focus + navigate)
+- **Cooldown 5s** ป้องกัน focus handler fetch ซ้ำรัวๆ + content-type check ก่อน parse JSON
+- **Login 401 ไม่ใช่ bug ในโค้ด** — diff ยืนยัน backend ไม่เปลี่ยนเลย ปัญหาคือ DB (password hash / user ไม่มี)
+- **fix-login.js** สร้างไว้ที่ `server/fix-login.js` สำหรับรีเซ็ตรหัสผ่านทั้ง admin + user เป็น "123456"
+- **test-db-login.js** สร้างไว้ที่ `server/test-db-login.js` สำหรับตรวจ DB connection
+- **สิ่งที่เปลี่ยนจาก repo เก่า (GitHub)**: เฉพาะ `BASE_URL` ใน frontend (จาก `http://localhost:3001` → `''`) + เพิ่ม Vite proxy — backend ไม่แตะเลย
 
 ## Tech Stack
 - **Frontend**: React + Vite (`lond/loandd/src/`) — port 5173

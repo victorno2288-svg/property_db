@@ -29,7 +29,7 @@ function haversine(lat1, lng1, lat2, lng2) {
 }
 
 function distColor(km) {
-  if (km <= 1) return '#04AA6D';
+  if (km <= 1) return '#1A8C6E';
   if (km <= 3) return '#f59e0b';
   return '#ef4444';
 }
@@ -57,7 +57,7 @@ export default function ProximityMap({
   centerLng,
   centerLabel = 'จุดอ้างอิง',
   centerIcon = '📍',
-  centerColor = '#1a3c6e',
+  centerColor = '#00463d',
   properties = [],
   mapHeight = 380,
 }) {
@@ -89,8 +89,8 @@ export default function ProximityMap({
 
     // ─ วงกลมระยะทาง ─
     const rings = [
-      { r: 500,  fill: 'rgba(26,60,110,0.07)',  stroke: '#1a3c6e', dash: null },
-      { r: 1000, fill: 'rgba(4,170,109,0.06)',   stroke: '#04AA6D', dash: null },
+      { r: 500,  fill: 'rgba(26,60,110,0.07)',  stroke: '#00463d', dash: null },
+      { r: 1000, fill: 'rgba(4,170,109,0.06)',   stroke: '#1A8C6E', dash: null },
       { r: 2000, fill: 'rgba(245,158,11,0.05)',  stroke: '#f59e0b', dash: '6 4' },
     ];
     rings.forEach(({ r, fill, stroke, dash }) => {
@@ -127,7 +127,7 @@ export default function ProximityMap({
       .bindPopup(
         `<div style="font-family:Sarabun,sans-serif;text-align:center;padding:2px 4px">
           <div style="font-size:1.4rem;margin-bottom:4px">${centerIcon}</div>
-          <div style="font-weight:800;color:#1a3c6e;font-size:0.9rem">${centerLabel}</div>
+          <div style="font-weight:800;color:#00463d;font-size:0.9rem">${centerLabel}</div>
           <div style="color:#888;font-size:0.72rem;margin-top:2px">จุดอ้างอิง</div>
         </div>`,
         { maxWidth: 200 }
@@ -171,7 +171,7 @@ export default function ProximityMap({
       });
 
       const typeLabels = {
-        house: 'บ้านเดี่ยว', condo: 'คอนโด', townhouse: 'ทาวน์เฮ้าส์',
+        house: 'บ้านเดี่ยว', condo: 'คอนโด', townhouse: 'ทาวน์เฮ้าส์', townhome: 'ทาวน์โฮม',
         land: 'ที่ดิน', commercial: 'อาคารพาณิชย์', apartment: 'อพาร์ทเม้นท์',
         home_office: 'โฮมออฟฟิศ', warehouse: 'โกดัง/โรงงาน',
       };
@@ -180,14 +180,14 @@ export default function ProximityMap({
 
       const popupHtml = `
         <div style="font-family:Sarabun,sans-serif;min-width:190px;max-width:220px">
-          <div style="font-weight:800;color:#1a2d4a;font-size:0.88rem;line-height:1.3;margin-bottom:5px">
+          <div style="font-weight:800;color:#1A8C6E;font-size:0.88rem;line-height:1.3;margin-bottom:5px">
             ${prop.title || 'ทรัพย์สิน'}
           </div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px">
             <span style="background:#f0f4f8;color:#555;padding:2px 7px;border-radius:8px;font-size:0.7rem">${typeLabel}</span>
             <span style="background:#e8f5e9;color:#2e7d32;padding:2px 7px;border-radius:8px;font-size:0.7rem">${listingIcon}</span>
           </div>
-          <div style="color:#04AA6D;font-weight:800;font-size:0.92rem;margin-bottom:6px">
+          <div style="color:#1A8C6E;font-weight:800;font-size:0.92rem;margin-bottom:6px">
             ${fmtPrice(prop.price_requested || prop.monthly_rent)}
           </div>
           <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px">
@@ -197,7 +197,7 @@ export default function ProximityMap({
             <span style="color:#666;font-size:0.72rem">${distLabel(km)}</span>
           </div>
           <a href="/property/${prop.id}" target="_blank"
-            style="display:block;background:#1a3c6e;color:#fff;text-align:center;
+            style="display:block;background:#00463d;color:#fff;text-align:center;
               padding:6px;border-radius:7px;font-size:0.78rem;font-weight:700;
               text-decoration:none;">
             ดูรายละเอียด →

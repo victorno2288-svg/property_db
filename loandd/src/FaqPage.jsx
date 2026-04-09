@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import Navbar from './Navbar';
 
-const brandGreen = '#04AA6D';
-const navy = '#1a2d4a';
+const brandGreen = '#1A8C6E';
+const navy = '#1A8C6E';
 
 // ============================================================
 //  FAQ DATA — grouped by category
@@ -10,7 +10,7 @@ const navy = '#1a2d4a';
 const FAQ_DATA = [
   {
     category: 'การซื้ออสังหาริมทรัพย์',
-    icon: '🏠',
+    icon: 'fa-home',
     items: [
       {
         q: 'ซื้อบ้านครั้งแรก ต้องเตรียมตัวอย่างไร?',
@@ -22,7 +22,7 @@ const FAQ_DATA = [
       },
       {
         q: 'ควรซื้อบ้านมือหนึ่งหรือมือสอง อะไรดีกว่ากัน?',
-        a: 'บ้านมือหนึ่ง:\n✅ ได้บ้านใหม่ สภาพดี มีประกันจากผู้พัฒนา\n✅ บางโครงการมีโปรโมชันช่วยออกค่าโอน\n❌ ราคาสูงกว่า ทำเลอาจอยู่ชานเมือง\n\nบ้านมือสอง:\n✅ ราคาต่ำกว่า ทำเลดีกว่า ย่านใจกลางเมือง\n✅ เห็นสภาพจริงก่อนตัดสินใจ\n❌ ต้องตรวจสอบสภาพและเอกสารอย่างละเอียด',
+        a: 'บ้านมือหนึ่ง:\n+ ได้บ้านใหม่ สภาพดี มีประกันจากผู้พัฒนา\n+ บางโครงการมีโปรโมชันช่วยออกค่าโอน\n- ราคาสูงกว่า ทำเลอาจอยู่ชานเมือง\n\nบ้านมือสอง:\n+ ราคาต่ำกว่า ทำเลดีกว่า ย่านใจกลางเมือง\n+ เห็นสภาพจริงก่อนตัดสินใจ\n- ต้องตรวจสอบสภาพและเอกสารอย่างละเอียด',
       },
       {
         q: 'ซื้อบ้านแล้วพบปัญหาซ่อนเร้น ผู้ขายต้องรับผิดชอบหรือไม่?',
@@ -32,7 +32,7 @@ const FAQ_DATA = [
   },
   {
     category: 'เอกสาร & การตรวจสอบ',
-    icon: '📄',
+    icon: 'fa-file-alt',
     items: [
       {
         q: 'ตรวจสอบโฉนดก่อนซื้อได้อย่างไร?',
@@ -40,7 +40,7 @@ const FAQ_DATA = [
       },
       {
         q: 'โฉนดที่ดินแต่ละประเภทต่างกันอย่างไร?',
-        a: '• น.ส.4 จ. (โฉนดที่ดิน) — สิทธิ์สมบูรณ์ที่สุด ซื้อขาย/โอนกรรมสิทธิ์ได้อย่างเสรี ✅\n• น.ส.3 ก. — มีการรังวัดแล้ว ซื้อขายได้แต่ต้องรอ 30 วัน\n• น.ส.3 — ยังไม่ได้รังวัดด้วยระบบพิกัด ซื้อขายได้ แต่ความเสี่ยงสูงกว่า\n• ส.ป.ก. — ห้ามซื้อขายโดยเด็ดขาด มีบทลงโทษทางกฎหมาย ❌\n\nบ้าน D มีเชง รับเฉพาะโฉนด น.ส.4 จ. เท่านั้น',
+        a: '• น.ส.4 จ. (โฉนดที่ดิน) — สิทธิ์สมบูรณ์ที่สุด ซื้อขาย/โอนกรรมสิทธิ์ได้อย่างเสรี +\n• น.ส.3 ก. — มีการรังวัดแล้ว ซื้อขายได้แต่ต้องรอ 30 วัน\n• น.ส.3 — ยังไม่ได้รังวัดด้วยระบบพิกัด ซื้อขายได้ แต่ความเสี่ยงสูงกว่า\n• ส.ป.ก. — ห้ามซื้อขายโดยเด็ดขาด มีบทลงโทษทางกฎหมาย -\n\nบ้าน D มีเชง รับเฉพาะโฉนด น.ส.4 จ. เท่านั้น',
       },
       {
         q: 'สัญญาซื้อขายต้องมีอะไรบ้างจึงจะถูกกฎหมาย?',
@@ -50,7 +50,7 @@ const FAQ_DATA = [
   },
   {
     category: 'ราคา & การประเมิน',
-    icon: '📊',
+    icon: 'fa-chart-bar',
     items: [
       {
         q: 'ราคาประเมินกรมธนารักษ์กับราคาตลาดต่างกันอย่างไร?',
@@ -64,7 +64,7 @@ const FAQ_DATA = [
   },
   {
     category: 'ทำไมต้อง บ้าน D มีเชง',
-    icon: '⭐',
+    icon: 'fa-star',
     items: [
       {
         q: 'บ้าน D มีเชง คืออะไร และช่วยผู้ซื้อได้อย่างไร?',
@@ -72,11 +72,11 @@ const FAQ_DATA = [
       },
       {
         q: 'ทรัพย์ของ บ้าน D มีเชง ผ่านกระบวนการอะไรบ้างก่อนขาย?',
-        a: 'ทุกหลังที่ บ้าน D มีเชง นำออกจำหน่ายผ่านกระบวนการครบถ้วน:\n\n🔨 รีโนเวทโดยทีม บ้าน D มีเชง — ปรับปรุงสภาพพร้อมเข้าอยู่\n✅ ตรวจสอบโฉนด — เลขที่ดิน เนื้อที่ ชื่อเจ้าของถูกต้อง\n✅ ตรวจภาระผูกพัน — ไม่มีหนี้ค้างชำระ ไม่ถูกอายัด\n✅ ตรวจสิ่งปลูกสร้าง — ใบอนุญาตก่อสร้างถูกกฎหมาย\n✅ ราคาเป็นธรรม — เทียบเคียงราคาตลาดในทำเลเดียวกัน',
+        a: 'ทุกหลังที่ บ้าน D มีเชง นำออกจำหน่ายผ่านกระบวนการครบถ้วน:\n\nรีโนเวทโดยทีม บ้าน D มีเชง — ปรับปรุงสภาพพร้อมเข้าอยู่\nตรวจสอบโฉนด — เลขที่ดิน เนื้อที่ ชื่อเจ้าของถูกต้อง\nตรวจภาระผูกพัน — ไม่มีหนี้ค้างชำระ ไม่ถูกอายัด\nตรวจสิ่งปลูกสร้าง — ใบอนุญาตก่อสร้างถูกกฎหมาย\nราคาเป็นธรรม — เทียบเคียงราคาตลาดในทำเลเดียวกัน',
       },
       {
         q: 'ติดต่อ บ้าน D มีเชง เพื่อขอคำปรึกษาได้อย่างไร?',
-        a: '📞 โทร: 081-638-6966\n💬 LINE: @loan_dd\n📍 เปิดทำการ จันทร์–อาทิตย์ 09:00–17:00 น.\n\nปรึกษาฟรี ไม่มีข้อผูกมัด ทีมงานพร้อมตอบทุกคำถามเรื่องอสังหาริมทรัพย์',
+        a: 'โทร: 081-638-6966\nLINE: @loan_dd\nเปิดทำการ จันทร์–อาทิตย์ 09:00–17:00 น.\n\nปรึกษาฟรี ไม่มีข้อผูกมัด ทีมงานพร้อมตอบทุกคำถามเรื่องอสังหาริมทรัพย์',
       },
     ],
   },
@@ -184,19 +184,22 @@ const FaqPage = () => {
   ];
 
   return (
-    <div style={{ fontFamily: '"Noto Sans Thai", sans-serif', background: '#f8faf9', minHeight: '100vh' }}>
+    <div style={{ fontFamily: "'Sarabun', 'Noto Sans Thai', sans-serif", background: 'var(--surface, #FAF9F7)', minHeight: '100vh' }}>
       <Navbar />
 
-      {/* ===== HERO ===== */}
+      {/* ===== HERO — Quiet Luxury ===== */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #1a3c6e 60%, ${brandGreen} 100%)`,
-        color: '#fff', padding: 'calc(64px + 32px) 16px 28px',
+        background: `linear-gradient(135deg, ${navy} 0%, #147A5E 60%, ${brandGreen} 100%)`,
+        color: '#fff', padding: 'calc(64px + 48px) 16px 36px',
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, marginBottom: 6 }}>
-            คำถามที่พบบ่อย (FAQ)
+          <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
+            Frequently Asked Questions
+          </div>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
+            คำถามที่พบบ่อย
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', marginBottom: 18 }}>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', marginBottom: 18 }}>
             รวมคำตอบทุกข้อสงสัยเรื่องการซื้อ-ขาย-เช่า อสังหาริมทรัพย์ กับ บ้าน D มีเชง
           </p>
 
@@ -237,7 +240,7 @@ const FaqPage = () => {
               display: 'flex', gap: 0, overflowX: 'auto',
               scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
             }}>
-              {[{ category: 'all', icon: '📋' }, ...FAQ_DATA].map((cat) => {
+              {[{ category: 'all', icon: 'fa-th-large' }, ...FAQ_DATA].map((cat) => {
                 const isActive = activeTab === cat.category;
                 const label = cat.category === 'all' ? 'ทั้งหมด' : cat.category;
                 return (
@@ -253,7 +256,7 @@ const FaqPage = () => {
                       transition: 'all 0.15s',
                     }}
                   >
-                    <span style={{ marginRight: 5 }}>{cat.icon}</span>
+                    <i className={`fas ${cat.icon}`} style={{ marginRight: 6, fontSize: '0.8rem' }} />
                     {label}
                   </button>
                 );
@@ -285,7 +288,7 @@ const FaqPage = () => {
                     return (
                       <div key={i}>
                         <div style={{ fontSize: '0.72rem', color: '#aaa', marginBottom: 4, marginLeft: 4 }}>
-                          {faq.icon} {faq.category}
+                          <i className={`fas ${faq.icon}`} style={{ marginRight: 4, fontSize: '0.7rem' }} /> {faq.category}
                         </div>
                         <AccordionItem
                           faq={faq} index={key} isOpen={openFaq === key}
@@ -313,8 +316,8 @@ const FaqPage = () => {
                       marginBottom: 16, paddingBottom: 10,
                       borderBottom: `2px solid ${brandGreen}22`,
                     }}>
-                      <span style={{ fontSize: '1.4rem' }}>{cat.icon}</span>
-                      <h3 style={{ fontWeight: 800, color: navy, margin: 0, fontSize: '1.05rem' }}>
+                      <i className={`fas ${cat.icon}`} style={{ fontSize: '1.1rem', color: brandGreen }} />
+                      <h3 style={{ fontWeight: 500, color: navy, margin: 0, fontSize: '1.05rem', fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif" }}>
                         {cat.category}
                       </h3>
                       <span style={{
@@ -389,17 +392,17 @@ const FaqPage = () => {
 
       {/* ===== CTA ===== */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #1a3c6e 60%, ${brandGreen} 100%)`,
+        background: `linear-gradient(135deg, ${navy} 0%, #00463d 60%, ${brandGreen} 100%)`,
         padding: '50px 0', textAlign: 'center', color: '#fff',
       }}>
         <div className="container">
-          <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>💬</div>
-          <h2 style={{ fontWeight: 900, fontSize: '1.7rem', marginBottom: 8 }}>ยังมีคำถามเพิ่มเติม?</h2>
+          <i className="fas fa-comments" style={{ fontSize: '2rem', marginBottom: 12, color: '#C9A84C', display: 'block' }} />
+          <h2 style={{ fontWeight: 400, fontSize: '1.5rem', marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif" }}>ยังมีคำถามเพิ่มเติม?</h2>
           <p style={{ opacity: 0.85, marginBottom: 28, fontSize: '0.95rem' }}>
             ปรึกษาฟรี ไม่มีข้อผูกมัด ทีมงานพร้อมตอบทุกคำถามเรื่องอสังหาฯ
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center' }}>
-            <a href="https://line.me/R/ti/p/@343gpuvp" target="_blank" rel="noopener noreferrer"
+            <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer"
               style={{
                 background: '#06C755', color: '#fff', textDecoration: 'none',
                 borderRadius: 50, padding: '13px 32px', fontWeight: 800, fontSize: '0.95rem',

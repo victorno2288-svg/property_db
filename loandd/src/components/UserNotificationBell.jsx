@@ -23,9 +23,9 @@ function formatTime(d) {
 }
 
 const TYPE_ICON = {
-  password_approved: { icon: '🔑', color: '#04AA6D', label: 'รหัสผ่าน' },
-  property_sold:     { icon: '🏠', color: '#e74c3c', label: 'ทรัพย์ขายแล้ว' },
-  property_rented:   { icon: '🔑', color: '#d4890a', label: 'ทรัพย์ถูกจอง' },
+  password_approved: { icon: 'fas fa-key',  color: '#1A8C6E', label: 'รหัสผ่าน' },
+  property_sold:     { icon: 'fas fa-home', color: '#e74c3c', label: 'ทรัพย์ขายแล้ว' },
+  property_rented:   { icon: 'fas fa-key',  color: '#d4890a', label: 'ทรัพย์ถูกจอง' },
 };
 
 export default function UserNotificationBell() {
@@ -153,13 +153,19 @@ export default function UserNotificationBell() {
       <button
         onClick={handleOpen}
         style={{
-          background: 'none', border: 'none', cursor: 'pointer',
-          position: 'relative', padding: '4px 6px',
-          color: 'inherit', lineHeight: 1,
+          background: open ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.2)',
+          borderRadius: 8,
+          width: 38, height: 38,
+          cursor: 'pointer',
+          position: 'relative',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          transition: 'background 0.15s',
+          lineHeight: 1,
         }}
         title="การแจ้งเตือน"
       >
-        <i className="fas fa-bell" style={{ fontSize: '1.1rem' }} />
+        <i className="fas fa-bell" style={{ fontSize: '1rem', color: '#fff' }} />
         {unread > 0 && (
           <span style={{
             position: 'absolute', top: 0, right: 0,
@@ -186,10 +192,10 @@ export default function UserNotificationBell() {
           {/* Header */}
           <div style={{
             padding: '12px 16px', borderBottom: '1px solid #f0f0f0',
-            fontWeight: 800, fontSize: '0.9rem', color: '#1a2d4a',
+            fontWeight: 800, fontSize: '0.9rem', color: '#1A8C6E',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           }}>
-            <span>🔔 การแจ้งเตือน</span>
+            <span><i className="fas fa-bell" style={{ color: '#1A8C6E', marginRight: 6 }} />การแจ้งเตือน</span>
             {notifications.length > 0 && (
               <span style={{ fontSize: '0.72rem', color: '#aaa', fontWeight: 500 }}>
                 {notifications.length} รายการ
@@ -201,7 +207,7 @@ export default function UserNotificationBell() {
           <div style={{ maxHeight: 320, overflowY: 'auto' }}>
             {notifications.length === 0 ? (
               <div style={{ padding: '28px 16px', textAlign: 'center', color: '#aaa', fontSize: '0.85rem' }}>
-                <div style={{ fontSize: '2rem', marginBottom: 8 }}>🎉</div>
+                <div style={{ fontSize: '2rem', marginBottom: 8 }}><i className="fas fa-check-circle" style={{ color: '#c8e6d0' }} /></div>
                 ไม่มีการแจ้งเตือนใหม่
               </div>
             ) : (
@@ -228,7 +234,7 @@ export default function UserNotificationBell() {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '1rem',
                     }}>
-                      {meta.icon}
+                      <i className={meta.icon} style={{ color: meta.color, fontSize: '0.9rem' }} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{
@@ -246,7 +252,7 @@ export default function UserNotificationBell() {
                     {!n.is_read && (
                       <div style={{
                         width: 8, height: 8, borderRadius: '50%',
-                        background: '#04AA6D', flexShrink: 0, marginTop: 4,
+                        background: '#1A8C6E', flexShrink: 0, marginTop: 4,
                       }} />
                     )}
                   </div>
@@ -260,7 +266,7 @@ export default function UserNotificationBell() {
             onClick={() => { setOpen(false); navigate('/profile?tab=saved'); }}
             style={{
               padding: '10px 16px', textAlign: 'center', fontSize: '0.78rem',
-              color: '#04AA6D', fontWeight: 700, cursor: 'pointer',
+              color: '#1A8C6E', fontWeight: 700, cursor: 'pointer',
               borderTop: '1px solid #f0f0f0',
             }}
           >

@@ -6,8 +6,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import adminFetch from '../../utils/adminFetch';
 
-const G = '#04AA6D';
-const N = '#1a2d4a';
+const G = '#1A8C6E';
+const N = '#1A8C6E';
 
 
 const STATUS_CONF = {
@@ -522,7 +522,7 @@ export default function UsersPanel() {
                       {req.new_password_plain && (
                         <div style={{ marginTop:5, background:'#f0f4ff', border:'1px solid #c7d2fe', borderRadius:6, padding:'4px 8px', fontSize:'0.76rem' }}>
                           <span style={{ color:'#666' }}>รหัสใหม่: </span>
-                          <code style={{ color:'#1a3c6e', fontWeight:800, fontSize:'0.82rem', letterSpacing:'0.5px' }}>{req.new_password_plain}</code>
+                          <code style={{ color:'#00463d', fontWeight:800, fontSize:'0.82rem', letterSpacing:'0.5px' }}>{req.new_password_plain}</code>
                         </div>
                       )}
                     </div>

@@ -1,6 +1,6 @@
 /* ====================================
    ListProperty.css - ฟอร์มลงประกาศทรัพย์ (3 ขั้นตอน)
-   Brand: #04AA6D (บ้าน D มีเชง Green)
+   Brand: #1A8C6E (บ้าน D มีเชง Green)
    ==================================== */
 
 /* === Container === */
@@ -23,7 +23,7 @@
   margin-bottom: 8px;
 }
 .lp-header h1 i {
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-right: 8px;
 }
 .lp-header p {
@@ -110,11 +110,11 @@
   transition: all 0.3s;
 }
 .lp-step.active .lp-step-num {
-  background: #04AA6D;
+  background: #1A8C6E;
   color: #fff;
 }
 .lp-step.done .lp-step-num {
-  background: #04AA6D;
+  background: #1A8C6E;
   color: #fff;
 }
 .lp-step span {
@@ -123,7 +123,7 @@
   font-weight: 500;
 }
 .lp-step.active span {
-  color: #04AA6D;
+  color: #1A8C6E;
   font-weight: 600;
 }
 .lp-step-line {
@@ -165,7 +165,7 @@
   border-bottom: 2px solid #f0f0f0;
 }
 .lp-card-title i {
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-right: 8px;
 }
 
@@ -201,11 +201,11 @@
   background: #fafafa;
 }
 .lp-radio-card:hover {
-  border-color: #04AA6D;
+  border-color: #1A8C6E;
   background: #f0faf5;
 }
 .lp-radio-card.selected {
-  border-color: #04AA6D;
+  border-color: #1A8C6E;
   background: #e8f8ef;
   box-shadow: 0 0 0 3px rgba(4, 170, 109, 0.15);
 }
@@ -222,7 +222,7 @@
 }
 .lp-radio-content i {
   font-size: 24px;
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-bottom: 4px;
 }
 .lp-radio-content strong {
@@ -250,18 +250,18 @@
   background: #fafafa;
 }
 .lp-type-card:hover {
-  border-color: #04AA6D;
+  border-color: #1A8C6E;
   background: #f0faf5;
 }
 .lp-type-card.selected {
-  border-color: #04AA6D;
+  border-color: #1A8C6E;
   background: #e8f8ef;
   box-shadow: 0 0 0 3px rgba(4, 170, 109, 0.15);
 }
 .lp-type-card i {
   display: block;
   font-size: 22px;
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-bottom: 6px;
 }
 .lp-type-card span {
@@ -284,7 +284,7 @@
 }
 .lp-input:focus, .lp-select:focus, .lp-textarea:focus {
   outline: none;
-  border-color: #04AA6D;
+  border-color: #1A8C6E;
   box-shadow: 0 0 0 3px rgba(4, 170, 109, 0.1);
 }
 .lp-textarea {
@@ -310,7 +310,7 @@
 }
 .lp-select-sm:focus {
   outline: none;
-  border-color: #04AA6D;
+  border-color: #1A8C6E;
 }
 .lp-unit-label {
   display: flex;
@@ -336,7 +336,7 @@
   left: 14px;
   font-size: 16px;
   font-weight: 700;
-  color: #04AA6D;
+  color: #1A8C6E;
   z-index: 1;
 }
 .lp-input-money .lp-input {
@@ -357,7 +357,7 @@
   margin-top: 6px;
 }
 .lp-hint i {
-  color: #04AA6D;
+  color: #1A8C6E;
 }
 .lp-hint-warn {
   color: #e53e3e;
@@ -383,7 +383,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: #04AA6D;
+  background: #1A8C6E;
   color: #fff;
   border: none;
   padding: 14px 28px;
@@ -418,7 +418,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #04AA6D, #028a57);
+  background: linear-gradient(135deg, #1A8C6E, #028a57);
   color: #fff;
   border: none;
   padding: 14px 28px;
@@ -442,8 +442,8 @@
   align-items: center;
   gap: 8px;
   background: #fff;
-  color: #04AA6D;
-  border: 2px solid #04AA6D;
+  color: #1A8C6E;
+  border: 2px solid #1A8C6E;
   padding: 12px 24px;
   border-radius: 12px;
   font-size: 15px;
@@ -463,7 +463,7 @@
   margin-top: 20px;
 }
 .lp-disclaimer i {
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-right: 4px;
 }
 
@@ -482,7 +482,7 @@
 .lp-summary-section h3 {
   font-size: 15px;
   font-weight: 700;
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-bottom: 14px;
   padding-bottom: 8px;
   border-bottom: 1px solid #eee;
@@ -511,7 +511,7 @@
   max-width: 60%;
 }
 .lp-summary-row.highlight strong {
-  color: #04AA6D;
+  color: #1A8C6E;
   font-size: 16px;
 }
 
@@ -581,7 +581,7 @@
 }
 .lp-success-icon {
   font-size: 64px;
-  color: #04AA6D;
+  color: #1A8C6E;
   margin-bottom: 16px;
 }
 .lp-success h2 {
@@ -595,7 +595,7 @@
   font-size: 15px;
 }
 .lp-success-sub {
-  color: #04AA6D;
+  color: #1A8C6E;
   font-weight: 600;
   font-size: 14px;
   margin-top: 4px;

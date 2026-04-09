@@ -1,69 +1,375 @@
+/* =============================================
+   index.css — Luxe Estate  ·  Quiet Luxury Design System
+   Inspired by Sotheby's, Compass, Savills
+   ============================================= */
+
+/* -- Google Fonts -- */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* ── Brand Colors — Fresh Green Gradient + Gold ── */
+  --primary:             #1A8C6E;
+  --primary-bright:      #2DB88E;
+  --primary-container:   #22A07C;
+  --primary-fixed:       #8ED9BF;
+  --on-primary:          #ffffff;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --secondary:           #1A1A1A;
+  --tertiary:            #C9A84C;
+  --tertiary-light:      #E8D5A0;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  /* ── Surfaces — Warm neutrals (Sotheby's inspired) ── */
+  --surface:             #FAF9F7;
+  --surface-low:         #F3F2EF;
+  --surface-lowest:      #ffffff;
+  --surface-container:   #ECEAE6;
+  --surface-high:        #E5E3DF;
+
+  --on-surface:          #1A1A1A;
+  --on-surface-variant:  #4A4A4A;
+  --outline:             #6B6B6B;
+  --outline-variant:     #D1D1D1;
+
+  /* Legacy compat */
+  --brand-green:         #1A8C6E;
+  --brand-green-dark:    #147A5E;
+  --brand-green-light:   #8ED9BF;
+  --brand-navy:          #1A1A1A;
+  --text-primary:        #1A1A1A;
+  --text-secondary:      #6B6B6B;
+  --white:               #ffffff;
+
+  /* Gradient shortcuts — fresh vivid green */
+  --grad-green:          linear-gradient(135deg, #1A8C6E 0%, #2DB88E 100%);
+  --grad-gold:           linear-gradient(135deg, #C9A84C 0%, #E8D5A0 100%);
+  --grad-green-gold:     linear-gradient(135deg, #22A07C 0%, #C9A84C 100%);
+
+  /* ── Typography ── */
+  --font-heading:        'Noto Serif Thai', 'Noto Serif', Georgia, serif;
+  --font-body:           'Sarabun', 'Noto Sans Thai', sans-serif;
+  --font-ui:             'Manrope', sans-serif;
+
+  /* ── Shadows (Compass-inspired triple layer) ── */
+  --shadow-sm:           0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md:           0 3px 4px -1px rgba(0,0,0,0.08), 0 2px 1px rgba(0,0,0,0.10), 0 -1px 1px rgba(0,0,0,0.04);
+  --shadow-lg:           0 20px 60px rgba(0,0,0,0.07);
+  --shadow-hover:        0 20px 50px rgba(26,140,110,0.14);
+
+  /* ── Transitions (luxury = slower) ── */
+  --ease-luxury:         cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
+  background-color: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Sarabun', 'Prompt', system-ui, -apple-system, sans-serif;
+  line-height: 1.75;
+  font-weight: 400;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Placeholder styling for dark-bg contact form */
+.detail-page-wrapper input::placeholder,
+.detail-page-wrapper textarea::placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+  opacity: 1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  line-height: 1.25;
+  color: var(--on-surface);
+  font-family: var(--font-heading);
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s;
 }
+a:hover { color: var(--primary-container); }
+
+button { font-family: inherit; cursor: pointer; }
+img { max-width: 100%; height: auto; }
+
+/* -- Section base -- */
+.section-py { padding-top: 80px; padding-bottom: 80px; }
+
+/* -- Luxe Section (no-line rule: use tonal shifts, not borders) -- */
+.luxe-section {
+  padding: 64px 0;
+  transition: background 0.3s;
+}
+.luxe-section--surface { background: var(--surface); }
+.luxe-section--low { background: var(--surface-low); }
+.luxe-section--white { background: var(--surface-lowest); }
+
+/* -- Section eyebrow label -- */
+.section-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--tertiary);
+  font-family: var(--font-ui);
+}
+
+/* -- Property Card Lift (subtle, Sotheby's style) -- */
+.property-card-hover {
+  transition: transform 0.4s var(--ease-luxury), box-shadow 0.4s var(--ease-luxury);
+}
+.property-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* -- Luxe Card (tonal layering, no hard borders) -- */
+.luxe-card {
+  background: var(--surface-lowest);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.4s var(--ease-luxury), box-shadow 0.4s var(--ease-luxury);
+}
+.luxe-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* -- Price display -- */
+.price-display {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  font-family: var(--font-ui);
+  letter-spacing: -0.3px;
+}
+
+/* -- Badge -- */
+.badge-clean {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 5px;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+}
+
+/* -- Primary button (Savills-inspired, sharp) -- */
+.btn-primary-luxe {
+  background: var(--primary);
+  color: #fff;
+  border: 1px solid var(--primary);
+  border-radius: 4px;
+  padding: 12px 32px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  font-family: var(--font-ui);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-luxury);
+}
+.btn-primary-luxe:hover {
+  background: #fff;
+  color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(46,125,106,0.15);
+}
+
+/* -- Stat strip -- */
+.stat-item {
+  flex: 1 1 120px;
+  text-align: center;
+  padding: 24px 16px;
+}
+.stat-value {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: 1.75rem;
+  color: var(--primary);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--outline);
+  margin-top: 4px;
+  font-family: var(--font-ui);
+}
+
+/* -- Area Circle -- */
+.area-card { cursor: pointer; text-align: center; }
+.area-circle {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+.area-card:hover .area-circle { transform: scale(0.94); }
+.area-circle-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0, 50, 42, 0.2);
+  transition: background 0.3s;
+}
+.area-card:hover .area-circle-overlay { background: transparent; }
+
+/* -- Type icon card (clean, no borders) -- */
+.type-icon-card {
+  background: var(--surface-lowest);
+  border-radius: 14px;
+  padding: 20px 12px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  transition: all 0.22s ease;
+}
+.type-icon-card:hover {
+  background: var(--primary);
+  box-shadow: 0 8px 32px rgba(0,50,42,0.14);
+  transform: translateY(-3px);
+}
+.type-icon-card:hover .type-icon-label { color: #fff !important; }
+.type-icon-card:hover i { color: #fff !important; }
+
+/* -- Scrollbar (subtle) -- */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--outline); }
+
+/* -- Legacy compat -- */
+.text-brand-green { color: var(--primary) !important; }
+.bg-brand-green   { background-color: var(--primary) !important; }
+.border-brand     { border-color: var(--primary) !important; }
+
+/* -- Card no-border rule (quiet luxury: tonal layering only) -- */
+.card {
+  border: none !important;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04) !important;
+}
+.card:hover {
+  box-shadow: 0 10px 36px rgba(0,50,42,0.08) !important;
+}
+
+/* -- Property Card: grayscale → color hover (editorial feel) -- */
+.prop-card .prop-card-img {
+  filter: grayscale(30%) brightness(0.97);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+.prop-card:hover .prop-card-img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.04);
+}
+
+/* -- Hero editorial font — light weight = luxury (Sotheby's insight) -- */
+.hero-editorial-heading {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* -- Premium footer accent line -- */
+.footer-premium::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tertiary) 0%, var(--primary) 50%, var(--tertiary) 100%);
+}
+
+/* -- Skeleton Shimmer Loading -- */
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton-box {
+  background: linear-gradient(90deg, #f0efec 25%, #e8e6e1 37%, #f0efec 63%);
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* -- Fade-in when content loads -- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+  animation: fadeInUp 0.5s var(--ease-luxury) forwards;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* -- Page transition overlay (Sotheby's style) -- */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  background: linear-gradient(135deg, #1A8C6E 0%, #147A5E 100%);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-luxury);
+}
+.page-transition-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.page-transition-overlay .transition-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.25s ease 0.1s;
+}
+.page-transition-overlay.active .transition-content {
+  opacity: 1;
+}
+.page-transition-overlay .transition-logo {
+  width: 48px; height: 48px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top-color: #C9A84C;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* -- Stagger animation for grid children -- */
+.stagger-in > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeInUp 0.4s var(--ease-luxury) forwards;
+}
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-in > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-in > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-in > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-in > *:nth-child(8) { animation-delay: 0.4s; }

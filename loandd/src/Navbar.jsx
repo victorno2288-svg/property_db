@@ -37,10 +37,12 @@ const [provinces, setProvinces] = useState([]);
 useEffect(() => {
   const fetchProvinces = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/provinces/popular');
+      const res = await fetch('/api/provinces/popular');
       const data = await res.json();
       if (data.success) {
         setProvinces(data.data.map((p) => p.name));
+      } else if (Array.isArray(data)) {
+        setProvinces(data.map((p) => p.name));
       }
     } catch (err) {
       console.error('Failed to fetch provinces:', err);
@@ -55,6 +57,7 @@ useEffect(() => {
     { icon: 'fa-building', label: 'คอนโดมิเนียม', slug: 'condo' },
     { icon: 'fa-home', label: 'บ้านเดี่ยว', slug: 'house' },
     { icon: 'fa-th-large', label: 'ทาวน์เฮ้าส์', slug: 'townhouse' },
+    { icon: 'fa-house-user', label: 'ทาวน์โฮม', slug: 'townhome' },
     { icon: 'fa-map', label: 'ที่ดิน', slug: 'land' },
     { icon: 'fa-store', label: 'อาคารพาณิชย์', slug: 'commercial' },
     { icon: 'fa-warehouse', label: 'โกดัง/โรงงาน', slug: 'warehouse' },
@@ -216,11 +219,6 @@ useEffect(() => {
             {[
               { to: '/profile',       icon: 'fa-user-circle',   label: 'โปรไฟล์' },
               { to: '/saved',         icon: 'fa-heart',         label: 'ทรัพย์ที่บันทึก' },
-              ...(user?.role === 'admin' ? [
-                { to: '/list-property', icon: 'fa-plus-circle', label: 'เพิ่มทรัพย์ใหม่' },
-                { to: '/dashboard',   icon: 'fa-tachometer-alt', label: 'แดชบอร์ด' },
-                { to: '/admin',       icon: 'fa-cog',           label: 'จัดการระบบ' },
-              ] : []),
             ].map((item, i) => (
               <Link key={i} to={item.to} className="user-dropdown-link" onClick={closeAll}>
                 <i className={`fas ${item.icon}`} style={{ color: item.icon === 'fa-cog' ? '#D32F2F' : 'var(--brand-green)' }}></i>
@@ -325,7 +323,7 @@ useEffect(() => {
                 display: 'flex', alignItems: 'center',
                 background: '#fff',
                 borderRadius: 50, padding: '4px 4px 4px 16px',
-                border: showNavSuggest ? '2px solid #04AA6D' : '2px solid transparent',
+                border: showNavSuggest ? '2px solid #1A8C6E' : '2px solid transparent',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
                 transition: 'border-color 0.15s',
               }}
@@ -340,7 +338,7 @@ useEffect(() => {
                 placeholder="ค้นหา ทรัพย์ ทำเล สถานี..."
                 style={{
                   flex: 1, border: 'none', background: 'transparent', outline: 'none',
-                  color: '#1a2d4a', fontSize: '0.85rem', fontFamily: 'inherit',
+                  color: '#1A8C6E', fontSize: '0.85rem', fontFamily: 'inherit',
                   minWidth: 0,
                 }}
               />
@@ -352,7 +350,7 @@ useEffect(() => {
               )}
               <button type="submit"
                 style={{
-                  background: '#04AA6D', color: '#fff', border: 'none',
+                  background: '#1A8C6E', color: '#fff', border: 'none',
                   borderRadius: 50, width: 32, height: 32, cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontWeight: 700, fontSize: '0.8rem', flexShrink: 0,
@@ -371,12 +369,6 @@ useEffect(() => {
           </div>
 
           <div className="d-flex align-items-center gap-2 ms-auto">
-            {user?.role === 'admin' && (
-              <Link to="/list-property" className="btn fw-bold px-3 rounded-pill nav-list-property-btn" onClick={closeAll}>
-                <i className="fas fa-plus-circle me-1"></i> เพิ่มทรัพย์
-              </Link>
-            )}
-
             {user && <UserNotificationBell />}
 
             {user ? (
@@ -510,11 +502,6 @@ useEffect(() => {
         <div className="mob-bottom">
           {user ? (
             <>
-              {user.role === 'admin' && (
-                <Link to="/list-property" className="mob-add-btn" onClick={closeAll}>
-                  <i className="fas fa-plus-circle" /> เพิ่มทรัพย์ใหม่
-                </Link>
-              )}
               <div className="mob-user-links">
                 <Link to="/profile" className="mob-user-link" onClick={closeAll}>
                   <i className="fas fa-user-circle" /> โปรไฟล์
@@ -522,16 +509,6 @@ useEffect(() => {
                 <Link to="/saved" className="mob-user-link" onClick={closeAll}>
                   <i className="fas fa-heart" /> ทรัพย์ที่บันทึก
                 </Link>
-                {user.role === 'admin' && (
-                  <>
-                    <Link to="/dashboard" className="mob-user-link" onClick={closeAll}>
-                      <i className="fas fa-tachometer-alt" /> แดชบอร์ด
-                    </Link>
-                    <Link to="/admin" className="mob-user-link mob-user-link--admin" onClick={closeAll}>
-                      <i className="fas fa-cog" /> จัดการระบบ
-                    </Link>
-                  </>
-                )}
               </div>
               <button className="mob-logout" onClick={handleLogout}>
                 <i className="fas fa-sign-out-alt" /> ออกจากระบบ

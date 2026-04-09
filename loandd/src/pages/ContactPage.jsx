@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 
-const brandGreen = '#04AA6D';
-const navy = '#1a2d4a';
-const LINE_URL = 'https://line.me/R/ti/p/@343gpuvp';
+const brandGreen = '#1A8C6E';
+const navy = '#1A8C6E';
+const LINE_URL = 'https://line.me/R/ti/p/@loan_dd';
 const PHONE    = '081-638-6966';
 const FB_URL   = 'https://www.facebook.com/share/1HWR1pe2XM/?mibextid=wwXIfr';
 
@@ -46,19 +46,22 @@ const ContactPage = () => {
   };
 
   return (
-    <div style={{ fontFamily: '"Noto Sans Thai", sans-serif', background: '#f8f9fb', minHeight: '100vh' }}>
+    <div style={{ fontFamily: "'Sarabun', 'Noto Sans Thai', sans-serif", background: 'var(--surface, #FAF9F7)', minHeight: '100vh' }}>
       <Navbar />
 
-      {/* Hero */}
+      {/* Hero — Quiet Luxury */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #1a3c6e 60%, ${brandGreen} 100%)`,
-        padding: 'calc(64px + 32px) 16px 28px',
+        background: `linear-gradient(135deg, ${navy} 0%, #147A5E 60%, ${brandGreen} 100%)`,
+        padding: 'calc(64px + 48px) 16px 40px',
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, marginBottom: 6 }}>
-            📞 ติดต่อเรา
+          <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
+            Contact Us
+          </div>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
+            ติดต่อเรา
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
             มีคำถามเรื่องทรัพย์? สนใจซื้อหรือเช่า? ทีมงาน บ้าน D มีเชง พร้อมช่วยคุณเสมอ
           </p>
         </div>
@@ -139,39 +142,57 @@ const ContactPage = () => {
               </a>
             </div>
 
-            {/* Map — Google Maps embed (ใช้ address query fallback) */}
+            {/* Map — Google Maps embed */}
             <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid #e8ecf0', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
               <div style={{ background: navy, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <i className="fas fa-map-marker-alt" style={{ color: '#4ade80' }} />
                 <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>ที่ตั้งสำนักงาน</span>
               </div>
               <iframe
-                title="บ้าน D มีเชง Office Map"
-                src="https://www.google.com/maps?q=บ้าน D มีเชง+กรุงเทพมหานคร+ไทย&z=14&output=embed"
+                title="บริษัท โลนด์ ดีดี จำกัด Office Map"
+                src="https://maps.google.com/maps?q=87+%E0%B8%96.+%E0%B8%AA%E0%B8%B8%E0%B8%A7%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A7%E0%B8%87%E0%B8%A8%E0%B9%8C+%E0%B9%81%E0%B8%82%E0%B8%A7%E0%B8%87%E0%B8%A1%E0%B8%B5%E0%B8%99%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+%E0%B9%80%E0%B8%82%E0%B8%95%E0%B8%A1%E0%B8%B5%E0%B8%99%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%9E%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%99%E0%B8%84%E0%B8%A3+10510&output=embed&z=15"
                 width="100%"
                 height="220"
                 style={{ display: 'block', border: 'none' }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
-              <div style={{ padding: '12px 18px', background: '#fff', fontSize: '0.82rem', color: '#666' }}>
-                <i className="fas fa-clock" style={{ color: brandGreen, marginRight: 6 }} />
-                เปิดทำการ จันทร์–เสาร์ เวลา 09:00–18:00 น.
+              <div style={{ padding: '12px 18px', background: '#fff', borderTop: '1px solid #f0f0f0' }}>
+                <div style={{ fontSize: '0.82rem', color: '#444', fontWeight: 600, marginBottom: 4 }}>
+                  <i className="fas fa-building" style={{ color: brandGreen, marginRight: 6 }} />
+                  บริษัท โลนด์ ดีดี จำกัด (สำนักงานใหญ่)
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#666', marginBottom: 8, lineHeight: 1.5 }}>
+                  87 ถ. สุวินทวงศ์ แขวงมีนบุรี เขตมีนบุรี<br />กรุงเทพมหานคร 10510
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+                  <div style={{ fontSize: '0.8rem', color: '#666' }}>
+                    <i className="fas fa-clock" style={{ color: brandGreen, marginRight: 6 }} />
+                    เปิดทำการ จันทร์–เสาร์ เวลา 09:00–18:00 น.
+                  </div>
+                  <a
+                    href="https://www.google.com/maps?um=1&ie=UTF-8&fb=1&gl=th&sa=X&geocode=KW0u9U8AZR0xMT-ZTOZxfWzx&daddr=87+%E0%B8%96.+%E0%B8%AA%E0%B8%B8%E0%B8%A7%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A7%E0%B8%87%E0%B8%A8%E0%B9%8C+%E0%B9%81%E0%B8%82%E0%B8%A7%E0%B8%87%E0%B8%A1%E0%B8%B5%E0%B8%99%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+%E0%B9%80%E0%B8%82%E0%B8%95%E0%B8%A1%E0%B8%B5%E0%B8%99%E0%B8%9A%E0%B8%B8%E0%B8%A3%E0%B8%B5+%E0%B8%81%E0%B8%A3%E0%B8%B8%E0%B8%87%E0%B9%80%E0%B8%97%E0%B8%9E%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%99%E0%B8%84%E0%B8%A3+10510"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: '0.78rem', color: brandGreen, fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                  >
+                    <i className="fas fa-directions" /> เปิดใน Google Maps
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
           {/* RIGHT — Inquiry Form */}
           <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e8ecf0', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '32px 28px' }}>
-            <h2 style={{ color: navy, fontWeight: 800, fontSize: '1.3rem', marginBottom: 6 }}>
-              <i className="fas fa-paper-plane" style={{ color: brandGreen, marginRight: 10 }} />
+            <h2 style={{ color: navy, fontWeight: 500, fontSize: '1.25rem', marginBottom: 6, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif" }}>
               ส่งข้อความหาเรา
             </h2>
             <p style={{ color: '#888', fontSize: '0.85rem', marginBottom: 24 }}>กรอกแบบฟอร์มด้านล่าง ทีมงานจะติดต่อกลับโดยเร็ว</p>
 
             {status === 'sent' ? (
               <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <div style={{ fontSize: '3rem', marginBottom: 16 }}>✅</div>
+                <i className="fas fa-check-circle" style={{ fontSize: '2.5rem', marginBottom: 16, color: '#1A8C6E', display: 'block' }} />
                 <h3 style={{ color: brandGreen, fontWeight: 800, marginBottom: 8 }}>ส่งข้อความสำเร็จ!</h3>
                 <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: 24 }}>ทีมงานจะติดต่อกลับภายใน 1 ชั่วโมง (จ–ส)</p>
                 <button
@@ -316,7 +337,7 @@ const ContactPage = () => {
         </div>
 
         {/* FAQ CTA */}
-        <div style={{ marginTop: 48, background: `linear-gradient(135deg, ${navy}, #1a3c6e)`, borderRadius: 16, padding: '32px 28px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
+        <div style={{ marginTop: 48, background: `linear-gradient(135deg, ${navy}, #00463d)`, borderRadius: 16, padding: '32px 28px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
           <div>
             <h3 style={{ color: '#fff', fontWeight: 800, fontSize: '1.2rem', marginBottom: 6 }}>มีคำถามเบื้องต้น?</h3>
             <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', margin: 0 }}>

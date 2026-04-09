@@ -11,6 +11,7 @@ const API = BASE_URL;
 const PROPERTY_TYPES = [
   { value:'house',      label:'บ้านเดี่ยว',       icon:'fa-home' },
   { value:'townhouse',  label:'ทาวน์เฮ้าส์',      icon:'fa-city' },
+  { value:'townhome',   label:'ทาวน์โฮม',         icon:'fa-house-user' },
   { value:'condo',      label:'คอนโด',             icon:'fa-building' },
   { value:'land',       label:'ที่ดิน',             icon:'fa-mountain' },
   { value:'commercial',  label:'อาคารพาณิชย์',    icon:'fa-store' },
@@ -88,8 +89,8 @@ const fieldStyle = {
 const errStyle = (e) => e ? { ...fieldStyle, borderColor: '#e53e3e', background: '#fff5f5', color: '#111827' } : fieldStyle;
 const prefix = { position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#888', fontSize: '0.9rem', pointerEvents: 'none' };
 const chipBtn = (active) => ({
-  padding: '7px 16px', borderRadius: 20, border: `1.5px solid ${active ? '#1a3c6e' : '#dde3ed'}`,
-  background: active ? '#1a3c6e' : '#fff', color: active ? '#fff' : '#555',
+  padding: '7px 16px', borderRadius: 20, border: `1.5px solid ${active ? '#00463d' : '#dde3ed'}`,
+  background: active ? '#00463d' : '#fff', color: active ? '#fff' : '#555',
   cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem', fontFamily: "'Sarabun',sans-serif",
   transition: 'all 0.15s',
 });
@@ -97,8 +98,8 @@ const chipBtn = (active) => ({
 function FormCard({ title, icon, children, tip }) {
   return (
     <div style={{ background: '#fff', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 8px rgba(0,0,0,0.07)' }}>
-      <h3 style={{ margin: '0 0 14px', fontSize: '0.95rem', fontWeight: 700, color: '#1a3c6e', display: 'flex', alignItems: 'center', gap: 8 }}>
-        {icon && <i className={`fas ${icon}`} style={{ color: '#04AA6D' }} />} {title}
+      <h3 style={{ margin: '0 0 14px', fontSize: '0.95rem', fontWeight: 700, color: '#00463d', display: 'flex', alignItems: 'center', gap: 8 }}>
+        {icon && <i className={`fas ${icon}`} style={{ color: '#1A8C6E' }} />} {title}
       </h3>
       {tip && (
         <div style={{ background: '#f0faf5', border: '1px solid #c6f0da', borderRadius: 8, padding: '9px 13px', marginBottom: 14, fontSize: '0.82rem', color: '#2d6a4f', display: 'flex', gap: 8 }}>
@@ -123,14 +124,15 @@ function FieldRow({ label, error, children, hint }) {
 }
 
 function Stepper({ label, value, onChange, min = 0, max = 20 }) {
+  const n = Number(value) || 0;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
       <span style={{ fontSize: '0.75rem', color: '#666', fontWeight: 600 }}>{label}</span>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <button type="button" onClick={() => onChange(Math.max(min, value - 1))}
+        <button type="button" onClick={() => onChange(Math.max(min, n - 1))}
           style={{ width: 30, height: 30, borderRadius: '50%', border: '1.5px solid #dde', background: '#f5f7fa', color: '#444', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
-        <span style={{ fontWeight: 800, fontSize: '1.1rem', minWidth: 24, textAlign: 'center', color: '#1a3c6e' }}>{value}</span>
-        <button type="button" onClick={() => onChange(Math.min(max, value + 1))}
+        <span style={{ fontWeight: 800, fontSize: '1.1rem', minWidth: 24, textAlign: 'center', color: '#1A8C6E' }}>{n}</span>
+        <button type="button" onClick={() => onChange(Math.min(max, n + 1))}
           style={{ width: 30, height: 30, borderRadius: '50%', border: '1.5px solid #dde', background: '#f5f7fa', color: '#444', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
       </div>
     </div>
@@ -143,7 +145,7 @@ function TipCard({ icon, title, desc }) {
     <div style={{ background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: 10, padding: '12px 14px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
       <div style={{ fontSize: '1.4rem' }}>{icon}</div>
       <div>
-        <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#1a3c6e', marginBottom: 2 }}>{title}</div>
+        <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#00463d', marginBottom: 2 }}>{title}</div>
         <div style={{ fontSize: '0.78rem', color: '#6b7280', lineHeight: 1.4 }}>{desc}</div>
       </div>
     </div>
@@ -151,8 +153,8 @@ function TipCard({ icon, title, desc }) {
 }
 
 // ===== MAIN COMPONENT =====
-const G = '#04AA6D';
-const N = '#1a2d4a';
+const G = '#1A8C6E';
+const N = '#1A8C6E';
 
 function PropertyForm() {
   const { id } = useParams();
@@ -185,6 +187,8 @@ function PropertyForm() {
   const [nearbyTransit, setNearbyTransit] = useState([]); // สถานีที่ detect ได้จาก lat/lng
 
   const [saving, setSaving]   = useState(false);
+  const savedIdRef = useRef(null); // guard against double POST
+  const savingLock = useRef(false); // hard mutex — prevents ALL concurrent saves
   const [saveMsg, setSaveMsg] = useState('');
   const [savedId, setSavedId] = useState(null);
 
@@ -307,16 +311,20 @@ function PropertyForm() {
     adminFetch(`/api/admin/properties/${id}`)
       .then(r => r.json())
       .then(data => {
+        // Debug: ดู raw API response สำหรับ floors/parking
+        console.log('[LOAD] raw API data:', JSON.stringify({ floors: data.floors, parking: data.parking, bedrooms: data.bedrooms, bathrooms: data.bathrooms }));
+        // helper: แปลงค่าเป็น number — ใช้ ?? แทน || เพื่อรองรับค่า 0
+        const num = (val, fallback) => (val != null && val !== '' && !isNaN(Number(val))) ? Number(val) : fallback;
         setForm({
           title:             data.title || '',
           listing_type:      data.listing_type || 'sale',
           property_type:     data.property_type || 'house',
           sale_status:       data.sale_status || 'available',
-          is_featured:       Boolean(data.is_featured),
-          is_active:         Boolean(data.is_active),
+          is_featured:       Number(data.is_featured) === 1,
+          is_active:         Number(data.is_active) === 1,
           price_requested:   data.price_requested || '',
           original_price:    data.original_price || '',
-          is_discounted:     Boolean(data.is_discounted),
+          is_discounted:     Number(data.is_discounted) === 1,
           price_per_sqm:     data.price_per_sqm || '',
           monthly_rent:      data.monthly_rent || '',
           province:          data.province || '',
@@ -331,19 +339,19 @@ function PropertyForm() {
           bts_distance_km:   data.bts_distance_km || '',
           mrt_station:       data.mrt_station || '',
           mrt_distance_km:   data.mrt_distance_km || '',
-          bedrooms:          data.bedrooms || 0,
-          bathrooms:         data.bathrooms || 0,
-          floors:            data.floors || 1,
-          parking:           data.parking || 0,
+          bedrooms:          num(data.bedrooms, 0),
+          bathrooms:         num(data.bathrooms, 0),
+          floors:            num(data.floors, 1),
+          parking:           num(data.parking, 0),
           usable_area:       data.usable_area || '',
-          land_area_rai:     data.land_area_rai || 0,
-          land_area_ngan:    data.land_area_ngan || 0,
-          land_area_wah:     data.land_area_wah || 0,
+          land_area_rai:     num(data.land_area_rai, 0),
+          land_area_ngan:    num(data.land_area_ngan, 0),
+          land_area_wah:     num(data.land_area_wah, 0),
           condition_status:  data.condition_status || 'unfurnished',
           property_condition: data.property_condition || 'good',
           title_deed_type:   data.title_deed_type || '',
           year_built:        data.year_built || '',
-          pet_friendly:      Boolean(data.pet_friendly),
+          pet_friendly:      Number(data.pet_friendly) === 1,
           video_url:         data.video_url || '',
           description:       data.description || '',
           internal_notes:    data.internal_notes || '',
@@ -355,6 +363,7 @@ function PropertyForm() {
         setExistingAmenities(data.amenities || []);
         setNearbyList(data.nearby_places || []);
         setSavedId(parseInt(id));
+        savedIdRef.current = parseInt(id);
         // โหลดรูปโฉนดเก่า (ถ้ามี)
         if (data.deed_image_url) setExistingDeedUrl(data.deed_image_url);
         // โหลดรายการโฉนดหลายรูป (ถ้ามี)
@@ -382,35 +391,95 @@ function PropertyForm() {
     return Object.keys(e).length === 0;
   };
 
-  const nextStep = () => { if (validate(step)) { setStep(s => Math.min(5, s + 1)); window.scrollTo(0, 0); } };
+  const nextStep = () => { setStep(s => Math.min(5, s + 1)); window.scrollTo(0, 0); };
   const prevStep = () => { setStep(s => Math.max(1, s - 1)); window.scrollTo(0, 0); };
 
   // ===== SAVE BASIC INFO =====
   const saveBasicInfo = async () => {
-    if (!validate(step)) return false;
+    // Hard mutex — absolutely no concurrent saves
+    if (savingLock.current) {
+      console.warn('[SAVE] ⛔ savingLock ค้าง — กดซ้ำเร็วเกินไป');
+      return false;
+    }
+    savingLock.current = true;
     setSaving(true); setSaveMsg('');
     try {
-      const method = (isEdit || savedId) ? 'PUT' : 'POST';
-      const url    = (isEdit || savedId)
-        ? `${API}/api/admin/properties/${savedId || id}`
+      const existingId = savedIdRef.current || savedId || (isEdit ? id : null);
+      const method = existingId ? 'PUT' : 'POST';
+      const url    = existingId
+        ? `${API}/api/admin/properties/${existingId}`
         : `${API}/api/admin/properties`;
+
+      const payload = { ...form };
+      // Ensure numbers are sent as numbers
+      ['bedrooms','bathrooms','floors','parking','land_area_rai','land_area_ngan','land_area_wah'].forEach(k => {
+        if (payload[k] !== undefined) payload[k] = Number(payload[k]) || 0;
+      });
+      // Ensure booleans are sent as 1/0 for MySQL TINYINT
+      ['is_featured','is_active','is_discounted','pet_friendly'].forEach(k => {
+        if (payload[k] !== undefined) payload[k] = payload[k] ? 1 : 0;
+      });
+      if (!payload.title && !existingId) payload.title = 'ทรัพย์ใหม่ (ร่าง)';
+
+      console.log(`[SAVE] ${method} ${url}`);
+      console.log('[SAVE] payload:', JSON.stringify({ floors: payload.floors, parking: payload.parking, bedrooms: payload.bedrooms, bathrooms: payload.bathrooms, title: payload.title?.slice(0, 30) }));
 
       const res = await adminFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
+      console.log(`[SAVE] response status: ${res.status}`, data);
+
       if (!res.ok) throw new Error(data.error || 'บันทึกไม่สำเร็จ');
-      if (!savedId && data.propertyId) setSavedId(data.propertyId);
+      const newId = data.propertyId || data.id || data.insertId;
+      if (!savedIdRef.current && newId) {
+        savedIdRef.current = newId;
+        setSavedId(newId);
+        console.log('[SAVE] ✅ สร้างใหม่ ID:', newId);
+      } else {
+        console.log('[SAVE] ✅ อัพเดท ID:', existingId);
+      }
+
+      // ─── Verify save: refetch & sync form state with DB ───
+      const verifyId = savedIdRef.current || newId || existingId;
+      if (verifyId) {
+        try {
+          const vRes = await adminFetch(`/api/admin/properties/${verifyId}`);
+          const vData = await vRes.json();
+          console.log('[VERIFY] DB values after save:', JSON.stringify({ floors: vData.floors, parking: vData.parking, bedrooms: vData.bedrooms, bathrooms: vData.bathrooms }));
+          // Sync numeric fields back from DB to prevent drift
+          const numSafe = (val, fallback) => (val != null && val !== '' && !isNaN(Number(val))) ? Number(val) : fallback;
+          setForm(prev => ({
+            ...prev,
+            bedrooms:      numSafe(vData.bedrooms, prev.bedrooms),
+            bathrooms:     numSafe(vData.bathrooms, prev.bathrooms),
+            floors:        numSafe(vData.floors, prev.floors),
+            parking:       numSafe(vData.parking, prev.parking),
+            land_area_rai: numSafe(vData.land_area_rai, prev.land_area_rai),
+            land_area_ngan:numSafe(vData.land_area_ngan, prev.land_area_ngan),
+            land_area_wah: numSafe(vData.land_area_wah, prev.land_area_wah),
+          }));
+          // Warn if DB values don't match what was sent
+          if (numSafe(vData.floors, 1) !== (Number(payload.floors) || 0) || numSafe(vData.parking, 0) !== (Number(payload.parking) || 0)) {
+            console.warn('[VERIFY] ⚠️ DB ไม่ตรงกับที่ส่ง! sent:', { floors: payload.floors, parking: payload.parking }, 'DB has:', { floors: vData.floors, parking: vData.parking });
+          }
+        } catch (verifyErr) {
+          console.warn('[VERIFY] ไม่สามารถตรวจสอบได้:', verifyErr.message);
+        }
+      }
+
       setSaveMsg('✓ บันทึกแล้ว');
       setTimeout(() => setSaveMsg(''), 2000);
       return true;
     } catch (err) {
+      console.error('[SAVE] ❌ ERROR:', err.message);
       setSaveMsg(`❌ ${err.message}`);
       return false;
     } finally {
       setSaving(false);
+      savingLock.current = false;
     }
   };
 
@@ -434,10 +503,30 @@ function PropertyForm() {
 
   // ===== SAVE IMAGES =====
   const saveImages = async () => {
+    if (savingLock.current) return;
+    savingLock.current = true;
     setSaving(true); setSaveMsg('');
     try {
-      const pid = savedId || id;
-      if (!pid) throw new Error('ยังไม่ได้บันทึกข้อมูลพื้นฐาน กรุณาบันทึก Step 1 ก่อน');
+      let pid = savedIdRef.current || savedId || (isEdit ? id : null);
+      // Auto-save basic info if not saved yet
+      if (!pid) {
+        setSaveMsg('⏳ กำลังบันทึกข้อมูลพื้นฐาน...');
+        const imgPayload = { ...form, title: form.title || 'ทรัพย์ใหม่ (ร่าง)' };
+        ['bedrooms','bathrooms','floors','parking','land_area_rai','land_area_ngan','land_area_wah'].forEach(k => {
+          if (imgPayload[k] !== undefined) imgPayload[k] = Number(imgPayload[k]) || 0;
+        });
+        const res = await adminFetch(`${API}/api/admin/properties`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(imgPayload),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'บันทึกข้อมูลไม่สำเร็จ');
+        const newId = data.propertyId || data.id || data.insertId;
+        if (newId) { savedIdRef.current = newId; setSavedId(newId); }
+        pid = newId;
+        if (!pid) throw new Error('ไม่สามารถสร้างทรัพย์ได้ — กรุณาลองใหม่');
+      }
 
       if (thumbnail) {
         const thumbUrl = await uploadThumbnail();
@@ -470,6 +559,7 @@ function PropertyForm() {
       setSaveMsg(`❌ ${err.message}`);
     } finally {
       setSaving(false);
+      savingLock.current = false;
     }
   };
 
@@ -573,8 +663,43 @@ function PropertyForm() {
   };
 
   const finishAndExit = async () => {
-    await saveBasicInfo();
-    navigate('/admin/properties');
+    if (savingLock.current) return;
+    savingLock.current = true;
+    setSaving(true);
+    try {
+      const existingId = savedIdRef.current || savedId || (isEdit ? id : null);
+      const method = existingId ? 'PUT' : 'POST';
+      const url = existingId
+        ? `${API}/api/admin/properties/${existingId}`
+        : `${API}/api/admin/properties`;
+      // ensure numeric fields are numbers (same as saveBasicInfo)
+      const exitPayload = { ...form };
+      ['bedrooms','bathrooms','floors','parking','land_area_rai','land_area_ngan','land_area_wah'].forEach(k => {
+        if (exitPayload[k] !== undefined) exitPayload[k] = Number(exitPayload[k]) || 0;
+      });
+      // ensure booleans are 1/0
+      ['is_featured','is_active','is_discounted','pet_friendly'].forEach(k => {
+        if (exitPayload[k] !== undefined) exitPayload[k] = exitPayload[k] ? 1 : 0;
+      });
+      console.log('[EXIT-SAVE] payload:', JSON.stringify({ floors: exitPayload.floors, parking: exitPayload.parking, bedrooms: exitPayload.bedrooms, bathrooms: exitPayload.bathrooms }));
+      const res = await adminFetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(exitPayload),
+      });
+      const data = await res.json();
+      const newId = data.propertyId || data.id || data.insertId;
+      if (res.ok && !savedIdRef.current && newId) {
+        savedIdRef.current = newId;
+        setSavedId(newId);
+      }
+    } catch (err) {
+      // ignore errors — user wants to exit
+    } finally {
+      setSaving(false);
+      savingLock.current = false;
+    }
+    navigate('/dashboard');
   };
 
   // extract Maps coords from Google Maps link + auto reverse geocode
@@ -820,7 +945,7 @@ function PropertyForm() {
     <div style={{ minHeight: '100vh', background: '#f5f7fa', fontFamily: "'Sarabun',sans-serif" }}>
 
       {/* Navbar — consistent with Dashboard / AdminProperties / AdminInquiries */}
-      <div style={{ background: `linear-gradient(135deg,${N},#1a3c6e)`, height: 60, position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16 }}>
+      <div style={{ background: `linear-gradient(135deg,${N},#00463d)`, height: 60, position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16 }}>
         {/* Logo */}
         <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <div style={{ width: 34, height: 34, borderRadius: 8, background: G, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#fff', fontSize: '1rem', letterSpacing: -1 }}>L</div>
@@ -853,9 +978,9 @@ function PropertyForm() {
       {/* Page title strip + pill tab nav */}
       <div style={{ background: '#fff', borderBottom: '1px solid #e8edf2', padding: '10px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Link to="/admin/properties" style={{ color: '#6b7280', fontSize: '0.8rem', textDecoration: 'none', fontWeight: 600 }}>← รายการทรัพย์สิน</Link>
+          <Link to="/dashboard" style={{ color: '#6b7280', fontSize: '0.8rem', textDecoration: 'none', fontWeight: 600 }}>← ภาพรวม</Link>
           <span style={{ color: '#d1d5db' }}>›</span>
-          <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#1a3c6e' }}>
+          <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#00463d' }}>
             {isEdit ? '✏️ แก้ไขทรัพย์สิน' : '➕ เพิ่มทรัพย์ใหม่'}
           </span>
         </div>
@@ -863,10 +988,10 @@ function PropertyForm() {
         <div className="admin-pill-nav" style={{ position:'relative', display:'inline-flex', background:'#e2e8f0', borderRadius:14, padding:4, gap:0 }}>
           <div style={{ position:'absolute', top:4, bottom:4, width:'calc(25% - 4px)', left:'calc(25% + 2px)', background:'#fff', borderRadius:10, boxShadow:'0 2px 10px rgba(0,0,0,0.12)', zIndex:0 }} />
           {[
-            { label:'📊 ภาพรวม',  path:'/dashboard' },
-            { label:'🏡 ทรัพย์',  path:'/admin/properties' },
-            { label:'✉️ ข้อความ', path:'/admin/inquiries' },
-            { label:'👥 ผู้ใช้',  path:'/admin/users' },
+            { label:'ภาพรวม',  path:'/dashboard' },
+            { label:'ทรัพย์',  path:'/admin/properties' },
+            { label:'ข้อความ', path:'/admin/inquiries' },
+            { label:'ผู้ใช้',  path:'/admin/users' },
           ].map((t) => {
             const active = t.path === '/admin/properties';
             return (
@@ -891,17 +1016,17 @@ function PropertyForm() {
                   onClick={() => done && setStep(n)}>
                   <div style={{
                     width: 30, height: 30, borderRadius: '50%',
-                    background: done ? '#04AA6D' : active ? '#1a3c6e' : '#e8edf2',
+                    background: done ? '#1A8C6E' : active ? '#00463d' : '#e8edf2',
                     color: (done || active) ? '#fff' : '#aaa',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontWeight: 800, fontSize: '0.85rem', transition: 'all 0.2s',
                   }}>
                     {done ? '✓' : n}
                   </div>
-                  <span style={{ fontSize: '0.68rem', marginTop: 4, color: active ? '#1a3c6e' : done ? '#04AA6D' : '#aaa', fontWeight: active ? 700 : 400, textAlign: 'center', whiteSpace: 'nowrap' }}>{label}</span>
+                  <span style={{ fontSize: '0.68rem', marginTop: 4, color: active ? '#00463d' : done ? '#1A8C6E' : '#aaa', fontWeight: active ? 700 : 400, textAlign: 'center', whiteSpace: 'nowrap' }}>{label}</span>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div style={{ flex: 1, height: 2, background: done ? '#04AA6D' : '#e8edf2', marginTop: 14, transition: 'background 0.2s' }} />
+                  <div style={{ flex: 1, height: 2, background: done ? '#1A8C6E' : '#e8edf2', marginTop: 14, transition: 'background 0.2s' }} />
                 )}
               </React.Fragment>
             );
@@ -950,7 +1075,7 @@ function PropertyForm() {
 
               <FieldRow label="สถานะการขาย">
                 <div style={{ display: 'flex', gap: 8 }}>
-                  {[{v:'available',l:'✅ ว่างอยู่',c:'#04AA6D'},{v:'reserved',l:'🔖 จองแล้ว',c:'#d4890a'},{v:'sold',l:'🔴 ขายแล้ว',c:'#c0392b'}].map(s => (
+                  {[{v:'available',l:'✅ ว่างอยู่',c:'#1A8C6E'},{v:'reserved',l:'🔖 จองแล้ว',c:'#d4890a'},{v:'sold',l:'🔴 ขายแล้ว',c:'#c0392b'}].map(s => (
                     <button key={s.v} type="button" onClick={() => set('sale_status', s.v)}
                       style={{ padding:'8px 14px', borderRadius:8, border:`1.5px solid ${form.sale_status===s.v?s.c:'#dde'}`, background:form.sale_status===s.v?s.c:'#fff', color:form.sale_status===s.v?'#fff':'#555', cursor:'pointer', fontWeight:600, fontSize:'0.82rem', transition:'all 0.15s' }}>
                       {s.l}
@@ -1008,11 +1133,11 @@ function PropertyForm() {
 
               <div style={{ display: 'flex', gap: 20, marginTop: 4, paddingTop: 12, borderTop: '1px solid #f0f0f0' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600 }}>
-                  <input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#1a3c6e' }} />
+                  <input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#00463d' }} />
                   <span>⭐ ตั้งเป็นทรัพย์แนะนำ</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600 }}>
-                  <input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#04AA6D' }} />
+                  <input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#1A8C6E' }} />
                   <span>👁️ แสดงบนเว็บ</span>
                 </label>
               </div>
@@ -1024,7 +1149,7 @@ function PropertyForm() {
         {step === 2 && (
           <>
             {/* ===== MULTI-DEED OCR CARD ===== */}
-            <div style={{ background: 'linear-gradient(135deg,#0d2347,#1a3c6e)', borderRadius: 14, padding: '18px 20px', marginBottom: 16, color: '#fff' }}>
+            <div style={{ background: 'linear-gradient(135deg,#001a16,#00463d)', borderRadius: 14, padding: '18px 20px', marginBottom: 16, color: '#fff' }}>
               {/* Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -1055,7 +1180,7 @@ function PropertyForm() {
                             style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 8, border: '2px solid rgba(255,255,255,0.25)', display: 'block' }} />
                         </a>
                         <button type="button" onClick={() => deleteExistingDeed(d.id)}
-                          style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #1a3c6e', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
+                          style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #00463d', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
                       </div>
                     ))}
                   </div>
@@ -1096,7 +1221,7 @@ function PropertyForm() {
                         </div>
                         {slot.preview && (
                           <button type="button" onClick={e => { e.stopPropagation(); removeDeedSlot(slot.slotId); }}
-                            style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #1a3c6e', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
+                            style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #00463d', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
                         )}
                         <input ref={el => { fileInputRefs.current[slot.slotId] = el; }} type="file" accept="image/*"
                           onChange={e => handleDeedFile(slot.slotId, e)} style={{ display: 'none' }} />
@@ -1246,7 +1371,7 @@ function PropertyForm() {
 
             {/* ===== Google Maps Pin + Embedded Preview ===== */}
             <div style={{ background: '#f0f7ff', border: '1px solid #cce0ff', borderRadius: 10, padding: 14, marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#1a3c6e', marginBottom: 8 }}>
+              <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#00463d', marginBottom: 8 }}>
                 📍 ปักหมุดบนแผนที่ (Google Maps)
               </div>
               <p style={{ fontSize: '0.78rem', color: '#666', margin: '0 0 10px', lineHeight: 1.5 }}>
@@ -1310,7 +1435,7 @@ function PropertyForm() {
                         style={{
                           padding: '5px 12px', borderRadius: 7, border: 'none', cursor: 'pointer',
                           fontFamily: "'Sarabun',sans-serif", fontSize: '0.8rem', fontWeight: 600,
-                          background: mapType === key ? '#1a3c6e' : '#e8edf2',
+                          background: mapType === key ? '#00463d' : '#e8edf2',
                           color: mapType === key ? '#fff' : '#555',
                           transition: 'all 0.15s',
                         }}>
@@ -1355,7 +1480,7 @@ function PropertyForm() {
               {/* BTS */}
               <div style={{ marginBottom: 8 }}>
                 <div style={{ fontSize: '0.75rem', color: '#6c757d', fontWeight: 700, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ background: '#04AA6D', color: '#fff', borderRadius: 10, padding: '1px 8px', fontSize: '0.7rem' }}>BTS</span>
+                  <span style={{ background: '#1A8C6E', color: '#fff', borderRadius: 10, padding: '1px 8px', fontSize: '0.7rem' }}>BTS</span>
                   BTS / สายสีเขียว
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -1516,7 +1641,7 @@ function PropertyForm() {
 
               {/* เลี้ยงสัตว์ */}
               <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600, margin: '8px 0 14px' }}>
-                <input type="checkbox" checked={form.pet_friendly} onChange={e => set('pet_friendly', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#04AA6D' }} />
+                <input type="checkbox" checked={form.pet_friendly} onChange={e => set('pet_friendly', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#1A8C6E' }} />
                 <span>🐾 อนุญาตให้เลี้ยงสัตว์</span>
               </label>
 
@@ -1610,10 +1735,20 @@ function PropertyForm() {
                   <div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(90px,1fr))', gap: 8, marginBottom: 10 }}>
                       {galleryPreviews.map((url, i) => (
-                        <img key={i} src={url} alt="" style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 8 }} />
+                        <div key={i} style={{ position: 'relative' }}>
+                          <img src={url} alt="" style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 8, display: 'block' }} />
+                          <button type="button" onClick={(e) => {
+                            e.stopPropagation();
+                            setGalleryFiles(prev => prev.filter((_, idx) => idx !== i));
+                            setGalleryPreviews(prev => prev.filter((_, idx) => idx !== i));
+                          }}
+                            style={{ position: 'absolute', top: -6, right: -6, background: '#e53e3e', color: '#fff', border: 'none', borderRadius: '50%', width: 22, height: 22, cursor: 'pointer', fontSize: '0.7rem', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 6px rgba(0,0,0,0.3)' }}>
+                            ✕
+                          </button>
+                        </div>
                       ))}
                     </div>
-                    <span style={{ fontSize: '0.78rem', color: '#04AA6D', fontWeight: 600 }}>+ เพิ่มรูปอีก คลิกที่นี่</span>
+                    <span style={{ fontSize: '0.78rem', color: '#1A8C6E', fontWeight: 600 }}>+ เพิ่มรูปอีก คลิกที่นี่</span>
                   </div>
                 ) : (
                   <>
@@ -1630,7 +1765,7 @@ function PropertyForm() {
                   }} />
               </div>
               {galleryFiles.length > 0 && (
-                <div style={{ marginTop: 8, fontSize: '0.78rem', color: '#04AA6D', fontWeight: 600 }}>
+                <div style={{ marginTop: 8, fontSize: '0.78rem', color: '#1A8C6E', fontWeight: 600 }}>
                   <i className="fas fa-check-circle" style={{ marginRight: 5 }} />เลือก {galleryFiles.length} รูปใหม่ — กด "บันทึกรูป" เพื่ออัพโหลด
                 </div>
               )}
@@ -1650,21 +1785,21 @@ function PropertyForm() {
                     <button key={a.name} type="button" onClick={() => toggleAmenity(a.name, a.icon)}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', borderRadius: 8,
-                        border: `1.5px solid ${active ? '#04AA6D' : '#dde3ed'}`,
+                        border: `1.5px solid ${active ? '#1A8C6E' : '#dde3ed'}`,
                         background: active ? '#f0faf5' : '#fff',
-                        color: active ? '#04AA6D' : '#555',
+                        color: active ? '#1A8C6E' : '#555',
                         cursor: 'pointer', fontWeight: active ? 700 : 400, fontSize: '0.82rem',
                         fontFamily: "'Sarabun',sans-serif", transition: 'all 0.15s',
                       }}>
                       <i className={`fas ${a.icon}`} style={{ fontSize: '0.9rem', width: 16, textAlign: 'center' }} />
                       {a.name}
-                      {active && <i className="fas fa-check-circle" style={{ marginLeft: 'auto', color: '#04AA6D', fontSize: '0.85rem' }} />}
+                      {active && <i className="fas fa-check-circle" style={{ marginLeft: 'auto', color: '#1A8C6E', fontSize: '0.85rem' }} />}
                     </button>
                   );
                 })}
               </div>
               {existingAmenities.length > 0 && (
-                <p style={{ fontSize: '0.78rem', color: '#04AA6D', fontWeight: 600, marginTop: 10, marginBottom: 0 }}>
+                <p style={{ fontSize: '0.78rem', color: '#1A8C6E', fontWeight: 600, marginTop: 10, marginBottom: 0 }}>
                   <i className="fas fa-check-circle" style={{ marginRight: 5 }} />เลือกแล้ว {existingAmenities.length} รายการ
                 </p>
               )}
@@ -1692,7 +1827,7 @@ function PropertyForm() {
                     ))}
                   </div>
                   <button type="button" onClick={addTransitToNearby}
-                    style={{ background: '#1a3c6e', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 16px', cursor: 'pointer', fontSize: '0.83rem', fontWeight: 600, fontFamily: "'Sarabun',sans-serif" }}>
+                    style={{ background: '#00463d', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 16px', cursor: 'pointer', fontSize: '0.83rem', fontWeight: 600, fontFamily: "'Sarabun',sans-serif" }}>
                     <i className="fas fa-magic" style={{ marginRight: 6 }} />เพิ่มทั้งหมดอัตโนมัติ
                   </button>
                   <span style={{ fontSize: '0.73rem', color: '#666', marginLeft: 10 }}>หรือเพิ่มทีละสถานีด้านล่าง</span>
@@ -1720,7 +1855,7 @@ function PropertyForm() {
                 </FieldRow>
               </div>
               <button type="button" onClick={addNearby}
-                style={{ background: '#1a3c6e', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, marginBottom: 14 }}>
+                style={{ background: '#00463d', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, marginBottom: 14 }}>
                 <i className="fas fa-plus" style={{ marginRight: 6 }} />เพิ่มสถานที่
               </button>
 
@@ -1731,9 +1866,9 @@ function PropertyForm() {
                     return (
                       <div key={n.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: 8, padding: '8px 12px' }}>
                         <div>
-                          <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#1a3c6e' }}>{n.place_name}</span>
+                          <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#00463d' }}>{n.place_name}</span>
                           <span style={{ fontSize: '0.75rem', color: '#888', marginLeft: 8 }}>({typeLabel})</span>
-                          {n.distance_km && <span style={{ fontSize: '0.75rem', color: '#04AA6D', marginLeft: 8, fontWeight: 600 }}>{n.distance_km} กม.</span>}
+                          {n.distance_km && <span style={{ fontSize: '0.75rem', color: '#1A8C6E', marginLeft: 8, fontWeight: 600 }}>{n.distance_km} กม.</span>}
                           {n.travel_time_min && <span style={{ fontSize: '0.75rem', color: '#888', marginLeft: 4 }}>• {n.travel_time_min} นาที</span>}
                         </div>
                         <button type="button" onClick={() => deleteNearby(n.id)}
@@ -1763,29 +1898,27 @@ function PropertyForm() {
             )}
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
-            {/* Save & Exit */}
-            {(savedId || isEdit) && (
-              <button type="button" onClick={finishAndExit} disabled={saving}
-                style={{ background: '#fff', color: '#1a3c6e', border: '1.5px solid #1a3c6e', borderRadius: 8, padding: '10px 18px', cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem' }}>
-                💾 บันทึก & ออก
-              </button>
-            )}
+            {/* Save & Exit — always visible */}
+            <button type="button" onClick={finishAndExit} disabled={saving}
+              style={{ background: '#fff', color: '#1A8C6E', border: '1.5px solid #1A8C6E', borderRadius: 8, padding: '10px 18px', cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem' }}>
+              💾 บันทึก & ออก
+            </button>
             {/* Step-specific next button */}
             {step < 4 && (
               <button type="button" onClick={saveAndNext} disabled={saving}
-                style={{ background: '#04AA6D', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
+                style={{ background: '#1A8C6E', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
                 {saving ? '⏳ กำลังบันทึก...' : 'บันทึก & ถัดไป →'}
               </button>
             )}
             {step === 4 && (
               <button type="button" onClick={saveImages} disabled={saving}
-                style={{ background: '#04AA6D', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
+                style={{ background: '#1A8C6E', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
                 {saving ? '⏳ กำลังอัพโหลด...' : '📷 บันทึกรูป & ถัดไป →'}
               </button>
             )}
             {step === 5 && (
               <button type="button" onClick={finishAndExit} disabled={saving}
-                style={{ background: '#1a3c6e', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem' }}>
+                style={{ background: '#00463d', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem' }}>
                 ✅ เสร็จสิ้น — กลับหน้ารายการ
               </button>
             )}

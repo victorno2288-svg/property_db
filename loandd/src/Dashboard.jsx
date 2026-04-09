@@ -6,14 +6,14 @@ import NotificationBell from './components/NotificationBell';
 import './css/adminMobile.css';
 
 /* ─────────────────────────── constants ─────────────────────────── */
-const G = '#04AA6D';
-const N = '#1a2d4a';
+const G = '#1A8C6E';
+const N = '#1A8C6E';
 
 const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 const THAI_DAYS   = ['อา','จ','อ','พ','พฤ','ศ','ส'];
 
 const TYPE_LABEL = {
-  house:'บ้านเดี่ยว', condo:'คอนโด', townhouse:'ทาวน์เฮ้าส์',
+  house:'บ้านเดี่ยว', condo:'คอนโด', townhouse:'ทาวน์เฮ้าส์', townhome:'ทาวน์โฮม',
   land:'ที่ดิน', apartment:'อพาร์ทเม้นท์', commercial:'อาคารพาณิชย์',
   home_office:'Home Office', warehouse:'โกดัง',
 };
@@ -91,7 +91,7 @@ const fillSalesTimeline = (raw, period) => {
 const SalesStatusChart = ({ stats }) => {
   const total = Math.max(stats.total || 0, 1);
   const items = [
-    { label: 'กำลังขาย/เช่า', count: (stats.for_sale || 0) + (stats.for_rent || 0), color: '#04AA6D', icon: 'fa-tag' },
+    { label: 'กำลังขาย/เช่า', count: (stats.for_sale || 0) + (stats.for_rent || 0), color: '#1A8C6E', icon: 'fa-tag' },
     { label: 'จองแล้ว',        count: stats.reserved || 0,                            color: '#f59e0b', icon: 'fa-bookmark' },
     { label: 'ขายแล้ว',        count: stats.sold || 0,                                color: '#7c3aed', icon: 'fa-check-circle' },
   ];
@@ -126,9 +126,9 @@ const SalesStatusChart = ({ stats }) => {
         })}
       </div>
       <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid #f0f4f8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: '0.75rem', color: '#aaa' }}>ทรัพย์ทั้งหมด <strong style={{ color: '#1a2d4a' }}>{stats.total || 0}</strong> รายการ</span>
+        <span style={{ fontSize: '0.75rem', color: '#aaa' }}>ทรัพย์ทั้งหมด <strong style={{ color: '#1A8C6E' }}>{stats.total || 0}</strong> รายการ</span>
         <span style={{ fontSize: '0.65rem', color: '#c0c9d8', display: 'flex', alignItems: 'center', gap: 4 }}>
-          <i className="fas fa-circle" style={{ fontSize: '0.4rem', color: '#04AA6D' }} />อัปเดตเรียลไทม์
+          <i className="fas fa-circle" style={{ fontSize: '0.4rem', color: '#1A8C6E' }} />อัปเดตเรียลไทม์
         </span>
       </div>
     </div>
@@ -403,7 +403,7 @@ export default function Dashboard() {
     <div style={{ minHeight: '100vh', background: '#f5f7fa', fontFamily: "'Sarabun','Noto Sans Thai',sans-serif" }}>
 
       {/* ── TOP NAVBAR ── */}
-      <div style={{ background: `linear-gradient(135deg,${N},#1a3c6e)`, padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 12px rgba(0,0,0,0.18)' }}>
+      <div style={{ background: `linear-gradient(135deg,${N},#00463d)`, padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 12px rgba(0,0,0,0.18)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{ fontWeight: 900, fontSize: '1.25rem', color: '#fff', letterSpacing: 1 }}>LOAN<span style={{ color: G }}>DD</span></div>
           <span style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>Admin</span>
@@ -538,7 +538,7 @@ export default function Dashboard() {
                     ))}
                   </div>
                 </div>
-                <div style={{ background: `linear-gradient(135deg,${N},#1a3c6e)`, borderRadius: 16, padding: '16px 18px', color: '#fff' }}>
+                <div style={{ background: `linear-gradient(135deg,${N},#00463d)`, borderRadius: 16, padding: '16px 18px', color: '#fff' }}>
                   <div style={{ fontWeight: 800, fontSize: '0.88rem', marginBottom: 12, opacity: 0.9 }}><i className="fas fa-chart-pie" style={{ marginRight: 7 }} />สรุปทรัพย์</div>
                   {[
                     { label:'รายการขาย', value:stats.for_sale,       color:'#4ade80' },
@@ -596,7 +596,7 @@ export default function Dashboard() {
 
                 <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 10px rgba(0,0,0,0.06)', padding: '14px 16px' }}>
                   <div style={{ fontWeight: 800, fontSize: '0.85rem', color: N, marginBottom: 10 }}>📣 ช่องทางติดต่อ</div>
-                  <a href="https://line.me/R/ti/p/@343gpuvp" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                  <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '7px 10px', borderRadius: 8, background: '#e8f8f0', marginBottom: 7 }}>
                       <i className="fab fa-line" style={{ color: '#06C755', fontSize: '1.05rem' }} />
                       <div><div style={{ fontWeight: 700, fontSize: '0.8rem', color: N }}>LINE OA</div><div style={{ fontSize: '0.7rem', color: '#888' }}>@loan_dd</div></div>
@@ -702,7 +702,7 @@ export default function Dashboard() {
                             </td>
                             {/* ราคา */}
                             <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>
-                              <div style={{ fontWeight: 700, color: '#1a3c6e' }}>฿{fmtPrice(p.price_requested || p.monthly_rent)}</div>
+                              <div style={{ fontWeight: 700, color: '#00463d' }}>฿{fmtPrice(p.price_requested || p.monthly_rent)}</div>
                               {p.listing_type === 'rent' && <div style={{ fontSize: '0.72rem', color: '#888' }}>/เดือน</div>}
                             </td>
                             {/* รูปภาพ count */}

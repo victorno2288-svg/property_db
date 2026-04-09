@@ -2,7 +2,7 @@
 import React from 'react';
 import '../css/LineFloatingButton.css';
 
-const LINE_URL = 'https://line.me/R/ti/p/@343gpuvp';
+const LINE_URL = 'https://line.me/R/ti/p/@loan_dd';
 
 function LineFloatingButton() {
     return (

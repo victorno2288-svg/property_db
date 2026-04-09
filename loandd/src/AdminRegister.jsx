@@ -130,15 +130,15 @@ export default function AdminRegister() {
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 20, padding: '4px 12px' }}>
-                <i className="fas fa-user-plus" style={{ color: '#04AA6D', fontSize: '0.7rem' }} />
-                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#04AA6D', letterSpacing: '0.5px' }}>NEW ADMIN</span>
+                <i className="fas fa-user-plus" style={{ color: '#1A8C6E', fontSize: '0.7rem' }} />
+                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#1A8C6E', letterSpacing: '0.5px' }}>NEW ADMIN</span>
               </div>
               <Link to="/admin/properties" style={{ color: '#9ca3af', fontSize: '0.78rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}>
                 <i className="fas fa-arrow-left" style={{ fontSize: '0.7rem' }} />
                 กลับ Dashboard
               </Link>
             </div>
-            <h2 style={{ margin: '0 0 4px', fontSize: '1.35rem', fontWeight: 800, color: '#1a3c6e' }}>
+            <h2 style={{ margin: '0 0 4px', fontSize: '1.35rem', fontWeight: 800, color: '#00463d' }}>
               สร้างบัญชีเจ้าหน้าที่
             </h2>
             <p style={{ margin: 0, color: '#9ca3af', fontSize: '0.82rem' }}>
@@ -267,7 +267,7 @@ const css = {
   brand: {
     width: '360px',
     flexShrink: 0,
-    background: 'linear-gradient(145deg, #0d2347 0%, #1a3c6e 60%, #04AA6D 160%)',
+    background: 'linear-gradient(145deg, #001a16 0%, #00463d 60%, #1A8C6E 160%)',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -357,7 +357,7 @@ const css = {
   btnPrimary: (loading) => ({
     flex: 1,
     padding: '11px',
-    background: loading ? '#9ca3af' : 'linear-gradient(135deg, #1a3c6e, #0d2347)',
+    background: loading ? '#9ca3af' : 'linear-gradient(135deg, #00463d, #001a16)',
     color: '#fff',
     border: 'none',
     borderRadius: 9,

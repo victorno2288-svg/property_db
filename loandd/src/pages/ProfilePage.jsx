@@ -133,7 +133,7 @@ export default function ProfilePage() {
     }
   };
 
-  const G = '#04AA6D';
+  const G = '#1A8C6E';
 
   const tabs = [
     { key: 'profile',  icon: 'fa-user-edit',    label: 'ข้อมูลของฉัน' },
@@ -158,7 +158,7 @@ export default function ProfilePage() {
       <Navbar />
 
       {/* Hero strip */}
-      <div style={{ background: 'linear-gradient(135deg,#1a2d4a,#1a3c6e)', paddingTop: 64 }}>
+      <div style={{ background: 'linear-gradient(135deg,#1A8C6E,#00463d)', paddingTop: 64 }}>
         <div className="container" style={{ padding: '28px 16px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, paddingBottom: 0 }}>
             {/* Avatar */}
@@ -186,7 +186,7 @@ export default function ProfilePage() {
             {tabs.map(t => (
               <button key={t.key} onClick={() => { setTab(t.key); setMsg(null); }} style={{
                 background: tab === t.key ? '#fff' : 'transparent',
-                color: tab === t.key ? '#1a2d4a' : 'rgba(255,255,255,0.7)',
+                color: tab === t.key ? '#1A8C6E' : 'rgba(255,255,255,0.7)',
                 border: 'none', padding: '10px 18px',
                 fontFamily: '"Noto Sans Thai", sans-serif',
                 fontWeight: tab === t.key ? 700 : 500,
@@ -227,7 +227,7 @@ export default function ProfilePage() {
         {/* ─── TAB: ข้อมูลของฉัน ─────────────────── */}
         {tab === 'profile' && (
           <div style={{ background: '#fff', borderRadius: 14, padding: '24px 24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <h4 style={{ color: '#1a2d4a', fontWeight: 800, marginBottom: 20, fontSize: '1rem' }}>
+            <h4 style={{ color: '#1A8C6E', fontWeight: 800, marginBottom: 20, fontSize: '1rem' }}>
               <i className="fas fa-user-edit" style={{ color: G, marginRight: 8 }} />แก้ไขข้อมูลส่วนตัว
             </h4>
             {loading ? (
@@ -307,7 +307,7 @@ export default function ProfilePage() {
         {tab === 'saved' && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h4 style={{ color: '#1a2d4a', fontWeight: 800, margin: 0, fontSize: '1rem' }}>
+              <h4 style={{ color: '#1A8C6E', fontWeight: 800, margin: 0, fontSize: '1rem' }}>
                 <i className="fas fa-heart" style={{ color: '#e53e3e', marginRight: 8 }} />
                 ทรัพย์ที่บันทึกไว้ ({saved.length} รายการ)
               </h4>
@@ -320,9 +320,9 @@ export default function ProfilePage() {
 
             {saved.length === 0 ? (
               <div style={{ background: '#fff', borderRadius: 14, padding: '48px 24px', textAlign: 'center', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-                <div style={{ fontSize: '3rem', marginBottom: 12 }}>🏠</div>
+                <div style={{ fontSize: '2.5rem', marginBottom: 12 }}><i className="fas fa-home" style={{ color: '#ccc' }} /></div>
                 <p style={{ color: '#999', fontWeight: 600, fontSize: '0.9rem', margin: 0 }}>ยังไม่มีทรัพย์ที่บันทึกไว้</p>
-                <p style={{ color: '#bbb', fontSize: '0.8rem', marginTop: 6 }}>กดหัวใจ ❤ บนการ์ดทรัพย์ที่คุณสนใจเพื่อบันทึกไว้ดูภายหลัง</p>
+                <p style={{ color: '#bbb', fontSize: '0.8rem', marginTop: 6 }}>กดหัวใจบนการ์ดทรัพย์ที่คุณสนใจเพื่อบันทึกไว้ดูภายหลัง</p>
                 <Link to="/search" style={{ display: 'inline-block', marginTop: 16, background: G, color: '#fff', padding: '9px 24px', borderRadius: 8, textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem' }}>
                   เริ่มค้นหาทรัพย์
                 </Link>
@@ -338,7 +338,7 @@ export default function ProfilePage() {
         {/* ─── TAB: เปลี่ยนรหัสผ่าน ──────────────── */}
         {tab === 'password' && (
           <div style={{ background: '#fff', borderRadius: 14, padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <h4 style={{ color: '#1a2d4a', fontWeight: 800, marginBottom: 8, fontSize: '1rem' }}>
+            <h4 style={{ color: '#1A8C6E', fontWeight: 800, marginBottom: 8, fontSize: '1rem' }}>
               <i className="fas fa-lock" style={{ color: G, marginRight: 8 }} />ขอเปลี่ยนรหัสผ่าน
             </h4>
             <p style={{ color: '#666', fontSize: '0.85rem', marginBottom: 20, lineHeight: 1.6 }}>
@@ -426,7 +426,7 @@ export default function ProfilePage() {
                   disabled={saving || !newPw || !newPwConf || newPw !== newPwConf}
                   style={{
                     width: '100%', padding: '12px',
-                    background: (saving || !newPw || !newPwConf || newPw !== newPwConf) ? '#ccc' : 'linear-gradient(135deg,#1a2d4a,#1a3c6e)',
+                    background: (saving || !newPw || !newPwConf || newPw !== newPwConf) ? '#ccc' : 'linear-gradient(135deg,#1A8C6E,#00463d)',
                     color: '#fff', border: 'none', borderRadius: 10,
                     fontWeight: 700, fontSize: '0.95rem',
                     cursor: (saving || !newPw || !newPwConf || newPw !== newPwConf) ? 'not-allowed' : 'pointer',

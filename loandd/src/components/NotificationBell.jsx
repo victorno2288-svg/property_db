@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import adminFetch, { BASE_URL } from '../utils/adminFetch';
 
-const G = '#04AA6D';
+const G = '#1A8C6E';
 
 // สร้างเสียงกริ่งแจ้งเตือนด้วย Web Audio API (ไม่ต้องใช้ไฟล์เสียง)
 function playNotificationSound() {
@@ -173,7 +173,7 @@ export default function NotificationBell() {
             borderRadius: '50%', minWidth: 18, height: 18,
             fontSize: '0.65rem', fontWeight: 900,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '0 3px', border: '2px solid #1a2d4a',
+            padding: '0 3px', border: '2px solid #1A8C6E',
             lineHeight: 1,
           }}>
             {total > 99 ? '99+' : total}
@@ -193,7 +193,7 @@ export default function NotificationBell() {
         }}>
           {/* Header */}
           <div style={{ padding: '14px 18px 10px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#1a2d4a' }}>
+            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#1A8C6E' }}>
               <i className="fas fa-bell" style={{ color: G, marginRight: 7 }} />
               การแจ้งเตือน
             </span>
@@ -206,7 +206,7 @@ export default function NotificationBell() {
           {pendingPw > 0 && (
             <div>
               <div style={{ padding: '8px 18px 4px', fontSize: '0.72rem', fontWeight: 800, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                🔑 คำขอเปลี่ยนรหัสผ่าน ({pendingPw})
+                <i className="fas fa-key" style={{ marginRight: 4 }} /> คำขอเปลี่ยนรหัสผ่าน ({pendingPw})
               </div>
               {data.password_requests.map(req => (
                 <div key={req.id}
@@ -234,7 +234,7 @@ export default function NotificationBell() {
           {newInquiries > 0 && (
             <div>
               <div style={{ padding: '8px 18px 4px', fontSize: '0.72rem', fontWeight: 800, color: '#888', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-                💬 ข้อความสอบถาม ({newInquiries})
+                <i className="fas fa-comment-dots" style={{ marginRight: 4 }} /> ข้อความสอบถาม ({newInquiries})
               </div>
               {data.inquiries.slice(0, 10).map(inq => (
                 <div key={inq.id}
@@ -255,13 +255,13 @@ export default function NotificationBell() {
                     <span style={{ fontSize: '0.68rem', color: '#aaa' }}>{formatTime(inq.created_at)}</span>
                   </div>
                   {/* เบอร์โทร */}
-                  <div style={{ fontSize: '0.76rem', color: '#04AA6D', fontWeight: 600, marginBottom: 2, paddingLeft: 34 }}>
+                  <div style={{ fontSize: '0.76rem', color: '#1A8C6E', fontWeight: 600, marginBottom: 2, paddingLeft: 34 }}>
                     <i className="fas fa-phone-alt" style={{ fontSize: '0.65rem', marginRight: 4 }} />{inq.phone}
                   </div>
                   {/* จังหวัด + ทรัพย์ */}
                   {inq.property_province && (
                     <div style={{ fontSize: '0.72rem', color: '#666', paddingLeft: 34, marginBottom: 2 }}>
-                      <i className="fas fa-home" style={{ fontSize: '0.6rem', marginRight: 4, color: '#04AA6D' }} />{inq.property_province}
+                      <i className="fas fa-home" style={{ fontSize: '0.6rem', marginRight: 4, color: '#1A8C6E' }} />{inq.property_province}
                     </div>
                   )}
                   {/* ข้อความ */}
@@ -283,7 +283,7 @@ export default function NotificationBell() {
           {/* Empty state */}
           {total === 0 && (
             <div style={{ padding: '32px 20px', textAlign: 'center', color: '#aaa' }}>
-              <div style={{ fontSize: '2rem', marginBottom: 8 }}>🎉</div>
+              <div style={{ fontSize: '2rem', marginBottom: 8 }}><i className="fas fa-check-circle" style={{ color: '#c8e6d0' }} /></div>
               <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>ไม่มีการแจ้งเตือนใหม่</div>
               <div style={{ fontSize: '0.75rem', marginTop: 4 }}>อัปเดตล่าสุดเมื่อกี้</div>
             </div>

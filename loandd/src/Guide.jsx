@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 
 const Guide = () => {
-  const brandGreen = '#04AA6D';
-  const navy = '#1a2d4a';
+  const brandGreen = '#1A8C6E';
+  const navy = '#1A8C6E';
   const [openFaq, setOpenFaq] = useState(null);
 
   const toggleFaq = (i) => setOpenFaq(openFaq === i ? null : i);
@@ -55,20 +55,23 @@ const Guide = () => {
   ];
 
   return (
-    <div style={{ fontFamily: '"Noto Sans Thai", sans-serif' }}>
+    <div style={{ fontFamily: "'Sarabun', 'Noto Sans Thai', sans-serif" }}>
       <Navbar />
 
-      {/* === HERO === */}
+      {/* === HERO — Quiet Luxury === */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #1a3c6e 60%, ${brandGreen} 100%)`,
-        color: '#fff', padding: 'calc(64px + 32px) 16px 28px',
+        background: `linear-gradient(135deg, ${navy} 0%, #147A5E 60%, ${brandGreen} 100%)`,
+        color: '#fff', padding: 'calc(64px + 48px) 16px 40px',
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, marginBottom: 6 }}>
+          <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
+            Buyer's Guide
+          </div>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
             คู่มือผู้ซื้อ-ขายอสังหาฯ
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', margin: 0 }}>
-            ทุกสิ่งที่ต้องรู้ก่อนซื้ออสังหาริมทรัพย์จาก บ้าน D มีเชง — เตรียมตัวให้พร้อม ไม่พลาดทุกดีล
+          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+            ทุกสิ่งที่ต้องรู้ก่อนซื้ออสังหาริมทรัพย์จาก บ้าน D มีเชง
           </p>
         </div>
       </section>
@@ -77,7 +80,7 @@ const Guide = () => {
       <section className="py-5" style={{ background: '#f8faf9' }}>
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="fw-bold">ทำไมต้องเลือก<span style={{ color: brandGreen }}> บ้าน D มีเชง</span></h2>
+            <h2 style={{ fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", fontWeight: 500 }}>ทำไมต้องเลือก<span style={{ color: brandGreen }}> บ้าน D มีเชง</span></h2>
             <p className="text-muted">แพลตฟอร์มอสังหาริมทรัพย์ที่เชื่อถือได้ ดูแลคุณทุกขั้นตอน</p>
           </div>
 
@@ -143,24 +146,25 @@ const Guide = () => {
       <section className="py-5" style={{ background: '#f8faf9' }}>
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="fw-bold">ประเภทอสังหาฯ<span style={{ color: brandGreen }}> ที่ บ้าน D มีเชง มี</span></h2>
+            <h2 style={{ fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", fontWeight: 500 }}>ประเภทอสังหาฯ<span style={{ color: brandGreen }}> ที่ บ้าน D มีเชง มี</span></h2>
           </div>
           <div className="row g-3 justify-content-center">
             {[
-              { emoji: '🏢', type: 'คอนโด',          desc: 'ห้องชุดพักอาศัย พร้อมสิ่งอำนวยความสะดวกครบครัน' },
-              { emoji: '🏠', type: 'บ้านเดี่ยว',     desc: 'บ้านพร้อมที่ดิน เหมาะสำหรับครอบครัว' },
-              { emoji: '🏘', type: 'ทาวน์เฮ้าส์',   desc: 'ที่พักอาศัยประหยัดพื้นที่ ใจกลางเมือง' },
-              { emoji: '🏕', type: 'ที่ดิน',          desc: 'ที่ดินเปล่า พร้อมพัฒนาหรือลงทุน' },
-              { emoji: '🏬', type: 'อาคารพาณิชย์',   desc: 'ตึกแถว อาคารสำนักงาน เหมาะทำธุรกิจ' },
-              { emoji: '🏨', type: 'อพาร์ทเม้นท์',  desc: 'อาคารให้เช่า รายได้ passive income' },
-              { emoji: '💼', type: 'โฮมออฟฟิศ',     desc: 'บ้านพักอาศัยพร้อมพื้นที่ทำงาน' },
-              { emoji: '🏭', type: 'โกดัง/โรงงาน',  desc: 'พื้นที่อุตสาหกรรม โลจิสติกส์ และการผลิต' },
+              { icon: 'fa-building',   type: 'คอนโด',          desc: 'ห้องชุดพักอาศัย พร้อมสิ่งอำนวยความสะดวกครบครัน' },
+              { icon: 'fa-home',       type: 'บ้านเดี่ยว',     desc: 'บ้านพร้อมที่ดิน เหมาะสำหรับครอบครัว' },
+              { icon: 'fa-city',       type: 'ทาวน์เฮ้าส์',   desc: 'ที่พักอาศัยประหยัดพื้นที่ ใจกลางเมือง' },
+              { icon: 'fa-house-user', type: 'ทาวน์โฮม',      desc: 'บ้านแถวสไตล์โมเดิร์น พื้นที่ใช้สอยคุ้มค่า' },
+              { icon: 'fa-mountain',   type: 'ที่ดิน',          desc: 'ที่ดินเปล่า พร้อมพัฒนาหรือลงทุน' },
+              { icon: 'fa-store',      type: 'อาคารพาณิชย์',   desc: 'ตึกแถว อาคารสำนักงาน เหมาะทำธุรกิจ' },
+              { icon: 'fa-hotel',      type: 'อพาร์ทเม้นท์',  desc: 'อาคารให้เช่า รายได้ passive income' },
+              { icon: 'fa-briefcase',  type: 'โฮมออฟฟิศ',     desc: 'บ้านพักอาศัยพร้อมพื้นที่ทำงาน' },
+              { icon: 'fa-warehouse',  type: 'โกดัง/โรงงาน',  desc: 'พื้นที่อุตสาหกรรม โลจิสติกส์ และการผลิต' },
             ].map((t, i) => (
               <div className="col-6 col-md-3" key={i}>
-                <div className="text-center p-3 rounded-3 border" style={{ transition: 'all 0.2s', cursor: 'default' }}
-                  onMouseOver={e => { e.currentTarget.style.borderColor = brandGreen; e.currentTarget.style.background = '#e8f7ee'; }}
-                  onMouseOut={e => { e.currentTarget.style.borderColor = '#dee2e6'; e.currentTarget.style.background = ''; }}>
-                  <div style={{ fontSize: '2rem', marginBottom: 8 }}>{t.emoji}</div>
+                <div className="text-center p-3 rounded-3" style={{ transition: 'all 0.2s', cursor: 'default', background: '#fff', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}
+                  onMouseOver={e => { e.currentTarget.style.background = brandGreen; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,50,42,0.14)'; e.currentTarget.style.transform = 'translateY(-3px)'; }}
+                  onMouseOut={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.04)'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                  <i className={`fas ${t.icon}`} style={{ fontSize: '1.5rem', marginBottom: 8, color: brandGreen, display: 'block', transition: 'color 0.2s' }} />
                   <div className="fw-bold" style={{ fontSize: '0.9rem', marginBottom: 4 }}>{t.type}</div>
                   <div className="text-muted" style={{ fontSize: '0.75rem', lineHeight: 1.5 }}>{t.desc}</div>
                 </div>
@@ -237,13 +241,13 @@ const Guide = () => {
       </section>
 
       {/* === CTA === */}
-      <section className="py-5" style={{ background: `linear-gradient(135deg, ${navy} 0%, #1a3c6e 60%, ${brandGreen} 100%)` }}>
+      <section className="py-5" style={{ background: `linear-gradient(135deg, ${navy} 0%, #00463d 60%, ${brandGreen} 100%)` }}>
         <div className="container text-center text-white">
-          <div style={{ fontSize: '2.5rem', marginBottom: 12 }}>💬</div>
-          <h2 className="fw-bold mb-3">พร้อมหาบ้านในฝันแล้วหรือยัง?</h2>
+          <i className="fas fa-comments" style={{ fontSize: '2rem', marginBottom: 12, color: '#C9A84C', display: 'block' }} />
+          <h2 style={{ fontWeight: 400, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", marginBottom: 16 }}>พร้อมหาบ้านในฝันแล้วหรือยัง?</h2>
           <p className="lead mb-4" style={{ opacity: 0.9 }}>ปรึกษาฟรี ทีมงานพร้อมช่วยคุณทุกขั้นตอน</p>
           <div className="d-flex flex-wrap gap-3 justify-content-center">
-            <a href="https://line.me/R/ti/p/@343gpuvp" target="_blank" rel="noopener noreferrer"
+            <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer"
               className="btn btn-lg rounded-pill px-5 py-3 fw-bold"
               style={{ backgroundColor: '#06C755', color: '#fff', border: 'none' }}>
               <i className="fab fa-line me-2"></i> Line: @loan_dd

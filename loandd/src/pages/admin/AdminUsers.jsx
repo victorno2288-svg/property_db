@@ -7,8 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import UsersPanel from './UsersPanel';
 import '../../css/adminMobile.css';
 
-const G = '#04AA6D';
-const N = '#1a2d4a';
+const G = '#1A8C6E';
+const N = '#1A8C6E';
 
 function AdminNav({ navigate }) {
   const adminUser = (() => { try { return JSON.parse(localStorage.getItem('adminUser') || '{}'); } catch { return {}; } })();
@@ -19,7 +19,7 @@ function AdminNav({ navigate }) {
   };
 
   return (
-    <div style={{ background:`linear-gradient(135deg,${N},#1a3c6e)`, padding:'0 24px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
+    <div style={{ background:`linear-gradient(135deg,${N},#00463d)`, padding:'0 24px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
       <div style={{ display:'flex', alignItems:'center', gap:10 }}>
         <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#fff', letterSpacing:1 }}>
           LOAN<span style={{ color:G }}>DD</span>
@@ -52,10 +52,10 @@ export default function AdminUsers() {
         <div className="admin-pill-nav" style={{ position:'relative', display:'inline-flex', background:'#e2e8f0', borderRadius:14, padding:4, marginBottom:20, gap:0 }}>
           <div style={{ position:'absolute', top:4, bottom:4, width:'calc(25% - 4px)', left:'calc(75% + 2px)', background:'#fff', borderRadius:10, boxShadow:'0 2px 10px rgba(0,0,0,0.12)', zIndex:0 }} />
           {[
-            { label:'📊 ภาพรวม',  path:'/dashboard' },
-            { label:'🏡 ทรัพย์',  path:'/admin/properties' },
-            { label:'✉️ ข้อความ', path:'/admin/inquiries' },
-            { label:'👥 ผู้ใช้',  path:'/admin/users' },
+            { label:'ภาพรวม',  path:'/dashboard' },
+            { label:'ทรัพย์',  path:'/admin/properties' },
+            { label:'ข้อความ', path:'/admin/inquiries' },
+            { label:'ผู้ใช้',  path:'/admin/users' },
           ].map((t) => {
             const active = t.path === '/admin/users';
             return (

@@ -1,6 +1,6 @@
 /* ================================================================
    Register.css — หน้าสมัครสมาชิก บ้าน D มีเชง
-   สีหลัก: #04AA6D (เขียว เหมือนหน้า Login)
+   สีหลัก: #1A8C6E (เขียว เหมือนหน้า Login)
    ใช้คู่กับ auth-container / auth-card / auth-input / auth-btn จาก App.css
    ================================================================ */
 
@@ -11,7 +11,7 @@
 
 /* ============ หัวข้อ ============ */
 .register-title {
-  color: #04AA6D;
+  color: #1A8C6E;
   font-weight: 700;
 }
 
@@ -23,7 +23,7 @@
 
 /* ============ ปุ่ม Submit ============ */
 .register-submit-btn {
-  background: linear-gradient(135deg, #04AA6D, #2ecc71) !important;
+  background: linear-gradient(135deg, #1A8C6E, #2ecc71) !important;
   border: none !important;
   box-shadow: 0 4px 15px rgba(4, 170, 109, 0.3);
   color: #fff !important;
@@ -42,7 +42,7 @@
 
 /* ============ Link กลับหน้า Login ============ */
 .register-login-link {
-  color: #04AA6D !important;
+  color: #1A8C6E !important;
   text-decoration: none;
   font-weight: 600;
 }

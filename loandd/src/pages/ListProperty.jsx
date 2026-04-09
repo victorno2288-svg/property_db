@@ -7,6 +7,7 @@ const PROPERTY_TYPES = [
   { value: 'house', label: 'บ้านเดี่ยว', icon: 'fa-home' },
   { value: 'condo', label: 'คอนโด', icon: 'fa-building' },
   { value: 'townhouse', label: 'ทาวน์เฮ้าส์', icon: 'fa-city' },
+  { value: 'townhome', label: 'ทาวน์โฮม', icon: 'fa-house-user' },
   { value: 'land', label: 'ที่ดินเปล่า', icon: 'fa-mountain' },
   { value: 'commercial', label: 'อาคารพาณิชย์', icon: 'fa-store' },
   { value: 'apartment', label: 'อพาร์ทเม้นท์', icon: 'fa-hotel' },
@@ -190,7 +191,7 @@ function ListProperty() {
           </div>
           <div className="lp-line-alt">
             <span>หรือติดต่อเราทาง Line ได้เลยค่ะ</span>
-            <a href="https://line.me/R/ti/p/@343gpuvp" target="_blank" rel="noopener noreferrer" className="btn-lp-line">
+            <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer" className="btn-lp-line">
               <LineSVG /> แอดไลน์ @LoanDD
             </a>
           </div>
@@ -249,7 +250,7 @@ function ListProperty() {
       <div className="lp-line-box">
         <div className="lp-line-box-inner">
           <span><i className="fas fa-headset"></i> ไม่สะดวกกรอกฟอร์ม? แอดไลน์คุยกับทีมงานได้เลยค่ะ</span>
-          <a href="https://line.me/R/ti/p/@343gpuvp" target="_blank" rel="noopener noreferrer" className="btn-lp-line-sm">
+          <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer" className="btn-lp-line-sm">
             <LineSVG size={18} /> แอดไลน์
           </a>
         </div>

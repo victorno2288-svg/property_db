@@ -8,8 +8,8 @@ const STATUS_CONF = {
   contacted: { label:'ติดต่อแล้ว',   bg:'#fffbe6', color:'#d4890a', border:'#ffd666' },
   closed:    { label:'ปิดแล้ว',      bg:'#f0f0f0', color:'#888',    border:'#ccc' },
 };
-const G = '#04AA6D';
-const N = '#1a2d4a';
+const G = '#1A8C6E';
+const N = '#1A8C6E';
 
 // ── ยืนยันลบ Modal ──────────────────────────────────────────────
 function DeleteModal({ inq, onClose, onDeleted }) {
@@ -128,7 +128,7 @@ function EditModal({ inq, onClose, onSaved }) {
 function InfoRow({ icon, label, value, highlight }) {
   return (
     <div style={{ display:'flex', gap:10, padding:'5px 0', alignItems:'flex-start' }}>
-      <i className={`fas ${icon}`} style={{ color:'#1a3c6e', width:16, marginTop:2, fontSize:'0.82rem' }} />
+      <i className={`fas ${icon}`} style={{ color:'#00463d', width:16, marginTop:2, fontSize:'0.82rem' }} />
       <div style={{ flex:1 }}>
         <div style={{ fontSize:'0.72rem', color:'#aaa' }}>{label}</div>
         <div style={{ fontSize:'0.88rem', fontWeight: highlight ? 800 : 600, color: highlight ? G : '#333' }}>{value}</div>
@@ -173,6 +173,14 @@ export default function AdminInquiries() {
 
   useEffect(() => { fetchInquiries(); }, [fetchInquiries]);
 
+  // Auto-refresh ทุก 30 วินาที + focus (real-time update)
+  useEffect(() => {
+    const onFocus = () => fetchInquiries();
+    window.addEventListener('focus', onFocus);
+    const id = setInterval(fetchInquiries, 30000);
+    return () => { window.removeEventListener('focus', onFocus); clearInterval(id); };
+  }, [fetchInquiries]);
+
   // debounce search input 400ms
   const handleSearchInput = (val) => {
     setSearchInput(val);
@@ -207,7 +215,7 @@ export default function AdminInquiries() {
     <div style={{ minHeight:'100vh', background:'#f5f7fa', fontFamily:"'Sarabun',sans-serif" }}>
 
       {/* ── NAVBAR ── */}
-      <div style={{ background:`linear-gradient(135deg,${N},#1a3c6e)`, padding:'0 20px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
+      <div style={{ background:`linear-gradient(135deg,${N},#00463d)`, padding:'0 20px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
           <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#fff', letterSpacing:1 }}>LOAN<span style={{ color:G }}>DD</span></div>
           <span style={{ background:'rgba(255,255,255,0.12)', color:'rgba(255,255,255,0.7)', fontSize:'0.7rem', padding:'2px 8px', borderRadius:10, fontWeight:700 }}>Admin</span>
@@ -239,10 +247,10 @@ export default function AdminInquiries() {
         <div className="admin-pill-nav" style={{ position:'relative', display:'inline-flex', background:'#e2e8f0', borderRadius:14, padding:4, marginBottom:16, gap:0 }}>
           <div style={{ position:'absolute', top:4, bottom:4, width:'calc(25% - 4px)', left:'calc(50% + 2px)', background:'#fff', borderRadius:10, boxShadow:'0 2px 10px rgba(0,0,0,0.12)', zIndex:0 }} />
           {[
-            { label:'📊 ภาพรวม',  path:'/dashboard' },
-            { label:'🏡 ทรัพย์',  path:'/admin/properties' },
-            { label:'✉️ ข้อความ', path:'/admin/inquiries', count: newCount },
-            { label:'👥 ผู้ใช้',  path:'/admin/users' },
+            { label:'ภาพรวม',  path:'/dashboard' },
+            { label:'ทรัพย์',  path:'/admin/properties' },
+            { label:'ข้อความ', path:'/admin/inquiries', count: newCount },
+            { label:'ผู้ใช้',  path:'/admin/users' },
           ].map(t => {
             const active = t.path === '/admin/inquiries';
             return (
@@ -337,7 +345,7 @@ export default function AdminInquiries() {
                         <span><i className="fas fa-phone" style={{ color:G, marginRight:3, fontSize:'0.72rem' }} />{inq.phone}</span>
                         {inq.property_title && (
                           <span style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', maxWidth:200 }}>
-                            <i className="fas fa-home" style={{ color:'#1a3c6e', marginRight:3, fontSize:'0.72rem' }} />{inq.property_title}
+                            <i className="fas fa-home" style={{ color:'#00463d', marginRight:3, fontSize:'0.72rem' }} />{inq.property_title}
                           </span>
                         )}
                       </div>
@@ -384,7 +392,7 @@ export default function AdminInquiries() {
           {selected ? (
             <div style={{ background:'#fff', borderRadius:14, boxShadow:'0 4px 20px rgba(0,0,0,0.10)', overflow:'hidden' }}>
               {/* Header */}
-              <div style={{ background:`linear-gradient(135deg,${N},#0d2347)`, padding:'14px 16px', color:'#fff', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <div style={{ background:`linear-gradient(135deg,${N},#001a16)`, padding:'14px 16px', color:'#fff', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                 <div>
                   <div style={{ fontWeight:800, fontSize:'1rem' }}>{selected.name}</div>
                   <div style={{ opacity:0.6, fontSize:'0.76rem' }}>#{String(selected.id).padStart(4,'0')}</div>
