@@ -20,7 +20,7 @@ exports.getAllProperties = (req, res) => {
     if (min_price) { where.push('p.price_requested >= ?'); params.push(min_price); }
     if (max_price) { where.push('p.price_requested <= ?'); params.push(max_price); }
     if (bedrooms) { where.push('p.bedrooms >= ?'); params.push(bedrooms); }
-    if (search) { where.push('(p.title LIKE ? OR p.address LIKE ? OR p.project_name LIKE ?)'); params.push(`%${search}%`, `%${search}%`, `%${search}%`); }
+    if (search) { where.push('(p.title LIKE ? OR p.address LIKE ? OR p.project_name LIKE ? OR p.province LIKE ? OR p.district LIKE ? OR p.sub_district LIKE ?)'); params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`); }
     if (bts_station) { where.push('(p.bts_station LIKE ? OR p.mrt_station LIKE ?)'); params.push(`%${bts_station}%`, `%${bts_station}%`); }
 
     const whereClause = where.join(' AND ');
@@ -241,8 +241,8 @@ exports.getStats = (req, res) => {
         SELECT
             COUNT(*) AS total,
             COUNT(DISTINCT province) AS province_count,
-            SUM(CASE WHEN listing_type IN ('sale','both') AND sale_status = 'available' THEN 1 ELSE 0 END) AS for_sale,
-            SUM(CASE WHEN listing_type IN ('rent','both') AND sale_status = 'available' THEN 1 ELSE 0 END) AS for_rent,
+            SUM(CASE WHEN listing_type IN ('sale','sale_rent') AND sale_status = 'available' THEN 1 ELSE 0 END) AS for_sale,
+            SUM(CASE WHEN listing_type IN ('rent','sale_rent') AND sale_status = 'available' THEN 1 ELSE 0 END) AS for_rent,
             SUM(CASE WHEN sale_status = 'reserved' THEN 1 ELSE 0 END) AS reserved,
             SUM(CASE WHEN sale_status = 'sold' THEN 1 ELSE 0 END) AS sold,
             SUM(CASE WHEN is_featured = 1 THEN 1 ELSE 0 END) AS featured

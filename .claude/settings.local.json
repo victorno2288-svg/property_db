@@ -120,7 +120,19 @@
       "Bash(ls index-*)",
       "Bash(ls assets/index-*)",
       "Bash(git add:*)",
-      "Bash(git commit -m ':*)"
+      "Bash(git commit -m ':*)",
+      "Bash(cp /c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-CKBBRgL_.js \"/c/Users/User/Downloads/สรุป/index-CKBBRgL_.js\")",
+      "Bash(cp /c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-CUv7NV_s.css \"/c/Users/User/Downloads/สรุป/index-CUv7NV_s.css\")",
+      "Bash(cp /c/Users/User/Downloads/สรุป/lond/loandd/dist/index.html \"/c/Users/User/Downloads/สรุป/index.html\")",
+      "Bash(sed -i 's|http://localhost:3001||g' \"/c/Users/User/Downloads/สรุป/index-CKBBRgL_.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-CKBBRgL_.js\" \"/c/Users/User/Downloads/สรุป/index-CKBBRgL_.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-CUv7NV_s.css\" \"/c/Users/User/Downloads/สรุป/index-CUv7NV_s.css\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/index.html\" \"/c/Users/User/Downloads/สรุป/index.html\")",
+      "Bash(cp \"lond/loandd/dist/assets/index-CUv7NV_s.css\" .)",
+      "Bash(cp \"lond/loandd/dist/index.html\" .)",
+      "Bash(sed -i 's|http://localhost:3001||g' \"index-CKBBRgL_.js\")",
+      "Bash(ls -la index*)",
+      "Bash(git checkout:*)"
     ]
   }
 }
