@@ -290,15 +290,15 @@ function PropertyCard({ property, className = '' }) {
             fontFamily: "'Playfair Display', 'Cinzel', 'Georgia', serif",
             animation: 'luxuryFadeIn 1s cubic-bezier(0.23, 1, 0.32, 1) forwards'
           }}>
-            <div style={{ 
-              border: '1px solid rgba(197, 160, 89, 0.3)', 
-              padding: '30px 20px', 
-              width: '100%', 
-              height: '100%', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center', 
-              justifyContent: 'center' 
+            <div style={{
+              border: '1px solid rgba(197, 160, 89, 0.3)',
+              padding: '30px 20px',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
               <div style={{
                 fontSize: '1.6rem',
@@ -311,18 +311,18 @@ function PropertyCard({ property, className = '' }) {
                 marginBottom: '12px',
                 textShadow: '0 4px 10px rgba(0,0,0,0.5)'
               }}>
-                {sale_status === 'sold' 
-                  ? (listing_type === 'rent' ? 'Exclusive\nChapter' : 'Legacy\nAcquired') 
+                {sale_status === 'sold'
+                  ? (listing_type === 'rent' ? 'Exclusive\nChapter' : 'Legacy\nAcquired')
                   : 'Future\nSecured'}
               </div>
-              
-              <div style={{ 
-                width: '40px', 
-                height: '1px', 
-                background: '#c5a059', 
-                margin: '15px 0' 
+
+              <div style={{
+                width: '40px',
+                height: '1px',
+                background: '#c5a059',
+                margin: '15px 0'
               }} />
-              
+
               <div style={{
                 fontSize: '0.65rem',
                 color: 'rgba(255,255,255,0.7)',
@@ -333,7 +333,7 @@ function PropertyCard({ property, className = '' }) {
                 {property.district || property.province} • {sale_status === 'sold' ? (listing_type === 'rent' ? 'RENTED' : 'SOLD') : 'RESERVED'}
               </div>
             </div>
-            
+
             <style>{`
               @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&family=Cinzel:wght@400;700&display=swap');
               @keyframes luxuryFadeIn {
