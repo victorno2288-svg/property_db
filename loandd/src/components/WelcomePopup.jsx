@@ -33,8 +33,8 @@ const WelcomePopup = () => {
   if (!show) return null;
 
   const P = {
-    green: '#1A8C6E',
-    greenDark: '#147A5E',
+    green: '#A1D99B',
+    greenDark: '#8BC683',
     gold: '#C9A84C',
     goldLight: '#E8D5A0',
     text: '#1A1A1A',
@@ -109,7 +109,7 @@ const WelcomePopup = () => {
 
           {/* Main heading — Noto Serif Thai, light weight */}
           <h2 style={{
-            fontFamily: "'Noto Serif Thai', serif",
+            fontFamily: "'Prompt', sans-serif",
             fontWeight: 400,
             fontSize: 'clamp(1.3rem, 4vw, 1.7rem)',
             color: P.text,
@@ -174,7 +174,7 @@ const WelcomePopup = () => {
               onClick={handleClose}
               style={{
                 background: P.green,
-                color: '#fff',
+                color: '#1a3a18',
                 border: `1px solid ${P.green}`,
                 borderRadius: 4,
                 padding: '14px 24px',

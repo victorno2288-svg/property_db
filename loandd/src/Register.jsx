@@ -3,16 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import bigLogo from './pic/big-logo.png';
 
 const T = {
-  bg: '#1A8C6E',
-  bgLight: '#004d40',
+  bg: '#A1D99B',
+  bgLight: '#8BC683',
   surface: '#faf9f6',
   text: '#1a1a18',
   textSoft: '#6a6560',
   textMuted: '#a8a39d',
-  accent: '#c9a84c',
+  accent: '#8B6914',
   white: '#fff',
   error: '#e53e3e',
-  success: '#1A8C6E',
+  success: '#A1D99B',
 };
 
 const Register = () => {
@@ -105,7 +105,7 @@ const Register = () => {
       {/* ===== LEFT: Brand Panel ===== */}
       <div className="register-brand-panel" style={{
         flex: '0 0 45%',
-        background: `linear-gradient(160deg, ${T.bg} 0%, ${T.bgLight} 50%, #006b5a 100%)`,
+        background: `linear-gradient(160deg, ${T.bg} 0%, ${T.bgLight} 50%, #6aab62 100%)`,
         display: 'flex', flexDirection: 'column',
         justifyContent: 'center', alignItems: 'center',
         padding: '60px 48px',
@@ -136,7 +136,7 @@ const Register = () => {
             Join Us Today
           </div>
           <h1 style={{
-            color: T.white, fontSize: 'clamp(1.4rem, 3vw, 2rem)',
+            color: '#1a3a18', fontSize: 'clamp(1.4rem, 3vw, 2rem)',
             fontWeight: 300, lineHeight: 1.3, margin: '0 0 16px',
             fontFamily: "'Manrope', sans-serif",
             letterSpacing: '-0.02em',
@@ -144,7 +144,7 @@ const Register = () => {
             เริ่มต้นค้นหา<br />อสังหาริมทรัพย์ในฝัน
           </h1>
           <p style={{
-            color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem',
+            color: 'rgba(26,58,24,0.6)', fontSize: '0.85rem',
             maxWidth: 320, lineHeight: 1.7,
           }}>
             สมัครสมาชิกฟรี เพื่อบันทึกทรัพย์ที่สนใจ ติดตามราคา และรับการแจ้งเตือนทรัพย์ใหม่ก่อนใคร
@@ -169,7 +169,7 @@ const Register = () => {
               }}>
                 <i className={`fas ${b.icon}`} style={{ color: T.accent, fontSize: '0.75rem' }} />
               </div>
-              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.8rem' }}>
+              <span style={{ color: 'rgba(26,58,24,0.6)', fontSize: '0.8rem' }}>
                 {b.text}
               </span>
             </div>
@@ -294,7 +294,7 @@ const Register = () => {
               style={{
                 width: '100%', padding: '14px',
                 background: loading ? T.textMuted : T.bg,
-                color: T.white, border: 'none',
+                color: '#1a3a18', border: 'none',
                 fontSize: '0.9rem', fontWeight: 700,
                 cursor: loading ? 'not-allowed' : 'pointer',
                 fontFamily: "'Manrope', sans-serif",
@@ -344,7 +344,7 @@ const Register = () => {
                 letterSpacing: '0.05em',
                 transition: 'all 0.3s',
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = T.bg; e.currentTarget.style.color = T.white; }}
+              onMouseEnter={e => { e.currentTarget.style.background = T.bg; e.currentTarget.style.color = '#1a3a18'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = T.bg; }}
             >
               เข้าสู่ระบบ

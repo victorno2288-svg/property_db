@@ -6,28 +6,28 @@ import NotificationBell from './components/NotificationBell';
 import './css/adminMobile.css';
 
 /* ─────────────────────────── constants ─────────────────────────── */
-const G = '#1A8C6E';
-const N = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
+const N = '#3d7a3a';
 
-const THAI_MONTHS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-const THAI_DAYS   = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+const THAI_MONTHS = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+const THAI_DAYS = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
 
 const TYPE_LABEL = {
-  house:'บ้านเดี่ยว', condo:'คอนโด', townhouse:'ทาวน์เฮ้าส์', townhome:'ทาวน์โฮม',
-  land:'ที่ดิน', apartment:'อพาร์ทเม้นท์', commercial:'อาคารพาณิชย์',
-  home_office:'Home Office', warehouse:'โกดัง',
+  house: 'บ้านเดี่ยว', condo: 'คอนโด', townhouse: 'ทาวน์เฮ้าส์', townhome: 'ทาวน์โฮม',
+  land: 'ที่ดิน', apartment: 'อพาร์ทเม้นท์', commercial: 'อาคารพาณิชย์',
+  home_office: 'Home Office', warehouse: 'โกดัง',
 };
 const SALE_STATUS = {
-  available: { label:'ว่างอยู่', bg:'#e8f8f2', color:G },
-  reserved:  { label:'จองแล้ว', bg:'#fffbe6', color:'#d4890a' },
-  sold:      { label:'ขายแล้ว', bg:'#fff0f0', color:'#c0392b' },
+  available: { label: 'ว่างอยู่', bg: '#e8f8f2', color: G },
+  reserved: { label: 'จองแล้ว', bg: '#fffbe6', color: '#d4890a' },
+  sold: { label: 'ขายแล้ว', bg: '#fff0f0', color: '#c0392b' },
 };
 const INQ_STATUS = {
-  new:       { label:'ใหม่',       bg:'#e8f4fd', color:'#2980b9' },
-  contacted: { label:'ติดต่อแล้ว', bg:'#fffbe6', color:'#d4890a' },
-  closed:    { label:'ปิดแล้ว',    bg:'#f0f0f0', color:'#888'    },
+  new: { label: 'ใหม่', bg: '#e8f4fd', color: '#2980b9' },
+  contacted: { label: 'ติดต่อแล้ว', bg: '#fffbe6', color: '#d4890a' },
+  closed: { label: 'ปิดแล้ว', bg: '#f0f0f0', color: '#888' },
 };
-const LISTING_LABEL = { sale:'ขาย', rent:'เช่า', sale_rent:'ขาย/เช่า' };
+const LISTING_LABEL = { sale: 'ขาย', rent: 'เช่า', sale_rent: 'ขาย/เช่า' };
 
 const fmtPrice = (n) => {
   if (!n) return '—';
@@ -76,9 +76,9 @@ const fillSalesTimeline = (raw, period) => {
   // week / month: label = 'YYYY-MM-DD' → parse แบบ manual เพื่อป้องกัน timezone drift
   return raw.map(r => {
     const parts = r.label.split('-');
-    const year  = parseInt(parts[0], 10);
+    const year = parseInt(parts[0], 10);
     const month = parseInt(parts[1], 10) - 1; // 0-indexed
-    const day   = parseInt(parts[2], 10);
+    const day = parseInt(parts[2], 10);
     const d = new Date(year, month, day);      // local time, ไม่มี timezone issue
     const label = period === 'week'
       ? `${THAI_DAYS[d.getDay()]} ${day}`        // เช่น "พฤ 12"
@@ -91,9 +91,9 @@ const fillSalesTimeline = (raw, period) => {
 const SalesStatusChart = ({ stats }) => {
   const total = Math.max(stats.total || 0, 1);
   const items = [
-    { label: 'กำลังขาย/เช่า', count: (stats.for_sale || 0) + (stats.for_rent || 0), color: '#1A8C6E', icon: 'fa-tag' },
-    { label: 'จองแล้ว',        count: stats.reserved || 0,                            color: '#f59e0b', icon: 'fa-bookmark' },
-    { label: 'ขายแล้ว',        count: stats.sold || 0,                                color: '#7c3aed', icon: 'fa-check-circle' },
+    { label: 'กำลังขาย/เช่า', count: (stats.for_sale || 0) + (stats.for_rent || 0), color: '#3d7a3a', icon: 'fa-tag' },
+    { label: 'จองแล้ว', count: stats.reserved || 0, color: '#f59e0b', icon: 'fa-bookmark' },
+    { label: 'ขายแล้ว', count: stats.sold || 0, color: '#7c3aed', icon: 'fa-check-circle' },
   ];
   const filled = items.reduce((s, x) => s + x.count, 0);
   return (
@@ -126,9 +126,9 @@ const SalesStatusChart = ({ stats }) => {
         })}
       </div>
       <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid #f0f4f8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontSize: '0.75rem', color: '#aaa' }}>ทรัพย์ทั้งหมด <strong style={{ color: '#1A8C6E' }}>{stats.total || 0}</strong> รายการ</span>
+        <span style={{ fontSize: '0.75rem', color: '#aaa' }}>ทรัพย์ทั้งหมด <strong style={{ color: '#3d7a3a' }}>{stats.total || 0}</strong> รายการ</span>
         <span style={{ fontSize: '0.65rem', color: '#c0c9d8', display: 'flex', alignItems: 'center', gap: 4 }}>
-          <i className="fas fa-circle" style={{ fontSize: '0.4rem', color: '#1A8C6E' }} />อัปเดตเรียลไทม์
+          <i className="fas fa-circle" style={{ fontSize: '0.4rem', color: '#3d7a3a' }} />อัปเดตเรียลไทม์
         </span>
       </div>
     </div>
@@ -162,17 +162,17 @@ const SalesTimelineChart = ({ data, loading }) => {
       {/* Bars */}
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: data.length <= 5 ? 'center' : 'stretch', gap: compact ? 2 : 8, height: BAR_H + 20, padding: '0 4px' }}>
         {data.map((d, i) => {
-          const total  = d.sold + d.reserved;
+          const total = d.sold + d.reserved;
           const totalH = Math.max((total / maxVal) * BAR_H, total > 0 ? 4 : 2);
-          const soldH  = total > 0 ? Math.round((d.sold     / total) * totalH) : 0;
-          const resvH  = total > 0 ? totalH - soldH : 0;
+          const soldH = total > 0 ? Math.round((d.sold / total) * totalH) : 0;
+          const resvH = total > 0 ? totalH - soldH : 0;
           const showLabel = !compact || i % 5 === 0 || i === data.length - 1;
           return (
             <div key={d.key} style={{ flex: barMaxW ? '0 0 auto' : 1, width: barMaxW, maxWidth: barMaxW, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
               {total > 0 && <span style={{ fontSize: '0.65rem', color: '#7c3aed', fontWeight: 800, lineHeight: 1 }}>{total}</span>}
               <div style={{ width: barMaxW ? barMaxW : '100%', display: 'flex', flexDirection: 'column', borderRadius: total > 0 ? '3px 3px 0 0' : 0, overflow: 'hidden' }}>
                 {resvH > 0 && <div title={`จอง: ${d.reserved}`} style={{ height: resvH, background: '#f59e0b', transition: 'height 0.45s ease' }} />}
-                {soldH > 0 && <div title={`ขาย: ${d.sold}`}     style={{ height: soldH, background: '#7c3aed', transition: 'height 0.45s ease' }} />}
+                {soldH > 0 && <div title={`ขาย: ${d.sold}`} style={{ height: soldH, background: '#7c3aed', transition: 'height 0.45s ease' }} />}
                 {total === 0 && <div style={{ height: 2, background: '#e8edf2' }} />}
               </div>
               {showLabel && <span style={{ fontSize: compact ? '0.5rem' : '0.68rem', color: '#888', lineHeight: 1, marginTop: 2, textAlign: 'center' }}>{d.label}</span>}
@@ -208,37 +208,37 @@ const BarChart = ({ data, loading }) => {
 
 /* ═══════════════════════════ DASHBOARD ═══════════════════════════ */
 export default function Dashboard() {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const adminUser = (() => { try { return JSON.parse(localStorage.getItem('adminUser') || '{}'); } catch { return {}; } })();
 
   /* ── shared state ── */
   const location = useLocation();
-  const [activeTab,    setActiveTab]    = useState(0);
-  const [stats,        setStats]        = useState({ total: 0, for_sale: 0, for_rent: 0, reserved: 0, province_count: 0, sold: 0 });
-  const [inquiries,    setInquiries]    = useState([]);
-  const [loading,      setLoading]      = useState(true);
+  const [activeTab, setActiveTab] = useState(0);
+  const [stats, setStats] = useState({ total: 0, for_sale: 0, for_rent: 0, reserved: 0, province_count: 0, sold: 0 });
+  const [inquiries, setInquiries] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   /* ── overview ── */
-  const [chartMode,         setChartMode]         = useState('sales'); // 'sales' | 'inquiries'
-  const [chartPeriod,       setChartPeriod]        = useState('week');
-  const [salesSummary,      setSalesSummary]       = useState({ week:{sold:0,reserved:0}, month:{sold:0,reserved:0}, year:{sold:0,reserved:0}, total:{sold:0,reserved:0} });
-  const [summaryPeriod,     setSummaryPeriod]      = useState('week'); // 'week'|'month'|'year'
-  const [chartData,         setChartData]          = useState([]);
-  const [chartLoading,      setChartLoading]       = useState(false);
-  const [salesChartData,    setSalesChartData]     = useState([]);
-  const [salesChartLoading, setSalesChartLoading]  = useState(false);
+  const [chartMode, setChartMode] = useState('sales'); // 'sales' | 'inquiries'
+  const [chartPeriod, setChartPeriod] = useState('week');
+  const [salesSummary, setSalesSummary] = useState({ week: { sold: 0, reserved: 0 }, month: { sold: 0, reserved: 0 }, year: { sold: 0, reserved: 0 }, total: { sold: 0, reserved: 0 } });
+  const [summaryPeriod, setSummaryPeriod] = useState('week'); // 'week'|'month'|'year'
+  const [chartData, setChartData] = useState([]);
+  const [chartLoading, setChartLoading] = useState(false);
+  const [salesChartData, setSalesChartData] = useState([]);
+  const [salesChartLoading, setSalesChartLoading] = useState(false);
 
   /* ── properties tab ── */
-  const [properties,   setProperties]   = useState([]);
-  const [propPag,      setPropPag]      = useState({ total: 0, totalPages: 1, page: 1 });
-  const [propLoading,  setPropLoading]  = useState(false);
-  const [propSearch,   setPropSearch]   = useState('');
-  const [propStatus,   setPropStatus]   = useState('');
-  const [delConfirm,   setDelConfirm]   = useState(null);
-  const [deleting,     setDeleting]     = useState(false);
+  const [properties, setProperties] = useState([]);
+  const [propPag, setPropPag] = useState({ total: 0, totalPages: 1, page: 1 });
+  const [propLoading, setPropLoading] = useState(false);
+  const [propSearch, setPropSearch] = useState('');
+  const [propStatus, setPropStatus] = useState('');
+  const [delConfirm, setDelConfirm] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   /* ── messages tab ── */
-  const [msgFilter,    setMsgFilter]    = useState('');
+  const [msgFilter, setMsgFilter] = useState('');
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -285,7 +285,7 @@ export default function Dashboard() {
   const fetchChart = useCallback(async (period) => {
     setChartLoading(true);
     try {
-      const res  = await adminFetch(`/api/inquiries/timeline?period=${period}`);
+      const res = await adminFetch(`/api/inquiries/timeline?period=${period}`);
       const data = await res.json();
       setChartData(fillTimeline(Array.isArray(data?.data) ? data.data : [], period));
     } catch { setChartData(fillTimeline([], period)); }
@@ -296,7 +296,7 @@ export default function Dashboard() {
   const fetchSalesChart = useCallback(async (period) => {
     setSalesChartLoading(true);
     try {
-      const res  = await fetch(`http://localhost:3001/api/properties/property-timeline?period=${period}`);
+      const res = await fetch(`http://localhost:3001/api/properties/property-timeline?period=${period}`);
       const data = await res.json();
       setSalesChartData(fillSalesTimeline(Array.isArray(data?.data) ? data.data : [], period));
     } catch { setSalesChartData(fillSalesTimeline([], period)); }
@@ -354,32 +354,35 @@ export default function Dashboard() {
     }
   }, [location.state]);
 
-  /* ── auto-refresh ทุก 30s: stats + charts + summary sync ── */
+  /* ── re-fetch เมื่อ user สลับแท็บกลับมา ── */
   useEffect(() => {
-    const id = setInterval(() => {
-      fetchStats();
-      fetchChart(chartPeriod);
-      fetchSalesChart(chartPeriod);
-      fetchSalesSummary();
-    }, 30000);
-    return () => clearInterval(id);
+    const onVis = () => {
+      if (!document.hidden) {
+        fetchStats();
+        fetchChart(chartPeriod);
+        fetchSalesChart(chartPeriod);
+        fetchSalesSummary();
+      }
+    };
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
   }, [fetchStats, fetchChart, fetchSalesChart, fetchSalesSummary, chartPeriod]);
 
   /* lazy-load properties only when tab=1 is opened */
   useEffect(() => { if (activeTab === 1) fetchProperties(1); }, [activeTab]); // eslint-disable-line
   useEffect(() => { if (activeTab === 1) fetchProperties(1); }, [fetchProperties]); // re-fetch when search/filter changes
 
-  const newCount    = inquiries.filter(i => i.status === 'new').length;
+  const newCount = inquiries.filter(i => i.status === 'new').length;
   const filteredInq = msgFilter ? inquiries.filter(i => i.status === msgFilter) : inquiries;
-  const chartTotal  = chartData.reduce((s, d) => s + d.count, 0);
+  const chartTotal = chartData.reduce((s, d) => s + d.count, 0);
 
   const TABS = [
     { icon: 'fa-chart-bar', label: 'ภาพรวม' },
-    { icon: 'fa-home',      label: 'ทรัพย์', count: propPag.total },
-    { icon: 'fa-envelope',  label: 'ข้อความ', count: newCount, alert: true },
-    { icon: 'fa-users',     label: '👥 ผู้ใช้' },
+    { icon: 'fa-home', label: 'ทรัพย์', count: propPag.total },
+    { icon: 'fa-envelope', label: 'ข้อความ', count: newCount, alert: true },
+    { icon: 'fa-users', label: '👥 ผู้ใช้' },
   ];
-  const PERIOD_OPTS = [['week','7 วัน'], ['month','เดือน'], ['year','ปี']];
+  const PERIOD_OPTS = [['week', '7 วัน'], ['month', 'เดือน'], ['year', 'ปี']];
 
   /* ── KPI card ── */
   const KpiCard = ({ icon, label, value, color, bg, link }) => (
@@ -403,13 +406,13 @@ export default function Dashboard() {
     <div style={{ minHeight: '100vh', background: '#f5f7fa', fontFamily: "'Sarabun','Noto Sans Thai',sans-serif" }}>
 
       {/* ── TOP NAVBAR ── */}
-      <div style={{ background: `linear-gradient(135deg,${N},#00463d)`, padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 12px rgba(0,0,0,0.18)' }}>
+      <div style={{ background: `linear-gradient(135deg,${N},#6aab62)`, padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 12px rgba(0,0,0,0.18)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ fontWeight: 900, fontSize: '1.25rem', color: '#fff', letterSpacing: 1 }}>LOAN<span style={{ color: G }}>DD</span></div>
-          <span style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>Admin</span>
+          <div style={{ fontWeight: 900, fontSize: '1.25rem', color: '#fff', letterSpacing: 1 }}>LOAN<span style={{ color: Gl }}>DD</span></div>
+          <span style={{ background: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.85)', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>Admin</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: '50%', background: G, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.82rem' }}>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: Gl, color: '#1a3a18', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.82rem' }}>
             {(adminUser.username || 'A').charAt(0).toUpperCase()}
           </div>
           <span className="admin-nav-username" style={{ color: '#fff', fontSize: '0.82rem', fontWeight: 600 }}>{adminUser.username || 'Admin'}</span>
@@ -454,13 +457,13 @@ export default function Dashboard() {
             {/* KPI cards */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))', gap: 14, marginBottom: 22 }}>
               {[
-                { icon:'fa-home',         label:'ทรัพย์ทั้งหมด', value:stats.total,                    color:G,        bg:'#e8f7ee', link:'/admin/properties' },
-                { icon:'fa-tag',          label:'กำลังขาย/เช่า', value:stats.for_sale+stats.for_rent,  color:'#0891b2', bg:'#e0f2fe', link:'/admin/properties' },
-                { icon:'fa-check-circle', label:'ขายแล้ว',        value:stats.sold,                    color:'#7c3aed', bg:'#f3e8ff', link:'/admin/properties' },
-                { icon:'fa-envelope',     label:'ข้อความใหม่',   value:newCount,                      color:'#e74c3c', bg:'#fff0f0', link:'/admin/inquiries', badge:true },
+                { icon: 'fa-home', label: 'ทรัพย์ทั้งหมด', value: stats.total, color: G, bg: '#e8f7ee', link: '/admin/properties' },
+                { icon: 'fa-tag', label: 'กำลังขาย/เช่า', value: stats.for_sale + stats.for_rent, color: '#0891b2', bg: '#e0f2fe', link: '/admin/properties' },
+                { icon: 'fa-check-circle', label: 'ขายแล้ว', value: stats.sold, color: '#7c3aed', bg: '#f3e8ff', link: '/admin/properties' },
+                { icon: 'fa-envelope', label: 'ข้อความใหม่', value: newCount, color: '#e74c3c', bg: '#fff0f0', link: '/admin/inquiries', badge: true },
               ].map((k, i) => (
                 <div key={i} style={{ position: 'relative' }}>
-                  {k.badge && k.value > 0 && <span style={{ position:'absolute', top:10, right:10, zIndex:2, background:'#e74c3c', color:'#fff', borderRadius:20, padding:'2px 7px', fontSize:'0.62rem', fontWeight:900 }}>NEW</span>}
+                  {k.badge && k.value > 0 && <span style={{ position: 'absolute', top: 10, right: 10, zIndex: 2, background: '#e74c3c', color: '#fff', borderRadius: 20, padding: '2px 7px', fontSize: '0.62rem', fontWeight: 900 }}>NEW</span>}
                   <KpiCard {...k} />
                 </div>
               ))}
@@ -500,7 +503,7 @@ export default function Dashboard() {
                   {chartMode === 'sales' ? (
                     <>
                       <span style={{ fontSize: '0.78rem', color: '#888' }}>
-                        ขาย <strong style={{ color: '#7c3aed' }}>{salesChartData.reduce((s,d)=>s+d.sold,0)}</strong>{' '}จอง <strong style={{ color: '#f59e0b' }}>{salesChartData.reduce((s,d)=>s+d.reserved,0)}</strong> รายการ
+                        ขาย <strong style={{ color: '#7c3aed' }}>{salesChartData.reduce((s, d) => s + d.sold, 0)}</strong>{' '}จอง <strong style={{ color: '#f59e0b' }}>{salesChartData.reduce((s, d) => s + d.reserved, 0)}</strong> รายการ
                       </span>
                       <span style={{ fontSize: '0.72rem', color: '#bbb' }}>{chartPeriod === 'week' ? '7 วันล่าสุด' : chartPeriod === 'month' ? '30 วันล่าสุด' : '12 เดือนล่าสุด'}</span>
                     </>
@@ -519,10 +522,10 @@ export default function Dashboard() {
                   <div style={{ padding: '13px 18px', borderBottom: '1px solid #f0f4f8' }}><div style={{ fontWeight: 800, fontSize: '0.92rem', color: N }}>⚡ Quick Actions</div></div>
                   <div style={{ padding: '6px 0' }}>
                     {[
-                      { icon:'fa-plus-circle',  label:'เพิ่มทรัพย์ใหม่',   link:'/admin/properties/new', color:G },
-                      { icon:'fa-list',          label:'จัดการทรัพย์',      link:'/admin/properties',     color:'#0891b2' },
-                      { icon:'fa-envelope-open', label:'ดูข้อความทั้งหมด', link:'/admin/inquiries',      color:'#e74c3c' },
-                      { icon:'fa-globe',         label:'ดูหน้าเว็บ',        link:'/',                     color:'#7c3aed' },
+                      { icon: 'fa-plus-circle', label: 'เพิ่มทรัพย์ใหม่', link: '/admin/properties/new', color: G },
+                      { icon: 'fa-list', label: 'จัดการทรัพย์', link: '/admin/properties', color: '#0891b2' },
+                      { icon: 'fa-envelope-open', label: 'ดูข้อความทั้งหมด', link: '/admin/inquiries', color: '#e74c3c' },
+                      { icon: 'fa-globe', label: 'ดูหน้าเว็บ', link: '/', color: '#7c3aed' },
                     ].map((a, i) => (
                       <Link key={i} to={a.link} style={{ textDecoration: 'none' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '9px 18px', cursor: 'pointer', transition: 'background 0.12s' }}
@@ -538,12 +541,12 @@ export default function Dashboard() {
                     ))}
                   </div>
                 </div>
-                <div style={{ background: `linear-gradient(135deg,${N},#00463d)`, borderRadius: 16, padding: '16px 18px', color: '#fff' }}>
+                <div style={{ background: `linear-gradient(135deg,${N},#6aab62)`, borderRadius: 16, padding: '16px 18px', color: '#fff' }}>
                   <div style={{ fontWeight: 800, fontSize: '0.88rem', marginBottom: 12, opacity: 0.9 }}><i className="fas fa-chart-pie" style={{ marginRight: 7 }} />สรุปทรัพย์</div>
                   {[
-                    { label:'รายการขาย', value:stats.for_sale,       color:'#4ade80' },
-                    { label:'รายการเช่า', value:stats.for_rent,      color:'#60a5fa' },
-                    { label:'ครอบคลุม',   value:`${stats.province_count} จว.`, color:'#fbbf24' },
+                    { label: 'รายการขาย', value: stats.for_sale, color: '#4ade80' },
+                    { label: 'รายการเช่า', value: stats.for_rent, color: '#60a5fa' },
+                    { label: 'ครอบคลุม', value: `${stats.province_count} จว.`, color: '#fbbf24' },
                   ].map((s, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '5px 0', borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
                       <span style={{ fontSize: '0.8rem', opacity: 0.72 }}>{s.label}</span>
@@ -558,7 +561,7 @@ export default function Dashboard() {
                       <i className="fas fa-receipt" style={{ color: G, marginRight: 7 }} />สรุปรายการขาย
                     </div>
                     <div style={{ display: 'flex', background: '#f0f4f8', borderRadius: 7, padding: 2, gap: 1 }}>
-                      {[['week','7 วัน'],['month','เดือน'],['year','ปี']].map(([p, lbl]) => (
+                      {[['week', '7 วัน'], ['month', 'เดือน'], ['year', 'ปี']].map(([p, lbl]) => (
                         <button key={p} onClick={() => setSummaryPeriod(p)}
                           style={{ padding: '3px 9px', borderRadius: 5, border: 'none', cursor: 'pointer', background: summaryPeriod === p ? '#fff' : 'transparent', color: summaryPeriod === p ? N : '#94a3b8', fontWeight: summaryPeriod === p ? 800 : 500, fontSize: '0.72rem', boxShadow: summaryPeriod === p ? '0 1px 3px rgba(0,0,0,0.10)' : 'none', fontFamily: "'Sarabun',sans-serif" }}>
                           {lbl}
@@ -568,8 +571,8 @@ export default function Dashboard() {
                   </div>
                   <div style={{ padding: '14px 16px' }}>
                     {[
-                      { label: 'ขายแล้ว',  key: 'sold',     color: '#7c3aed', icon: 'fa-check-circle', bg: '#f3e8ff' },
-                      { label: 'จองแล้ว',  key: 'reserved', color: '#f59e0b', icon: 'fa-bookmark',     bg: '#fef3c7' },
+                      { label: 'ขายแล้ว', key: 'sold', color: '#7c3aed', icon: 'fa-check-circle', bg: '#f3e8ff' },
+                      { label: 'จองแล้ว', key: 'reserved', color: '#f59e0b', icon: 'fa-bookmark', bg: '#fef3c7' },
                     ].map(item => {
                       const val = salesSummary[summaryPeriod]?.[item.key] ?? 0;
                       return (
@@ -659,7 +662,7 @@ export default function Dashboard() {
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                     <thead>
                       <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e8edf2' }}>
-                        {['รูป','ชื่อทรัพย์','ประเภท','สถานะ','ราคา','📷','✉️','แก้โดย','⭐','จัดการ'].map((h, hi) => (
+                        {['รูป', 'ชื่อทรัพย์', 'ประเภท', 'สถานะ', 'ราคา', '📷', '✉️', 'แก้โดย', '⭐', 'จัดการ'].map((h, hi) => (
                           <th key={hi} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 700, color: '#555', whiteSpace: 'nowrap' }}>{h}</th>
                         ))}
                       </tr>
@@ -702,7 +705,7 @@ export default function Dashboard() {
                             </td>
                             {/* ราคา */}
                             <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>
-                              <div style={{ fontWeight: 700, color: '#00463d' }}>฿{fmtPrice(p.price_requested || p.monthly_rent)}</div>
+                              <div style={{ fontWeight: 700, color: '#6aab62' }}>฿{fmtPrice(p.price_requested || p.monthly_rent)}</div>
                               {p.listing_type === 'rent' && <div style={{ fontSize: '0.72rem', color: '#888' }}>/เดือน</div>}
                             </td>
                             {/* รูปภาพ count */}
@@ -727,9 +730,9 @@ export default function Dashboard() {
                             {/* จัดการ */}
                             <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>
                               <div style={{ display: 'flex', gap: 6 }}>
-                                <button onClick={() => window.open(`/property/${p.id}`, '_blank')} title="ดูหน้าเว็บ" style={actionBtn('#e8f4fd','#2980b9')}><i className="fas fa-eye" /></button>
-                                <button onClick={() => navigate(`/admin/properties/${p.id}/edit`)} title="แก้ไข" style={actionBtn('#e8f8f2',G)}><i className="fas fa-edit" /></button>
-                                <button onClick={() => setDelConfirm(p)} title="ลบ" style={actionBtn('#fff0f0','#c0392b')}><i className="fas fa-trash" /></button>
+                                <button onClick={() => window.open(`/property/${p.id}`, '_blank')} title="ดูหน้าเว็บ" style={actionBtn('#e8f4fd', '#2980b9')}><i className="fas fa-eye" /></button>
+                                <button onClick={() => navigate(`/admin/properties/${p.id}/edit`)} title="แก้ไข" style={actionBtn('#e8f8f2', G)}><i className="fas fa-edit" /></button>
+                                <button onClick={() => setDelConfirm(p)} title="ลบ" style={actionBtn('#fff0f0', '#c0392b')}><i className="fas fa-trash" /></button>
                               </div>
                             </td>
                           </tr>
@@ -766,7 +769,7 @@ export default function Dashboard() {
                 {newCount > 0 && <div style={{ fontSize: '0.74rem', color: '#e74c3c', fontWeight: 700, marginTop: 2 }}><i className="fas fa-circle" style={{ fontSize: '0.5rem', marginRight: 4 }} />{newCount} ข้อความใหม่รอตอบ</div>}
               </div>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {[['','ทั้งหมด'],['new','ใหม่'],['contacted','ติดต่อแล้ว'],['closed','ปิดแล้ว']].map(([val, lbl]) => (
+                {[['', 'ทั้งหมด'], ['new', 'ใหม่'], ['contacted', 'ติดต่อแล้ว'], ['closed', 'ปิดแล้ว']].map(([val, lbl]) => (
                   <button key={val} onClick={() => setMsgFilter(val)} style={{ padding: '5px 13px', borderRadius: 20, border: 'none', cursor: 'pointer', fontSize: '0.78rem', background: msgFilter === val ? N : '#f0f4f8', color: msgFilter === val ? '#fff' : '#666', fontWeight: msgFilter === val ? 700 : 500, fontFamily: "'Sarabun',sans-serif", transition: 'all 0.15s' }}>{lbl}</button>
                 ))}
               </div>

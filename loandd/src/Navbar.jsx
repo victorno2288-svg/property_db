@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import bigLogo from './pic/big-logo.png';
 import './css/Navbar.css';
@@ -8,7 +9,7 @@ import UserNotificationBell from './components/UserNotificationBell';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
+  // showDropdown removed — user dropdown now uses activeMega === 'user'
   const [activeMega, setActiveMega] = useState(null);
   const [mobileSubmenu, setMobileSubmenu] = useState(null);
   const [scrolled, setScrolled] = useState(false);
@@ -18,6 +19,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const megaRef = useRef(null);
+  const buyTriggerRef = useRef(null);
+  const rentTriggerRef = useRef(null);
+  const moreTriggerRef = useRef(null);
   const isHomePage = location.pathname === '/';
 
   // Show sticky search bar: always on inner pages, or after scrolling on homepage
@@ -90,12 +94,12 @@ useEffect(() => {
 
   // ========== Click outside ==========
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setShowDropdown(false);
-      if (megaRef.current && !megaRef.current.contains(e.target)) setActiveMega(null);
+    const handleOutside = (e) => {
+      const inPortal = e.target.closest('.mega-dropdown') || e.target.closest('.more-dropdown') || e.target.closest('.user-dropdown');
+      if (megaRef.current && !megaRef.current.contains(e.target) && !inPortal) setActiveMega(null);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
   }, []);
 
   useEffect(() => {
@@ -109,7 +113,7 @@ useEffect(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);
-    setShowDropdown(false);
+    setActiveMega(null);
     setIsOpen(false);
     window.dispatchEvent(new Event('authChange'));
     navigate('/');
@@ -117,7 +121,6 @@ useEffect(() => {
 
   const closeAll = () => {
     setIsOpen(false);
-    setShowDropdown(false);
     setActiveMega(null);
     setMobileSubmenu(null);
   };
@@ -126,10 +129,10 @@ useEffect(() => {
 
   // ========== Sub-Components ==========
 
-  const MegaDropdown = ({ listingType, label, icon }) => {
-    const [searchQ, setSearchQ] = React.useState('');
-    return (
-    <div className="mega-dropdown">
+  const [megaSearchQ, setMegaSearchQ] = useState('');
+  const megaDdLeft = Math.max(0, (window.innerWidth - 680) / 2);
+  const renderMegaDropdown = (listingType, label, icon) => createPortal(
+    <div className="mega-dropdown" style={{ position: 'fixed', top: 64, left: megaDdLeft, zIndex: 99999 }} onMouseDown={stopMd}>
       <div className="mega-dropdown-header">
         <h6><i className={`fas ${icon} me-2`}></i>ค้นหาอสังหาฯ{label === 'ซื้อ' ? 'เพื่อซื้อ' : 'เพื่อเช่า'}</h6>
       </div>
@@ -167,92 +170,72 @@ useEffect(() => {
           <input type="text"
             placeholder={`ค้นหาอสังหาฯ ${label === 'ซื้อ' ? 'ซื้อ' : 'เช่า'} ... เช่น คอนโด สุขุมวิท`}
             className="form-control form-control-sm mega-search-input"
-            value={searchQ}
-            onChange={e => setSearchQ(e.target.value)}
+            value={megaSearchQ}
+            onChange={e => setMegaSearchQ(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') { navigate(`/search?listing_type=${listingType}&search=${encodeURIComponent(e.target.value)}`); closeAll(); }
+              if (e.key === 'Enter') { navigate(`/search?listing_type=${listingType}&search=${encodeURIComponent(e.target.value)}`); closeAll(); setMegaSearchQ(''); }
             }} />
           <button className="btn btn-sm mega-search-btn"
-            onClick={() => { navigate(`/search?listing_type=${listingType}${searchQ ? `&search=${encodeURIComponent(searchQ)}` : ''}`); closeAll(); }}>
+            onClick={() => { navigate(`/search?listing_type=${listingType}${megaSearchQ ? `&search=${encodeURIComponent(megaSearchQ)}` : ''}`); closeAll(); setMegaSearchQ(''); }}>
             <i className="fas fa-search"></i>
           </button>
         </div>
       </div>
-    </div>
-    );
-  };
-
-  const MoreDropdown = () => (
-    <div className="more-dropdown">
-      {moreItems.map((item, i) => (
-        <Link key={i} to={item.link} className="more-dropdown-item" onClick={closeAll}>
-          <i className={`fas ${item.icon}`}></i>
-          <span>{item.label}</span>
-        </Link>
-      ))}
-    </div>
+    </div>,
+    document.body
   );
 
-  const UserMenu = ({ isMobile }) => (
-    <div ref={!isMobile ? dropdownRef : null} style={{ position: 'relative' }}>
-      <button
-        className={`btn d-flex align-items-center gap-2 rounded-pill px-3 py-1 user-btn ${isMobile ? 'mobile' : ''}`}
-        onClick={() => setShowDropdown(!showDropdown)}
-      >
-        <div className="user-avatar">
-          {user?.username?.charAt(0)?.toUpperCase() || 'U'}
-        </div>
-        <div className="text-start">
-          <div className="user-name">{user?.username || 'User'}</div>
-        </div>
-        <i className={`fas fa-chevron-${showDropdown ? 'up' : 'down'} chevron`}></i>
-      </button>
+  const isMoreOpen = activeMega === 'more';
+  const moreBtnRect = (isMoreOpen && moreTriggerRef.current) ? moreTriggerRef.current.getBoundingClientRect() : null;
+  const moreDdLeft = moreBtnRect ? Math.max(0, moreBtnRect.left + moreBtnRect.width - 240) : 0;
 
-      {showDropdown && (
-        <div className={`user-dropdown ${isMobile ? 'mobile' : 'desktop'}`}>
-          {/* Header */}
-          <div className="user-dropdown-header">
-            <div className="name">{user?.username}</div>
-          </div>
+  const userBtnRef = useRef(null);
+  const isUserOpen = activeMega === 'user';
+  const userBtnRect = (isUserOpen && userBtnRef.current) ? userBtnRef.current.getBoundingClientRect() : null;
+  const userDdStyle = userBtnRect ? { position: 'fixed', top: userBtnRect.bottom + 8, right: window.innerWidth - userBtnRect.right, zIndex: 99999 } : {};
 
-          <div style={{ padding: '8px 0' }}>
-            {[
-              { to: '/profile',       icon: 'fa-user-circle',   label: 'โปรไฟล์' },
-              { to: '/saved',         icon: 'fa-heart',         label: 'ทรัพย์ที่บันทึก' },
-            ].map((item, i) => (
-              <Link key={i} to={item.to} className="user-dropdown-link" onClick={closeAll}>
-                <i className={`fas ${item.icon}`} style={{ color: item.icon === 'fa-cog' ? '#D32F2F' : 'var(--brand-green)' }}></i>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          <div style={{ borderTop: '1px solid #f0f0f0', padding: '8px 0' }}>
-            <button className="logout-btn" onClick={handleLogout}>
-              <i className="fas fa-sign-out-alt"></i> ออกจากระบบ
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+  const userDropdownItems = [
+    { to: '/profile', icon: 'fa-user-circle', label: 'โปรไฟล์' },
+    { to: '/saved',   icon: 'fa-heart',       label: 'ทรัพย์ที่บันทึก' },
+  ];
+
+  const stopMd = (e) => e.stopPropagation();
+
+  const renderUserDropdownContent = () => (
+    <>
+      <div className="user-dropdown-header">
+        <div className="name">{user?.username}</div>
+      </div>
+      <div style={{ padding: '8px 0' }}>
+        {userDropdownItems.map((item, i) => (
+          <Link key={i} to={item.to} className="user-dropdown-link">
+            <i className={`fas ${item.icon}`} style={{ color: 'var(--brand-green)' }}></i>
+            {item.label}
+          </Link>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid #f0f0f0', padding: '8px 0' }}>
+        <button className="logout-btn" onClick={handleLogout}>
+          <i className="fas fa-sign-out-alt"></i> ออกจากระบบ
+        </button>
+      </div>
+    </>
   );
 
   // ========== RENDER ==========
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top py-0 loandd-navbar">
+    <nav className="navbar navbar-expand-lg shadow-sm fixed-top py-0 loandd-navbar">
       <div className="container" ref={megaRef}>
 
         <Link className="navbar-brand d-flex align-items-center me-0 me-lg-3 py-2" to="/" onClick={closeAll}>
-          <div className="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm navbar-brand-logo">
-            <img src={bigLogo} alt="บ้าน D มีเชง" />
-          </div>
-          <span className="ms-2 fw-bold text-white d-none d-sm-inline navbar-brand-text">บ้าน D มีเชง</span>
+          <img src={bigLogo} alt="บ้าน D มีเชง" className="navbar-brand-logo" />
         </Link>
 
         {/* มือถือ: bell + avatar + hamburger (ขวา) */}
         <div className="d-flex align-items-center order-lg-2 ms-auto d-lg-none gap-2">
           {user && <UserNotificationBell />}
           {!user ? (
-            <Link to="/login" className="btn btn-sm btn-outline-light rounded-pill fw-bold d-flex align-items-center mobile-login-btn">
+            <Link to="/login" className="btn btn-sm rounded-pill fw-bold d-flex align-items-center mobile-login-btn" style={{ color: '#1a3a18', border: '2px solid #1a3a18' }}>
               <i className="fas fa-user me-1"></i> เข้าสู่ระบบ
             </Link>
           ) : (
@@ -276,28 +259,40 @@ useEffect(() => {
               <i className="fas fa-home menu-icon"></i> หน้าแรก
             </Link>
             {[
-              { key: 'buy',  label: 'ซื้อ', listingType: 'sale', icon: 'fa-shopping-cart' },
-              { key: 'rent', label: 'เช่า', listingType: 'rent', icon: 'fa-key' },
-            ].map(({ key, label, listingType, icon }) => (
-              <div key={key} style={{ position: 'relative' }}>
+              { key: 'buy',  label: 'ซื้อ', listingType: 'sale', icon: 'fa-shopping-cart', ref: buyTriggerRef },
+              { key: 'rent', label: 'เช่า', listingType: 'rent', icon: 'fa-key', ref: rentTriggerRef },
+            ].map(({ key, label, listingType, icon, ref }) => (
+              <div key={key} style={{ position: 'relative' }} ref={ref}>
                 <button className={`mega-nav-link ${activeMega === key ? 'active-mega' : ''}`}
+                  onMouseDown={stopMd}
                   onClick={() => setActiveMega(activeMega === key ? null : key)}>
                   <i className={`fas ${icon} menu-icon`}></i> {label}
                   <i className={`fas fa-chevron-${activeMega === key ? 'up' : 'down'} chevron`}></i>
                 </button>
-                {activeMega === key && <MegaDropdown listingType={listingType} label={label} icon={icon} />}
+                {activeMega === key && renderMegaDropdown(listingType, label, icon)}
               </div>
             ))}
             <Link to="/guide" className="mega-nav-link text-decoration-none" onClick={closeAll}>
               <i className="fas fa-book menu-icon"></i> คู่มือ
             </Link>
-            <div style={{ position: 'relative' }}>
+            <div style={{ position: 'relative' }} ref={moreTriggerRef}>
               <button className={`mega-nav-link ${activeMega === 'more' ? 'active-mega' : ''}`}
+                onMouseDown={stopMd}
                 onClick={() => setActiveMega(activeMega === 'more' ? null : 'more')}>
                 <i className="fas fa-ellipsis-h menu-icon"></i> เพิ่มเติม
                 <i className={`fas fa-chevron-${activeMega === 'more' ? 'up' : 'down'} chevron`}></i>
               </button>
-              {activeMega === 'more' && <MoreDropdown />}
+              {isMoreOpen && createPortal(
+                <div className="more-dropdown" style={{ position: 'fixed', top: 64, left: moreDdLeft, zIndex: 99999 }} onMouseDown={stopMd}>
+                  {moreItems.map((item, i) => (
+                    <Link key={i} to={item.link} className="more-dropdown-item" onClick={closeAll}>
+                      <i className={`fas ${item.icon}`}></i>
+                      <span>{item.label}</span>
+                    </Link>
+                  ))}
+                </div>,
+                document.body
+              )}
             </div>
           </div>
 
@@ -323,7 +318,7 @@ useEffect(() => {
                 display: 'flex', alignItems: 'center',
                 background: '#fff',
                 borderRadius: 50, padding: '4px 4px 4px 16px',
-                border: showNavSuggest ? '2px solid #1A8C6E' : '2px solid transparent',
+                border: showNavSuggest ? '2px solid #3d7a3a' : '2px solid transparent',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
                 transition: 'border-color 0.15s',
               }}
@@ -338,7 +333,7 @@ useEffect(() => {
                 placeholder="ค้นหา ทรัพย์ ทำเล สถานี..."
                 style={{
                   flex: 1, border: 'none', background: 'transparent', outline: 'none',
-                  color: '#1A8C6E', fontSize: '0.85rem', fontFamily: 'inherit',
+                  color: '#3d7a3a', fontSize: '0.85rem', fontFamily: 'inherit',
                   minWidth: 0,
                 }}
               />
@@ -350,7 +345,7 @@ useEffect(() => {
               )}
               <button type="submit"
                 style={{
-                  background: '#1A8C6E', color: '#fff', border: 'none',
+                  background: '#3d7a3a', color: '#fff', border: 'none',
                   borderRadius: 50, width: 32, height: 32, cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontWeight: 700, fontSize: '0.8rem', flexShrink: 0,
@@ -372,11 +367,32 @@ useEffect(() => {
             {user && <UserNotificationBell />}
 
             {user ? (
-              <UserMenu isMobile={false} />
+              <div style={{ position: 'relative' }}>
+                <button
+                  ref={userBtnRef}
+                  className={`btn d-flex align-items-center gap-2 rounded-pill px-3 py-1 user-btn ${isUserOpen ? 'active-mega' : ''}`}
+                  onMouseDown={stopMd}
+                  onClick={() => setActiveMega(isUserOpen ? null : 'user')}
+                >
+                  <div className="user-avatar">
+                    {user?.username?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                  <div className="text-start">
+                    <div className="user-name">{user?.username || 'User'}</div>
+                  </div>
+                  <i className={`fas fa-chevron-${isUserOpen ? 'up' : 'down'} chevron`}></i>
+                </button>
+                {isUserOpen && createPortal(
+                  <div className="user-dropdown desktop" style={userDdStyle} onMouseDown={stopMd}>
+                    {renderUserDropdownContent()}
+                  </div>,
+                  document.body
+                )}
+              </div>
             ) : (
               <>
                 <Link to="/login" className="btn fw-bold px-3 rounded-pill auth-login-btn">เข้าสู่ระบบ</Link>
-                <Link to="/register" className="btn fw-bold px-3 rounded-pill shadow auth-register-btn" onClick={closeAll}>สมัครสมาชิก</Link>
+                <Link to="/register" className="btn fw-bold px-3 rounded-pill auth-register-btn" onClick={closeAll}>สมัครสมาชิก</Link>
               </>
             )}
           </div>
@@ -409,9 +425,7 @@ useEffect(() => {
             </div>
           ) : (
             <div className="mob-head-brand">
-              <div className="bg-white rounded-circle d-flex align-items-center justify-content-center" style={{ width: 38, height: 38, flexShrink: 0 }}>
-                <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 28 }} />
-              </div>
+              <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 34, width: 'auto', flexShrink: 0 }} />
               <span>บ้าน D มีเชง</span>
             </div>
           )}

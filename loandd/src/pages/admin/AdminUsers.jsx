@@ -7,8 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import UsersPanel from './UsersPanel';
 import '../../css/adminMobile.css';
 
-const G = '#1A8C6E';
-const N = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
+const N = '#3d7a3a';
 
 function AdminNav({ navigate }) {
   const adminUser = (() => { try { return JSON.parse(localStorage.getItem('adminUser') || '{}'); } catch { return {}; } })();
@@ -19,15 +19,15 @@ function AdminNav({ navigate }) {
   };
 
   return (
-    <div style={{ background:`linear-gradient(135deg,${N},#00463d)`, padding:'0 24px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
+    <div style={{ background:`linear-gradient(135deg,${N},#6aab62)`, padding:'0 24px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
       <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-        <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#fff', letterSpacing:1 }}>
+        <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#1a3a18', letterSpacing:1 }}>
           LOAN<span style={{ color:G }}>DD</span>
         </div>
-        <span style={{ background:'rgba(255,255,255,0.12)', color:'rgba(255,255,255,0.7)', fontSize:'0.7rem', padding:'2px 8px', borderRadius:10, fontWeight:700 }}>Admin</span>
+        <span style={{ background:'rgba(255,255,255,0.2)', color:'rgba(255,255,255,0.85)', fontSize:'0.7rem', padding:'2px 8px', borderRadius:10, fontWeight:700 }}>Admin</span>
       </div>
       <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-        <span className="admin-nav-username" style={{ color:'rgba(255,255,255,0.6)', fontSize:'0.78rem' }}>{adminUser.username}</span>
+        <span className="admin-nav-username" style={{ color:'rgba(26,58,24,0.6)', fontSize:'0.78rem' }}>{adminUser.username}</span>
         <button onClick={handleLogout} style={{ background:'rgba(220,38,38,0.15)', border:'1.5px solid rgba(220,38,38,0.4)', color:'#fca5a5', borderRadius:7, padding:'5px 12px', fontSize:'0.78rem', cursor:'pointer' }}>ออกจากระบบ</button>
       </div>
     </div>
@@ -42,7 +42,7 @@ export default function AdminUsers() {
       <AdminNav navigate={navigate} />
 
       {/* Page Header */}
-      <div style={{ background:`linear-gradient(135deg,${N},#24467a)`, color:'#fff', padding:'24px 32px 20px' }}>
+      <div style={{ background:`linear-gradient(135deg,${N},#24467a)`, color:'#1a3a18', padding:'24px 32px 20px' }}>
         <h1 style={{ margin:0, fontSize:'1.5rem', fontWeight:900 }}>👥 จัดการผู้ใช้</h1>
         <p style={{ margin:'6px 0 0', opacity:0.7, fontSize:'0.88rem' }}>ดู แก้ไข และลบบัญชีผู้ใช้งานในระบบ</p>
       </div>

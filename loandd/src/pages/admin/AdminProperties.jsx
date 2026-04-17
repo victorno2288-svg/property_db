@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import adminFetch, { BASE_URL } from '../../utils/adminFetch';
 import '../../css/adminMobile.css';
 
-const G = '#1A8C6E';
-const N = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
+const N = '#3d7a3a';
 
 const handleAdminLogout = (navigate) => {
   localStorage.removeItem('adminToken');
@@ -14,18 +14,18 @@ const handleAdminLogout = (navigate) => {
 
 const API = BASE_URL;
 
-const TYPE_LABEL = { house:'บ้านเดี่ยว', condo:'คอนโด', townhouse:'ทาวน์เฮ้าส์', townhome:'ทาวน์โฮม', land:'ที่ดิน', apartment:'อพาร์ทเม้นท์', commercial:'อาคารพาณิชย์' };
+const TYPE_LABEL = { house: 'บ้านเดี่ยว', condo: 'คอนโด', townhouse: 'ทาวน์เฮ้าส์', townhome: 'ทาวน์โฮม', land: 'ที่ดิน', apartment: 'อพาร์ทเม้นท์', commercial: 'อาคารพาณิชย์' };
 const STATUS_CONF = {
-  available: { label:'ว่างอยู่',  bg:'#e8f8f2', color:'#1A8C6E' },
-  reserved:  { label:'จองแล้ว', bg:'#fffbe6', color:'#d4890a' },
-  sold:      { label:'ขายแล้ว', bg:'#fff0f0', color:'#c0392b' },
+  available: { label: 'ว่างอยู่', bg: '#e8f8f2', color: '#A1D99B' },
+  reserved: { label: 'จองแล้ว', bg: '#fffbe6', color: '#d4890a' },
+  sold: { label: 'ขายแล้ว', bg: '#fff0f0', color: '#c0392b' },
 };
-const LISTING_LABEL = { sale:'ขาย', rent:'เช่า', sale_rent:'ขาย/เช่า' };
+const LISTING_LABEL = { sale: 'ขาย', rent: 'เช่า', sale_rent: 'ขาย/เช่า' };
 
 const fmt = (n) => {
   if (!n) return '—';
   const num = Number(n);
-  if (num >= 1e6) return `${(num/1e6).toFixed(2).replace(/\.?0+$/,'')} ล้าน`;
+  if (num >= 1e6) return `${(num / 1e6).toFixed(2).replace(/\.?0+$/, '')} ล้าน`;
   return num.toLocaleString('th-TH');
 };
 
@@ -33,16 +33,16 @@ function AdminProperties() {
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [pagination, setPagination] = useState({ total: 0, totalPages: 1, page: 1 });
-  const [loading, setLoading]     = useState(true);
-  const [search, setSearch]       = useState('');
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [delConfirm, setDelConfirm]     = useState(null);
-  const [deleting, setDeleting]         = useState(false);
+  const [delConfirm, setDelConfirm] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchProperties = useCallback((page = 1) => {
     setLoading(true);
     const params = new URLSearchParams({ page, limit: 15 });
-    if (search)       params.set('search', search);
+    if (search) params.set('search', search);
     if (statusFilter) params.set('status', statusFilter);
 
     adminFetch(`/api/admin/properties?${params}`)
@@ -57,12 +57,11 @@ function AdminProperties() {
 
   useEffect(() => { fetchProperties(1); }, [fetchProperties]);
 
-  // Auto-refresh ทุก 30 วินาที + focus (real-time update)
+  // Re-fetch เมื่อ user สลับแท็บกลับมา
   useEffect(() => {
-    const onFocus = () => fetchProperties(pagination.page);
-    window.addEventListener('focus', onFocus);
-    const id = setInterval(() => fetchProperties(pagination.page), 30000);
-    return () => { window.removeEventListener('focus', onFocus); clearInterval(id); };
+    const onVis = () => { if (!document.hidden) fetchProperties(pagination.page); };
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
   }, [fetchProperties, pagination.page]);
 
   const handleDelete = async () => {
@@ -102,33 +101,33 @@ function AdminProperties() {
   const adminUser = (() => { try { return JSON.parse(localStorage.getItem('adminUser') || '{}'); } catch { return {}; } })();
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f7fa', fontFamily:"'Sarabun',sans-serif" }}>
+    <div style={{ minHeight: '100vh', background: '#f5f7fa', fontFamily: "'Sarabun',sans-serif" }}>
 
       {/* ===== NAVBAR (same style as Dashboard) ===== */}
-      <div style={{ background:`linear-gradient(135deg,${N},#00463d)`, padding:'0 24px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
+      <div style={{ background: `linear-gradient(135deg,${N},#6aab62)`, padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 12px rgba(0,0,0,0.18)' }}>
         {/* Logo */}
-        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-          <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#fff', letterSpacing:1 }}>
-            LOAN<span style={{ color:G }}>DD</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ fontWeight: 900, fontSize: '1.25rem', color: '#1a3a18', letterSpacing: 1 }}>
+            LOAN<span style={{ color: G }}>DD</span>
           </div>
-          <span style={{ background:'rgba(255,255,255,0.12)', color:'rgba(255,255,255,0.7)', fontSize:'0.7rem', padding:'2px 8px', borderRadius:10, fontWeight:700 }}>Admin</span>
+          <span style={{ background: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.85)', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>Admin</span>
         </div>
 
         {/* User + actions */}
-        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
             onClick={() => navigate('/admin/properties/new')}
-            style={{ background:G, border:'none', color:'#fff', padding:'6px 16px', borderRadius:8, fontWeight:800, cursor:'pointer', fontSize:'0.82rem', display:'flex', alignItems:'center', gap:6, fontFamily:"'Sarabun',sans-serif" }}
+            style={{ background: Gl, border: 'none', color: '#1a3a18', padding: '6px 16px', borderRadius: 8, fontWeight: 800, cursor: 'pointer', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: 6, fontFamily: "'Sarabun',sans-serif" }}
           >
             <i className="fas fa-plus" /> เพิ่มทรัพย์ใหม่
           </button>
-          <div style={{ width:32, height:32, borderRadius:'50%', background:G, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:900, fontSize:'0.82rem' }}>
-            {(adminUser.username||'A').charAt(0).toUpperCase()}
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: Gl, color: '#1a3a18', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.82rem' }}>
+            {(adminUser.username || 'A').charAt(0).toUpperCase()}
           </div>
-          <span className="admin-nav-username" style={{ color:'#fff', fontSize:'0.82rem', fontWeight:600 }}>{adminUser.username||'Admin'}</span>
+          <span className="admin-nav-username" style={{ color: '#fff', fontSize: '0.82rem', fontWeight: 600 }}>{adminUser.username || 'Admin'}</span>
           <button
             onClick={() => handleAdminLogout(navigate)}
-            style={{ background:'rgba(220,38,38,0.15)', border:'1.5px solid rgba(220,38,38,0.4)', color:'#fca5a5', padding:'5px 12px', borderRadius:7, fontWeight:700, cursor:'pointer', fontSize:'0.78rem', display:'flex', alignItems:'center', gap:5, fontFamily:"'Sarabun',sans-serif" }}
+            style={{ background: 'rgba(220,38,38,0.15)', border: '1.5px solid rgba(220,38,38,0.4)', color: '#fca5a5', padding: '5px 12px', borderRadius: 7, fontWeight: 700, cursor: 'pointer', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: 5, fontFamily: "'Sarabun',sans-serif" }}
           >
             <i className="fas fa-sign-out-alt" /> ออก
           </button>
@@ -136,19 +135,19 @@ function AdminProperties() {
       </div>
 
       {/* ===== PILL TAB NAV ===== */}
-      <div style={{ maxWidth:1200, margin:'0 auto', padding:'20px 16px 0' }}>
-        <div className="admin-pill-nav" style={{ position:'relative', display:'inline-flex', background:'#e2e8f0', borderRadius:14, padding:4, marginBottom:20, gap:0 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 16px 0' }}>
+        <div className="admin-pill-nav" style={{ position: 'relative', display: 'inline-flex', background: '#e2e8f0', borderRadius: 14, padding: 4, marginBottom: 20, gap: 0 }}>
           {/* active pill */}
-          <div style={{ position:'absolute', top:4, bottom:4, width:'calc(25% - 3px)', left:'calc(25% + 2px)', background:'#fff', borderRadius:10, boxShadow:'0 2px 10px rgba(0,0,0,0.12)', transition:'left 0.28s cubic-bezier(0.4,0,0.2,1)', zIndex:0 }} />
+          <div style={{ position: 'absolute', top: 4, bottom: 4, width: 'calc(25% - 3px)', left: 'calc(25% + 2px)', background: '#fff', borderRadius: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.12)', transition: 'left 0.28s cubic-bezier(0.4,0,0.2,1)', zIndex: 0 }} />
           {[
-            { label:'ภาพรวม',  path:'/dashboard' },
-            { label:'ทรัพย์',  path:'/admin/properties' },
-            { label:'ข้อความ', path:'/admin/inquiries' },
-            { label:'ผู้ใช้',  path:'/admin/users' },
-          ].map((t,i) => {
+            { label: 'ภาพรวม', path: '/dashboard' },
+            { label: 'ทรัพย์', path: '/admin/properties' },
+            { label: 'ข้อความ', path: '/admin/inquiries' },
+            { label: 'ผู้ใช้', path: '/admin/users' },
+          ].map((t, i) => {
             const active = t.path === '/admin/properties';
             return (
-              <Link key={t.path} to={t.path} style={{ position:'relative', zIndex:1, textDecoration:'none', padding:'9px 22px', borderRadius:10, fontWeight: active ? 800 : 500, color: active ? N : '#94a3b8', fontSize:'0.85rem', fontFamily:"'Sarabun',sans-serif", transition:'color 0.2s', display:'flex', alignItems:'center', gap:6, whiteSpace:'nowrap' }}>
+              <Link key={t.path} to={t.path} style={{ position: 'relative', zIndex: 1, textDecoration: 'none', padding: '9px 22px', borderRadius: 10, fontWeight: active ? 800 : 500, color: active ? N : '#94a3b8', fontSize: '0.85rem', fontFamily: "'Sarabun',sans-serif", transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
                 {t.label}
               </Link>
             );
@@ -156,70 +155,70 @@ function AdminProperties() {
         </div>
 
         {/* ===== PAGE TITLE ===== */}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <div>
-            <h1 style={{ margin:0, fontSize:'1.3rem', fontWeight:900, color:N }}>
-              <i className="fas fa-home" style={{ color:G, marginRight:8 }} />จัดการทรัพย์สิน
+            <h1 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 900, color: N }}>
+              <i className="fas fa-home" style={{ color: G, marginRight: 8 }} />จัดการทรัพย์สิน
             </h1>
-            <p style={{ margin:'2px 0 0', color:'#888', fontSize:'0.82rem' }}>ทั้งหมด {pagination.total} รายการ</p>
+            <p style={{ margin: '2px 0 0', color: '#888', fontSize: '0.82rem' }}>ทั้งหมด {pagination.total} รายการ</p>
           </div>
         </div>
       </div>
 
-      <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 16px 20px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 16px 20px' }}>
 
         {/* ===== FILTER BAR ===== */}
-        <div className="admin-filter-bar" style={{ background:'#fff', borderRadius:10, padding:'14px 16px', marginBottom:16, display:'flex', gap:10, flexWrap:'wrap', alignItems:'center', boxShadow:'0 1px 6px rgba(0,0,0,0.06)' }}>
+        <div className="admin-filter-bar" style={{ background: '#fff', borderRadius: 10, padding: '14px 16px', marginBottom: 16, display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}>
           <input
             type="text"
             placeholder="🔍 ค้นหาชื่อ, จังหวัด, อำเภอ..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && fetchProperties(1)}
-            style={{ flex:1, minWidth:200, padding:'8px 12px', border:'1.5px solid #dde', borderRadius:7, fontSize:'0.88rem', outline:'none', color:'#111827', background:'#fff' }}
+            style={{ flex: 1, minWidth: 200, padding: '8px 12px', border: '1.5px solid #dde', borderRadius: 7, fontSize: '0.88rem', outline: 'none', color: '#111827', background: '#fff' }}
           />
 
           <button
             onClick={() => fetchProperties(1)}
-            style={{ background:'#00463d', color:'#fff', border:'none', borderRadius:7, padding:'8px 18px', fontWeight:700, cursor:'pointer', fontSize:'0.88rem' }}
+            style={{ background: '#6aab62', color: '#1a3a18', border: 'none', borderRadius: 7, padding: '8px 18px', fontWeight: 700, cursor: 'pointer', fontSize: '0.88rem' }}
           >
             ค้นหา
           </button>
           {(search || statusFilter) && (
-            <button onClick={() => { setSearch(''); setStatusFilter(''); }} style={{ background:'none', border:'none', color:'#e74c3c', cursor:'pointer', fontSize:'0.82rem' }}>✕ ล้าง</button>
+            <button onClick={() => { setSearch(''); setStatusFilter(''); }} style={{ background: 'none', border: 'none', color: '#e74c3c', cursor: 'pointer', fontSize: '0.82rem' }}>✕ ล้าง</button>
           )}
         </div>
 
         {/* ===== TABLE ===== */}
-        <div style={{ background:'#fff', borderRadius:12, boxShadow:'0 2px 12px rgba(0,0,0,0.07)', overflow:'hidden' }}>
+        <div style={{ background: '#fff', borderRadius: 12, boxShadow: '0 2px 12px rgba(0,0,0,0.07)', overflow: 'hidden' }}>
           {loading ? (
-            <div style={{ textAlign:'center', padding:'60px', color:'#aaa' }}>
-              <i className="fas fa-spinner fa-spin" style={{ fontSize:'2rem' }} />
+            <div style={{ textAlign: 'center', padding: '60px', color: '#aaa' }}>
+              <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem' }} />
             </div>
           ) : properties.length === 0 ? (
-            <div style={{ textAlign:'center', padding:'60px', color:'#aaa' }}>
-              <i className="fas fa-home" style={{ fontSize:'2.5rem', display:'block', marginBottom:10 }} />
+            <div style={{ textAlign: 'center', padding: '60px', color: '#aaa' }}>
+              <i className="fas fa-home" style={{ fontSize: '2.5rem', display: 'block', marginBottom: 10 }} />
               <p>ยังไม่มีทรัพย์สิน</p>
-              <button onClick={() => navigate('/admin/properties/new')} style={{ background:'#1A8C6E', color:'#fff', border:'none', borderRadius:8, padding:'8px 20px', cursor:'pointer', fontWeight:700 }}>+ เพิ่มทรัพย์แรก</button>
+              <button onClick={() => navigate('/admin/properties/new')} style={{ background: '#A1D99B', color: '#1a3a18', border: 'none', borderRadius: 8, padding: '8px 20px', cursor: 'pointer', fontWeight: 700 }}>+ เพิ่มทรัพย์แรก</button>
             </div>
           ) : (
-            <div className="admin-table-wrap admin-prop-table" style={{ overflowX:'auto' }}>
-              <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'0.85rem' }}>
+            <div className="admin-table-wrap admin-prop-table" style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
                 <thead>
-                  <tr style={{ background:'#f8fafc', borderBottom:'2px solid #e8edf2' }}>
+                  <tr style={{ background: '#f8fafc', borderBottom: '2px solid #e8edf2' }}>
                     {[
-                      { label:'รูปภาพ', hide:true },
-                      { label:'ชื่อทรัพย์', hide:false },
-                      { label:'ประเภท', hide:false },
-                      { label:'สถานะ', hide:false },
-                      { label:'ราคา', hide:false },
-                      { label:'จำนวนรูป', hide:true },
-                      { label:'Inquiry', hide:true },
-                      { label:'แก้โดย', hide:true },
-                      { label:'แนะนำ', hide:true },
-                      { label:'จัดการ', hide:false },
+                      { label: 'รูปภาพ', hide: true },
+                      { label: 'ชื่อทรัพย์', hide: false },
+                      { label: 'ประเภท', hide: false },
+                      { label: 'สถานะ', hide: false },
+                      { label: 'ราคา', hide: false },
+                      { label: 'จำนวนรูป', hide: true },
+                      { label: 'Inquiry', hide: true },
+                      { label: 'แก้โดย', hide: true },
+                      { label: 'แนะนำ', hide: true },
+                      { label: 'จัดการ', hide: false },
                     ].map(h => (
-                      <th key={h.label} className={h.hide ? 'admin-col-hide-mobile' : ''} style={{ padding:'10px 12px', textAlign:'left', fontWeight:700, color:'#555', whiteSpace:'nowrap' }}>{h.label}</th>
+                      <th key={h.label} className={h.hide ? 'admin-col-hide-mobile' : ''} style={{ padding: '10px 12px', textAlign: 'left', fontWeight: 700, color: '#555', whiteSpace: 'nowrap' }}>{h.label}</th>
                     ))}
                   </tr>
                 </thead>
@@ -227,18 +226,18 @@ function AdminProperties() {
                   {properties.map(p => {
                     const sc = STATUS_CONF[p.sale_status] || STATUS_CONF.available;
                     return (
-                      <tr key={p.id} style={{ borderBottom:'1px solid #f0f4f8', transition:'background 0.1s' }}
+                      <tr key={p.id} style={{ borderBottom: '1px solid #f0f4f8', transition: 'background 0.1s' }}
                         onMouseEnter={e => e.currentTarget.style.background = '#fafcff'}
                         onMouseLeave={e => e.currentTarget.style.background = ''}
                       >
                         {/* รูปหน้าปก */}
-                        <td className="admin-col-hide-mobile" style={{ padding:'8px 12px' }}>
-                          <div style={{ width:56, height:44, borderRadius:6, overflow:'hidden', background:'#e8edf2', flexShrink:0 }}>
+                        <td className="admin-col-hide-mobile" style={{ padding: '8px 12px' }}>
+                          <div style={{ width: 56, height: 44, borderRadius: 6, overflow: 'hidden', background: '#e8edf2', flexShrink: 0 }}>
                             {p.thumbnail_url ? (
                               <img src={p.thumbnail_url.startsWith('http') ? p.thumbnail_url : `${API}${p.thumbnail_url}`}
-                                alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                                alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
-                              <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', color:'#bbb', fontSize:'1.2rem' }}>
+                              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#bbb', fontSize: '1.2rem' }}>
                                 <i className="fas fa-home" />
                               </div>
                             )}
@@ -246,83 +245,83 @@ function AdminProperties() {
                         </td>
 
                         {/* ชื่อ */}
-                        <td style={{ padding:'8px 12px', maxWidth:220 }}>
-                          <div style={{ fontWeight:700, color:'#1A8C6E', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{p.title}</div>
-                          <div style={{ fontSize:'0.75rem', color:'#888', marginTop:1 }}>{p.province}{p.district ? ` · ${p.district}` : ''}</div>
-                          <div style={{ fontSize:'0.72rem', color:'#bbb' }}>#{String(p.id).padStart(4,'0')}</div>
+                        <td style={{ padding: '8px 12px', maxWidth: 220 }}>
+                          <div style={{ fontWeight: 700, color: '#A1D99B', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</div>
+                          <div style={{ fontSize: '0.75rem', color: '#888', marginTop: 1 }}>{p.province}{p.district ? ` · ${p.district}` : ''}</div>
+                          <div style={{ fontSize: '0.72rem', color: '#bbb' }}>#{String(p.id).padStart(4, '0')}</div>
                         </td>
 
                         {/* ประเภท */}
-                        <td style={{ padding:'8px 12px', whiteSpace:'nowrap' }}>
-                          <div style={{ fontSize:'0.8rem', color:'#555' }}>{TYPE_LABEL[p.property_type] || p.property_type}</div>
-                          <div style={{ fontSize:'0.72rem', color:'#888' }}>{LISTING_LABEL[p.listing_type]}</div>
+                        <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontSize: '0.8rem', color: '#555' }}>{TYPE_LABEL[p.property_type] || p.property_type}</div>
+                          <div style={{ fontSize: '0.72rem', color: '#888' }}>{LISTING_LABEL[p.listing_type]}</div>
                         </td>
 
                         {/* สถานะ — badge */}
-                        <td style={{ padding:'8px 12px' }}>
-                          <span style={{ background:sc.bg, color:sc.color, border:`1px solid ${sc.color}`, borderRadius:6, padding:'3px 10px', fontSize:'0.78rem', fontWeight:700, whiteSpace:'nowrap' }}>
+                        <td style={{ padding: '8px 12px' }}>
+                          <span style={{ background: sc.bg, color: sc.color, border: `1px solid ${sc.color}`, borderRadius: 6, padding: '3px 10px', fontSize: '0.78rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
                             {sc.label}
                           </span>
                         </td>
 
                         {/* ราคา */}
-                        <td style={{ padding:'8px 12px', whiteSpace:'nowrap' }}>
-                          <div style={{ fontWeight:700, color:'#00463d' }}>฿{fmt(p.price_requested || p.monthly_rent)}</div>
-                          {p.listing_type === 'rent' && <div style={{ fontSize:'0.72rem', color:'#888' }}>/เดือน</div>}
+                        <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontWeight: 700, color: '#6aab62' }}>฿{fmt(p.price_requested || p.monthly_rent)}</div>
+                          {p.listing_type === 'rent' && <div style={{ fontSize: '0.72rem', color: '#888' }}>/เดือน</div>}
                         </td>
 
                         {/* จำนวนรูป */}
-                        <td className="admin-col-hide-mobile" style={{ padding:'8px 12px', textAlign:'center' }}>
-                          <span style={{ fontSize:'0.82rem', color: p.image_count > 0 ? '#1A8C6E' : '#ccc', fontWeight:600 }}>
-                            <i className="fas fa-images" style={{ marginRight:3 }} />{p.image_count || 0}
+                        <td className="admin-col-hide-mobile" style={{ padding: '8px 12px', textAlign: 'center' }}>
+                          <span style={{ fontSize: '0.82rem', color: p.image_count > 0 ? '#A1D99B' : '#ccc', fontWeight: 600 }}>
+                            <i className="fas fa-images" style={{ marginRight: 3 }} />{p.image_count || 0}
                           </span>
                         </td>
 
                         {/* Inquiry count */}
-                        <td className="admin-col-hide-mobile" style={{ padding:'8px 12px', textAlign:'center' }}>
-                          <span style={{ fontSize:'0.82rem', color: p.inquiry_count > 0 ? '#e8a020' : '#ccc', fontWeight:600 }}>
-                            <i className="fas fa-envelope" style={{ marginRight:3 }} />{p.inquiry_count || 0}
+                        <td className="admin-col-hide-mobile" style={{ padding: '8px 12px', textAlign: 'center' }}>
+                          <span style={{ fontSize: '0.82rem', color: p.inquiry_count > 0 ? '#e8a020' : '#ccc', fontWeight: 600 }}>
+                            <i className="fas fa-envelope" style={{ marginRight: 3 }} />{p.inquiry_count || 0}
                           </span>
                         </td>
 
                         {/* audit — แอดมินที่แก้ล่าสุด */}
-                        <td className="admin-col-hide-mobile" style={{ padding:'8px 12px', textAlign:'center' }}>
+                        <td className="admin-col-hide-mobile" style={{ padding: '8px 12px', textAlign: 'center' }}>
                           <span
                             title={`สร้างโดย: ${p.created_by_admin || '-'}\nแก้ล่าสุดโดย: ${p.updated_by_admin || '-'}`}
-                            style={{ fontSize:'0.75rem', color: p.updated_by_admin ? '#4b5563' : '#ccc', cursor:'help' }}>
+                            style={{ fontSize: '0.75rem', color: p.updated_by_admin ? '#4b5563' : '#ccc', cursor: 'help' }}>
                             {p.updated_by_admin
-                              ? <><i className="fas fa-user-edit" style={{ marginRight:3, color:'#6b7280' }} />{p.updated_by_admin}</>
-                              : <span style={{ color:'#ccc' }}>—</span>
+                              ? <><i className="fas fa-user-edit" style={{ marginRight: 3, color: '#6b7280' }} />{p.updated_by_admin}</>
+                              : <span style={{ color: '#ccc' }}>—</span>
                             }
                           </span>
                         </td>
 
                         {/* แนะนำ toggle */}
-                        <td className="admin-col-hide-mobile" style={{ padding:'8px 12px', textAlign:'center' }}>
+                        <td className="admin-col-hide-mobile" style={{ padding: '8px 12px', textAlign: 'center' }}>
                           <button
                             onClick={() => toggleFeatured(p.id, p.is_featured)}
                             title={p.is_featured ? 'ยกเลิกแนะนำ' : 'ตั้งเป็นแนะนำ'}
-                            style={{ background:'none', border:'none', cursor:'pointer', fontSize:'1.2rem', color: p.is_featured ? '#e8a020' : '#ddd' }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: p.is_featured ? '#e8a020' : '#ddd' }}
                           >★</button>
                         </td>
 
                         {/* ปุ่มจัดการ */}
-                        <td style={{ padding:'8px 12px', whiteSpace:'nowrap' }}>
-                          <div style={{ display:'flex', gap:6 }}>
+                        <td style={{ padding: '8px 12px', whiteSpace: 'nowrap' }}>
+                          <div style={{ display: 'flex', gap: 6 }}>
                             <button
                               onClick={() => window.open(`/property/${p.id}`, '_blank')}
                               title="ดูหน้าเว็บ"
-                              style={actionBtn('#e8f4fd','#2980b9')}
+                              style={actionBtn('#e8f4fd', '#2980b9')}
                             ><i className="fas fa-eye" /></button>
                             <button
                               onClick={() => navigate(`/admin/properties/${p.id}/edit`)}
                               title="แก้ไข"
-                              style={actionBtn('#e8f8f2','#1A8C6E')}
+                              style={actionBtn('#e8f8f2', '#A1D99B')}
                             ><i className="fas fa-edit" /></button>
                             <button
                               onClick={() => setDelConfirm(p)}
                               title="ลบ"
-                              style={actionBtn('#fff0f0','#c0392b')}
+                              style={actionBtn('#fff0f0', '#c0392b')}
                             ><i className="fas fa-trash" /></button>
                           </div>
                         </td>
@@ -337,15 +336,15 @@ function AdminProperties() {
 
         {/* ===== PAGINATION ===== */}
         {pagination.totalPages > 1 && (
-          <div style={{ display:'flex', justifyContent:'center', gap:6, marginTop:20, flexWrap:'wrap' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 20, flexWrap: 'wrap' }}>
             {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(n => (
               <button key={n} onClick={() => fetchProperties(n)} style={{
-                width:34, height:34, borderRadius:7,
-                border:`1.5px solid ${n === pagination.page ? '#1A8C6E' : '#dde'}`,
-                background: n === pagination.page ? '#1A8C6E' : '#fff',
-                color: n === pagination.page ? '#fff' : '#555',
+                width: 34, height: 34, borderRadius: 7,
+                border: `1.5px solid ${n === pagination.page ? '#A1D99B' : '#dde'}`,
+                background: n === pagination.page ? '#A1D99B' : '#fff',
+                color: n === pagination.page ? '#1a3a18' : '#555',
                 fontWeight: n === pagination.page ? 700 : 400,
-                cursor:'pointer', fontSize:'0.85rem',
+                cursor: 'pointer', fontSize: '0.85rem',
               }}>{n}</button>
             ))}
           </div>
@@ -354,19 +353,19 @@ function AdminProperties() {
 
       {/* ===== DELETE CONFIRM MODAL ===== */}
       {delConfirm && (
-        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.45)', zIndex:9999, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
-          <div style={{ background:'#fff', borderRadius:14, padding:'28px 24px', maxWidth:380, width:'100%', boxShadow:'0 8px 32px rgba(0,0,0,0.2)' }}>
-            <div style={{ textAlign:'center', marginBottom:16 }}>
-              <i className="fas fa-exclamation-triangle" style={{ fontSize:'2.5rem', color:'#e74c3c', marginBottom:10, display:'block' }} />
-              <h3 style={{ margin:0, color:'#1A8C6E' }}>ยืนยันการลบ?</h3>
-              <p style={{ color:'#666', fontSize:'0.88rem', marginTop:8 }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+          <div style={{ background: '#fff', borderRadius: 14, padding: '28px 24px', maxWidth: 380, width: '100%', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
+            <div style={{ textAlign: 'center', marginBottom: 16 }}>
+              <i className="fas fa-exclamation-triangle" style={{ fontSize: '2.5rem', color: '#e74c3c', marginBottom: 10, display: 'block' }} />
+              <h3 style={{ margin: 0, color: '#A1D99B' }}>ยืนยันการลบ?</h3>
+              <p style={{ color: '#666', fontSize: '0.88rem', marginTop: 8 }}>
                 ลบทรัพย์ "<strong>{delConfirm.title}</strong>"<br />
                 ไม่สามารถกู้คืนได้
               </p>
             </div>
-            <div style={{ display:'flex', gap:10 }}>
-              <button onClick={() => setDelConfirm(null)} style={{ flex:1, padding:'10px', borderRadius:8, border:'1.5px solid #dde', background:'#fff', cursor:'pointer', fontWeight:600 }}>ยกเลิก</button>
-              <button onClick={handleDelete} disabled={deleting} style={{ flex:1, padding:'10px', borderRadius:8, border:'none', background:'#e74c3c', color:'#fff', cursor:'pointer', fontWeight:700 }}>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={() => setDelConfirm(null)} style={{ flex: 1, padding: '10px', borderRadius: 8, border: '1.5px solid #dde', background: '#fff', cursor: 'pointer', fontWeight: 600 }}>ยกเลิก</button>
+              <button onClick={handleDelete} disabled={deleting} style={{ flex: 1, padding: '10px', borderRadius: 8, border: 'none', background: '#e74c3c', color: '#fff', cursor: 'pointer', fontWeight: 700 }}>
                 {deleting ? <><i className="fas fa-spinner fa-spin" /> กำลังลบ...</> : 'ลบเลย'}
               </button>
             </div>

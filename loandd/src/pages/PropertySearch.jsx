@@ -192,16 +192,11 @@ function PropertySearch() {
   useEffect(() => { fetchProperties(); }, [fetchProperties]);
 
   // Re-fetch เมื่อ user สลับแท็บกลับมา (real-time update หลังอัพโหลดรูป/แก้ไขทรัพย์)
+  // Re-fetch เมื่อ user สลับแท็บกลับมา
   useEffect(() => {
-    const onFocus = () => fetchProperties();
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
-  }, [fetchProperties]);
-
-  // Auto-refresh ทุก 30 วินาที (real-time update)
-  useEffect(() => {
-    const id = setInterval(fetchProperties, 30000);
-    return () => clearInterval(id);
+    const onVis = () => { if (!document.hidden) fetchProperties(); };
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
   }, [fetchProperties]);
 
   // --- Sync URL → filters (รับค่าจาก navbar link หรือ back/forward) ---
@@ -271,25 +266,40 @@ function PropertySearch() {
 
       {/* ========== SEARCH HERO — Quiet Luxury ========== */}
       <div style={{
-        background: 'linear-gradient(135deg, #1A8C6E 0%, #147A5E 60%, #00463d 100%)',
-        padding: 'calc(64px + 48px) 16px 36px',
+        background: 'linear-gradient(135deg, #A1D99B 0%, #6aab62 40%, #4a8a43 80%, #3d7a3a 100%)',
+        padding: 'calc(64px + 48px) 16px 44px',
+        position: 'relative',
+        zIndex: showSuggest ? 200 : 1,
       }}>
-        <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
-            Property Collection
+        {/* Subtle pattern overlay */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.04, backgroundImage: 'radial-gradient(circle at 20% 50%, #3d7a3a 1px, transparent 1px), radial-gradient(circle at 80% 20%, #3d7a3a 1px, transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
+        {/* Gold accent line */}
+        {/* gold line removed */}
+
+        <div style={{ maxWidth: 960, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          <div style={{ fontSize: '0.62rem', color: '#3d7a3a', letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
+            ── Property Collection ──
           </div>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Prompt', sans-serif", letterSpacing: '-0.01em' }}>
             อสังหาริมทรัพย์จาก บ้าน D มีเชง
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', marginBottom: 18 }}>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.85rem', marginBottom: 22 }}>
             ทรัพย์คุณภาพ คัดสรรโดยทีม บ้าน D มีเชง
           </p>
 
           {/* Search Bar */}
           <div style={{ position: 'relative', maxWidth: 600 }}>
             <form onSubmit={e => { e.preventDefault(); setShowSuggest(false); handleSearch(e); }}
-              style={{ display: 'flex', gap: 0, background: '#fff', borderRadius: 10, overflow: 'hidden', border: showSuggest ? '2px solid #1A8C6E' : '2px solid transparent', transition: 'border-color 0.15s' }}>
-              <i className="fas fa-search" style={{ color: '#aaa', fontSize: '0.9rem', padding: '0 0 0 14px', alignSelf: 'center' }} />
+              style={{
+                display: 'flex', gap: 0,
+                background: 'rgba(255,255,255,0.95)',
+                backdropFilter: 'blur(12px)',
+                borderRadius: 14, overflow: 'hidden',
+                border: showSuggest ? '2px solid #3d7a3a' : '2px solid rgba(61,122,58,0.25)',
+                transition: 'border-color 0.2s, box-shadow 0.2s',
+                boxShadow: showSuggest ? '0 8px 30px rgba(0,0,0,0.2), 0 0 0 4px rgba(61,122,58,0.1)' : '0 6px 24px rgba(0,0,0,0.15)',
+              }}>
+              <i className="fas fa-search" style={{ color: '#3d7a3a', fontSize: '0.9rem', padding: '0 0 0 16px', alignSelf: 'center' }} />
               <input
                 type="text"
                 value={searchInput}
@@ -298,9 +308,9 @@ function PropertySearch() {
                 onBlur={() => setTimeout(() => setShowSuggest(false), 150)}
                 placeholder="ค้นหาตำแหน่ง, โครงการ, ชื่อทรัพย์..."
                 style={{
-                  flex: 1, padding: '11px 12px',
+                  flex: 1, padding: '13px 12px',
                   border: 'none', fontSize: '0.9rem', outline: 'none',
-                  background: 'transparent', fontFamily: 'inherit', color: '#1A8C6E',
+                  background: 'transparent', fontFamily: 'inherit', color: '#2d3748',
                 }}
               />
               {searchInput && (
@@ -310,10 +320,11 @@ function PropertySearch() {
                 </button>
               )}
               <button type="submit" style={{
-                background: '#1A8C6E', color: '#fff',
-                border: 'none', padding: '11px 20px', fontWeight: 700,
+                background: 'linear-gradient(135deg, #3d7a3a, #2d5e2b)', color: '#fff',
+                border: 'none', padding: '13px 22px', fontWeight: 700,
                 cursor: 'pointer', fontSize: '0.88rem', whiteSpace: 'nowrap',
-                fontFamily: 'inherit',
+                fontFamily: 'inherit', letterSpacing: '0.3px',
+                transition: 'background 0.2s',
               }}>
                 <i className="fas fa-search" /> ค้นหา
               </button>
@@ -330,36 +341,43 @@ function PropertySearch() {
       </div>
 
       {/* ========== FILTER TABS (Listing Type) ========== */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #e8e8e8', position: 'sticky', top: 64, zIndex: 100 }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 16px', display: 'flex', alignItems: 'center', gap: 0, overflowX: 'auto' }}>
-          {LISTING_TYPES.map(lt => (
+      <div style={{ background: '#fff', borderBottom: '1px solid #e2e2e2', position: 'sticky', top: 64, zIndex: 100, boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 16px', display: 'flex', alignItems: 'center', gap: 4, overflowX: 'auto' }}>
+          {LISTING_TYPES.map(lt => {
+            const isActive = filters.listing_type === lt.value;
+            return (
             <button
               key={lt.value}
               onClick={() => applyFilter({ listing_type: lt.value })}
               style={{
-                padding: '12px 20px', border: 'none', background: 'transparent',
-                fontWeight: filters.listing_type === lt.value ? 800 : 500,
-                color: filters.listing_type === lt.value ? '#1A8C6E' : '#555',
-                borderBottom: filters.listing_type === lt.value ? '2px solid #1A8C6E' : '2px solid transparent',
-                cursor: 'pointer', fontSize: '0.9rem', whiteSpace: 'nowrap',
-                transition: 'all 0.15s',
+                padding: '13px 22px', border: 'none', background: 'transparent',
+                fontWeight: isActive ? 800 : 500,
+                color: isActive ? '#3d7a3a' : '#777',
+                borderBottom: isActive ? '3px solid #3d7a3a' : '3px solid transparent',
+                cursor: 'pointer', fontSize: '0.92rem', whiteSpace: 'nowrap',
+                transition: 'all 0.2s',
+                letterSpacing: '0.3px',
               }}
             >
               {lt.label}
             </button>
-          ))}
+            );
+          })}
 
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
             style={{
-              marginLeft: 'auto', padding: '8px 14px',
-              background: hasActiveFilter ? '#1A8C6E' : '#f0f4f8',
-              color: hasActiveFilter ? '#fff' : '#555',
-              border: 'none', borderRadius: 8,
-              cursor: 'pointer', fontSize: '0.82rem', fontWeight: 600,
-              display: 'flex', alignItems: 'center', gap: 5,
+              marginLeft: 'auto', padding: '8px 16px',
+              background: hasActiveFilter ? 'linear-gradient(135deg, #3d7a3a, #2d5e2b)' : '#f5f5f5',
+              color: hasActiveFilter ? '#fff' : '#666',
+              border: hasActiveFilter ? 'none' : '1.5px solid #ddd',
+              borderRadius: 10,
+              cursor: 'pointer', fontSize: '0.82rem', fontWeight: 700,
+              display: 'flex', alignItems: 'center', gap: 6,
               whiteSpace: 'nowrap',
+              boxShadow: hasActiveFilter ? '0 2px 8px rgba(61,122,58,0.25)' : 'none',
+              transition: 'all 0.2s',
             }}
           >
             <i className="fas fa-sliders-h" /> กรอง{hasActiveFilter ? ' ✓' : ''}
@@ -375,7 +393,7 @@ function PropertySearch() {
             <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 10, marginBottom: 10 }}>
               <span style={{ fontSize: '1.2rem' }}>🚇</span>
               <div>
-                <span style={{ fontWeight: 800, color: '#00463d', fontSize: '1rem' }}>
+                <span style={{ fontWeight: 800, color: '#3d7a3a', fontSize: '1rem' }}>
                   อสังหาฯ ใกล้ {filters.bts_station}
                 </span>
               </div>
@@ -385,9 +403,9 @@ function PropertySearch() {
                 {[1, 2, 3, 5].map(r => (
                   <button key={r} onClick={() => setProximityRadius(r)} style={{
                     padding: '3px 9px', borderRadius: 14, fontSize: '0.75rem', fontWeight: 700,
-                    border: `1.5px solid ${proximityRadius === r ? '#00463d' : '#ccc'}`,
-                    background: proximityRadius === r ? '#00463d' : '#fff',
-                    color: proximityRadius === r ? '#fff' : '#555',
+                    border: `1.5px solid ${proximityRadius === r ? '#6aab62' : '#ccc'}`,
+                    background: proximityRadius === r ? '#6aab62' : '#fff',
+                    color: proximityRadius === r ? '#1a3a18' : '#555',
                     cursor: 'pointer', transition: 'all 0.12s',
                   }}>{r} กม.</button>
                 ))}
@@ -399,7 +417,7 @@ function PropertySearch() {
             </div>
             {/* Distance Legend */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 10, fontSize: '0.75rem' }}>
-              {[['#1A8C6E','≤ 1 กม.'],['#f59e0b','1–3 กม.'],['#ef4444','> 3 กม.']].map(([c,l]) => (
+              {[['#A1D99B','≤ 1 กม.'],['#f59e0b','1–3 กม.'],['#ef4444','> 3 กม.']].map(([c,l]) => (
                 <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <span style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'inline-block' }} />
                   <span style={{ color: '#555' }}>{l}</span>
@@ -415,7 +433,7 @@ function PropertySearch() {
                   centerLng={activeBtsStation.lng}
                   centerLabel={activeBtsStation.name}
                   centerIcon="🚇"
-                  centerColor="#00463d"
+                  centerColor="#6aab62"
                   properties={properties}
                   mapHeight={360}
                 />
@@ -442,7 +460,7 @@ function PropertySearch() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
               <span style={{ fontSize: '1.2rem' }}>{activeSchool ? activeSchool.icon : '🏫'}</span>
               <div>
-                <span style={{ fontWeight: 800, color: '#00463d', fontSize: '1rem' }}>
+                <span style={{ fontWeight: 800, color: '#3d7a3a', fontSize: '1rem' }}>
                   อสังหาฯ ใกล้ {activeSchool ? activeSchool.label : filters.near_school}
                 </span>
               </div>
@@ -454,7 +472,7 @@ function PropertySearch() {
                     padding: '3px 9px', borderRadius: 14, fontSize: '0.75rem', fontWeight: 700,
                     border: `1.5px solid ${proximityRadius === r ? '#6d28d9' : '#ccc'}`,
                     background: proximityRadius === r ? '#6d28d9' : '#fff',
-                    color: proximityRadius === r ? '#fff' : '#555',
+                    color: proximityRadius === r ? '#1a3a18' : '#555',
                     cursor: 'pointer', transition: 'all 0.12s',
                   }}>{r} กม.</button>
                 ))}
@@ -466,7 +484,7 @@ function PropertySearch() {
             </div>
             {/* Distance Legend */}
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 10, fontSize: '0.75rem' }}>
-              {[['#1A8C6E','≤ 1 กม. (เดินได้)'],['#f59e0b','1–3 กม.'],['#ef4444','> 3 กม.']].map(([c,l]) => (
+              {[['#A1D99B','≤ 1 กม. (เดินได้)'],['#f59e0b','1–3 กม.'],['#ef4444','> 3 กม.']].map(([c,l]) => (
                 <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <span style={{ width: 10, height: 10, borderRadius: '50%', background: c, display: 'inline-block' }} />
                   <span style={{ color: '#555' }}>{l}</span>
@@ -526,94 +544,170 @@ function PropertySearch() {
           {/* Header bar */}
           <div style={{
             display: 'flex', justifyContent: 'space-between',
-            alignItems: 'center', marginBottom: 16, flexWrap: 'wrap', gap: 8,
+            alignItems: 'center', marginBottom: 18, flexWrap: 'wrap', gap: 10,
           }}>
-            <div style={{ fontSize: '0.88rem', color: '#666' }}>
-              {loading ? 'กำลังโหลด...' : (
-                <span>
-                  พบ <strong style={{ color: '#00463d' }}>{pagination.total}</strong> รายการ
-                  {hasActiveFilter && <button onClick={clearAll} style={{ marginLeft: 8, background: 'none', border: 'none', color: '#e74c3c', cursor: 'pointer', fontSize: '0.8rem' }}>✕ ล้างตัวกรอง</button>}
+            <div style={{ fontSize: '0.88rem', color: '#666', display: 'flex', alignItems: 'center', gap: 8 }}>
+              {loading ? (
+                <span style={{
+                  color: '#3d7a3a', display: 'inline-flex', alignItems: 'center', gap: 8,
+                  background: 'rgba(61,122,58,0.06)', padding: '5px 14px', borderRadius: 20,
+                  fontSize: '0.82rem', fontWeight: 600,
+                }}>
+                  <i className="fas fa-circle-notch fa-spin" style={{ fontSize: '0.9rem' }} />
+                  กำลังค้นหา...
                 </span>
+              ) : (
+                <>
+                  <span>
+                    พบ <strong style={{ color: '#3d7a3a', fontSize: '1rem' }}>{pagination.total}</strong> รายการ
+                  </span>
+                  {hasActiveFilter && (
+                    <button onClick={clearAll} style={{
+                      background: '#fff5f5', border: '1.5px solid #fecdd3',
+                      color: '#dc2626', cursor: 'pointer', fontSize: '0.76rem',
+                      fontWeight: 600, padding: '4px 12px', borderRadius: 20,
+                      display: 'flex', alignItems: 'center', gap: 4,
+                      transition: 'all 0.15s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = '#fee2e2'; e.currentTarget.style.borderColor = '#fca5a5'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = '#fff5f5'; e.currentTarget.style.borderColor = '#fecdd3'; }}
+                    >
+                      <i className="fas fa-times" style={{ fontSize: '0.65rem' }} /> ล้างตัวกรอง
+                    </button>
+                  )}
+                </>
               )}
             </div>
             <select
               value={filters.sort}
               onChange={e => applyFilter({ sort: e.target.value })}
-              style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #ddd', fontSize: '0.83rem', background: '#fff' }}
+              style={{
+                padding: '8px 12px', borderRadius: 10, border: '1.5px solid #e0e0e0',
+                fontSize: '0.83rem', background: '#fff', color: '#444',
+                cursor: 'pointer', outline: 'none', fontWeight: 500,
+                boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+              }}
             >
               {SORT_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
           </div>
 
           {/* Property Type Chips */}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-            {PROPERTY_TYPES.map(pt => (
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20, paddingBottom: 16, borderBottom: '1px solid #f0f0f0' }}>
+            {PROPERTY_TYPES.map(pt => {
+              const isActive = filters.property_type === pt.value;
+              return (
               <button
                 key={pt.value}
                 onClick={() => applyFilter({ property_type: pt.value })}
                 style={{
-                  padding: '6px 14px', borderRadius: 20,
-                  border: `1.5px solid ${filters.property_type === pt.value ? '#1A8C6E' : '#dde'}`,
-                  background: filters.property_type === pt.value ? '#1A8C6E' : '#fff',
-                  color: filters.property_type === pt.value ? '#fff' : '#555',
-                  fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
-                  transition: 'all 0.15s',
-                  display: 'flex', alignItems: 'center', gap: 5,
+                  padding: '7px 16px', borderRadius: 22,
+                  border: isActive ? '2px solid #3d7a3a' : '1.5px solid #e0e0e0',
+                  background: isActive ? 'linear-gradient(135deg, #3d7a3a, #2d5e2b)' : '#fff',
+                  color: isActive ? '#fff' : '#555',
+                  fontSize: '0.8rem', fontWeight: isActive ? 700 : 500, cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  boxShadow: isActive ? '0 2px 8px rgba(61,122,58,0.2)' : '0 1px 3px rgba(0,0,0,0.04)',
                 }}
               >
-                <i className={`fas ${pt.icon}`} style={{ fontSize: '0.75rem' }} />
+                <i className={`fas ${pt.icon}`} style={{ fontSize: '0.72rem' }} />
                 {pt.label}
               </button>
-            ))}
+              );
+            })}
           </div>
 
           {/* Cards Grid */}
           {loading ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20, padding: '20px 0' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 22, padding: '20px 0' }}>
               {[...Array(6)].map((_, i) => (
-                <div key={i} style={{ borderRadius: 8, overflow: 'hidden' }}>
-                  <div className="skeleton-box" style={{ height: 190 }} />
-                  <div style={{ padding: '16px' }}>
-                    <div className="skeleton-box" style={{ height: 14, width: '70%', marginBottom: 10 }} />
-                    <div className="skeleton-box" style={{ height: 12, width: '50%', marginBottom: 10 }} />
-                    <div className="skeleton-box" style={{ height: 18, width: '40%' }} />
+                <div key={i} style={{
+                  borderRadius: 14, overflow: 'hidden',
+                  background: '#fff',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+                  border: '1px solid rgba(0,0,0,0.04)',
+                }}>
+                  <div style={{ position: 'relative' }}>
+                    <div className="skeleton-box" style={{ height: 200, borderRadius: 0 }} />
+                    <div style={{ position: 'absolute', top: 14, left: 14, display: 'flex', gap: 6 }}>
+                      <div className="skeleton-box" style={{ width: 50, height: 22, borderRadius: 6 }} />
+                      <div className="skeleton-box" style={{ width: 70, height: 22, borderRadius: 6 }} />
+                    </div>
+                  </div>
+                  <div style={{ padding: '18px 16px 20px' }}>
+                    <div className="skeleton-box" style={{ height: 16, width: '75%', marginBottom: 12, borderRadius: 4 }} />
+                    <div style={{ display: 'flex', gap: 6, marginBottom: 14 }}>
+                      <div className="skeleton-box" style={{ height: 12, width: 50, borderRadius: 4 }} />
+                      <div className="skeleton-box" style={{ height: 12, width: 50, borderRadius: 4 }} />
+                      <div className="skeleton-box" style={{ height: 12, width: 60, borderRadius: 4 }} />
+                    </div>
+                    <div className="skeleton-box" style={{ height: 12, width: '60%', marginBottom: 14, borderRadius: 4 }} />
+                    <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div className="skeleton-box" style={{ height: 22, width: '45%', borderRadius: 4 }} />
+                      <div className="skeleton-box" style={{ width: 32, height: 32, borderRadius: '50%' }} />
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : properties.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '60px 0', color: '#aaa' }}>
-              <i className="fas fa-map-marker-alt" style={{ fontSize: '2.5rem', marginBottom: 12, display: 'block', color: '#cbd5e1' }} />
+            <div style={{
+              textAlign: 'center', padding: '50px 20px', color: '#aaa',
+              background: 'linear-gradient(180deg, #f8f6f2 0%, #fff 100%)',
+              borderRadius: 16, border: '1.5px dashed #d8d4cc', margin: '10px 0',
+            }}>
+              <div style={{
+                width: 72, height: 72, borderRadius: '50%',
+                background: 'linear-gradient(135deg, #e8f5e6, #d0ebd4)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 16px',
+                boxShadow: '0 4px 16px rgba(61,122,58,0.1)',
+              }}>
+                <i className="fas fa-search" style={{ fontSize: '1.5rem', color: '#3d7a3a' }} />
+              </div>
               {(filters.near_school || filters.bts_station) ? (
                 <>
-                  <p style={{ fontSize: '1rem', fontWeight: 600, color: '#555' }}>ไม่พบทรัพย์ในรัศมี {proximityRadius} กม.</p>
-                  <p style={{ fontSize: '0.85rem', marginBottom: 14 }}>ยังไม่มีทรัพย์ที่มีพิกัด GPS ในระยะนี้</p>
+                  <p style={{ fontSize: '1.05rem', fontWeight: 700, color: '#2d3748', marginBottom: 6 }}>ไม่พบทรัพย์ในรัศมี {proximityRadius} กม.</p>
+                  <p style={{ fontSize: '0.85rem', color: '#888', marginBottom: 16 }}>ยังไม่มีทรัพย์ที่มีพิกัด GPS ในระยะนี้</p>
                   <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
                     {[3, 5, 10].filter(r => r > proximityRadius).slice(0, 2).map(r => (
                       <button key={r} onClick={() => setProximityRadius(r)} style={{
-                        background: '#00463d', color: '#fff', border: 'none',
-                        borderRadius: 8, padding: '8px 18px', cursor: 'pointer',
+                        background: 'linear-gradient(135deg, #3d7a3a, #2d5e2b)', color: '#fff', border: 'none',
+                        borderRadius: 10, padding: '10px 22px', cursor: 'pointer',
                         fontSize: '0.85rem', fontWeight: 700,
+                        boxShadow: '0 3px 10px rgba(61,122,58,0.25)',
+                        transition: 'all 0.2s',
                       }}>ขยายเป็น {r} กม.</button>
                     ))}
                   </div>
                 </>
               ) : (
                 <>
-                  <p style={{ fontSize: '1rem', fontWeight: 600 }}>ไม่พบทรัพย์สินที่ตรงกับเงื่อนไข</p>
-                  <p style={{ fontSize: '0.85rem' }}>ลองปรับตัวกรองใหม่หรือ <button onClick={clearAll} style={{ background: 'none', border: 'none', color: '#1A8C6E', cursor: 'pointer', fontWeight: 700 }}>ล้างทั้งหมด</button></p>
+                  <p style={{ fontSize: '1.05rem', fontWeight: 700, color: '#2d3748', marginBottom: 6 }}>ไม่พบทรัพย์สินที่ตรงกับเงื่อนไข</p>
+                  <p style={{ fontSize: '0.85rem', color: '#888', marginBottom: 16 }}>ลองปรับตัวกรองใหม่ หรือดูทรัพย์ทั้งหมด</p>
+                  <button onClick={clearAll} style={{
+                    background: 'linear-gradient(135deg, #3d7a3a, #2d5e2b)', color: '#fff',
+                    border: 'none', borderRadius: 10, padding: '10px 24px',
+                    cursor: 'pointer', fontSize: '0.88rem', fontWeight: 700,
+                    boxShadow: '0 3px 10px rgba(61,122,58,0.25)',
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    transition: 'all 0.2s',
+                  }}>
+                    <i className="fas fa-redo" style={{ fontSize: '0.75rem' }} /> ล้างตัวกรองทั้งหมด
+                  </button>
                 </>
               )}
             </div>
           ) : (
-            <div style={{
+            <div className="search-grid" style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-              gap: 18,
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: 20,
             }}>
               {properties.map(p => {
                 const distKm = p._distKm;
-                const distColor = distKm == null ? null : distKm <= 1 ? '#1A8C6E' : distKm <= 3 ? '#f59e0b' : '#ef4444';
+                const distColor = distKm == null ? null : distKm <= 1 ? '#A1D99B' : distKm <= 3 ? '#f59e0b' : '#ef4444';
                 const distText = distKm == null ? null : distKm < 1 ? `${Math.round(distKm * 1000)} ม.` : `${distKm.toFixed(1)} กม.`;
                 return (
                   <div key={p.id} style={{ position: 'relative' }}>
@@ -684,6 +778,9 @@ function PropertySearch() {
             position: static !important;
             margin-bottom: 16px;
           }
+          .search-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </div>
@@ -700,20 +797,24 @@ function FilterPanel({ filters, provinces, onApply, onClear, hasActive }) {
 
   return (
     <div style={{
-      background: '#fff', borderRadius: 12,
-      boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-      padding: 16, fontSize: '0.85rem',
+      background: '#fff', borderRadius: 14,
+      boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
+      padding: 18, fontSize: '0.85rem',
+      border: '1px solid #f0f0f0',
     }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-        <strong style={{ color: '#00463d' }}>
-          <i className="fas fa-sliders-h" style={{ marginRight: 6 }} />ตัวกรอง
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingBottom: 12, borderBottom: '2px solid #f0f0f0' }}>
+        <strong style={{ color: '#3d7a3a', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <i className="fas fa-sliders-h" style={{ color: '#3d7a3a' }} />ตัวกรอง
         </strong>
         {hasActive && (
           <button onClick={onClear} style={{
-            background: 'none', border: 'none',
-            color: '#e74c3c', fontSize: '0.78rem',
+            background: '#fff5f5', border: '1.5px solid #fecdd3',
+            color: '#dc2626', fontSize: '0.72rem',
             cursor: 'pointer', fontWeight: 600,
-          }}>ล้างทั้งหมด</button>
+            padding: '3px 10px', borderRadius: 16,
+            display: 'flex', alignItems: 'center', gap: 3,
+            transition: 'all 0.15s',
+          }}><i className="fas fa-times" style={{ fontSize: '0.6rem' }} /> ล้าง</button>
         )}
       </div>
 
@@ -752,8 +853,8 @@ function FilterPanel({ filters, provinces, onApply, onClear, hasActive }) {
               onClick={() => { update('bedrooms', n); onApply({ bedrooms: n }); }}
               style={{
                 padding: '4px 10px', borderRadius: 6,
-                border: `1.5px solid ${local.bedrooms === n ? '#1A8C6E' : '#dde'}`,
-                background: local.bedrooms === n ? '#1A8C6E' : '#fff',
+                border: `1.5px solid ${local.bedrooms === n ? '#3d7a3a' : '#dde'}`,
+                background: local.bedrooms === n ? '#3d7a3a' : '#fff',
                 color: local.bedrooms === n ? '#fff' : '#555',
                 fontSize: '0.8rem', cursor: 'pointer', fontWeight: 600,
               }}
@@ -767,8 +868,8 @@ function FilterPanel({ filters, provinces, onApply, onClear, hasActive }) {
 
 function FilterGroup({ label, children }) {
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#888', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</div>
+    <div style={{ marginBottom: 18 }}>
+      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#3d7a3a', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.8px' }}>{label}</div>
       {children}
     </div>
   );
@@ -778,25 +879,31 @@ function PageBtn({ label, active, onClick }) {
   return (
     <button
       onClick={onClick}
+      onMouseEnter={e => { if (!active) { e.currentTarget.style.background = '#e8f5e6'; e.currentTarget.style.borderColor = '#A1D99B'; e.currentTarget.style.color = '#3d7a3a'; } }}
+      onMouseLeave={e => { if (!active) { e.currentTarget.style.background = '#fff'; e.currentTarget.style.borderColor = '#e0e0e0'; e.currentTarget.style.color = '#555'; } }}
       style={{
-        width: 34, height: 34, borderRadius: 8,
-        border: `1.5px solid ${active ? '#1A8C6E' : '#dde'}`,
-        background: active ? '#1A8C6E' : '#fff',
+        width: 38, height: 38, borderRadius: 10,
+        border: active ? '2px solid #3d7a3a' : '1.5px solid #e0e0e0',
+        background: active ? 'linear-gradient(135deg, #3d7a3a, #2d5e2b)' : '#fff',
         color: active ? '#fff' : '#555',
-        fontSize: '0.85rem', fontWeight: active ? 700 : 500,
+        fontSize: '0.88rem', fontWeight: active ? 700 : 500,
         cursor: 'pointer',
+        transition: 'all 0.2s',
+        boxShadow: active ? '0 3px 10px rgba(61,122,58,0.25)' : '0 1px 3px rgba(0,0,0,0.05)',
       }}
     >{label}</button>
   );
 }
 
 const selectStyle = {
-  width: '100%', padding: '7px 10px',
-  borderRadius: 6, border: '1px solid #dde',
-  fontSize: '0.83rem', background: '#fff',
+  width: '100%', padding: '9px 12px',
+  borderRadius: 10, border: '1.5px solid #e0e0e0',
+  fontSize: '0.83rem', background: '#fafafa',
   color: '#333',
   outline: 'none',
   cursor: 'pointer',
+  transition: 'border-color 0.2s',
+  fontFamily: 'inherit',
 };
 
 export default PropertySearch;

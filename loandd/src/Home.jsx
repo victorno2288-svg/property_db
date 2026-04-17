@@ -26,7 +26,8 @@ const typeLabels = {
 };
 
 const Home = () => {
-  const brandGreen = '#1A8C6E';
+  const brandGreen = '#3d7a3a';
+  const brandGreenBg = '#A1D99B';
   const brandBright = '#2DB88E';
   const gold = '#C9A84C';
   const API_URL = `${API_BASE}/api/properties`;
@@ -36,6 +37,10 @@ const Home = () => {
   // State
   const [featuredProperties, setFeaturedProperties] = useState([]);
   const [latestProperties, setLatestProperties] = useState([]);
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [heroIndex, setHeroIndex] = useState(0);
+  const heroTimer = useRef(null);
+  const heroTouchRef = useRef({ startX: 0 });
   const [stats, setStats] = useState({ total: 0, province_count: 0, for_sale: 0, for_rent: 0, reserved: 0, sold: 0 });
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('sale');
@@ -123,14 +128,16 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
   // Fetch data — re-fetch เมื่อ navigate กลับมาหน้านี้ หรือ focus กลับมาที่แท็บ (real-time update)
   const fetchData = async () => {
     try {
-      const [featuredRes, latestRes, statsRes] = await Promise.all([
+      const [featuredRes, latestRes, statsRes, heroRes] = await Promise.all([
         fetch(`${API_URL}/featured`),
         fetch(`${API_URL}/latest?limit=8`),
         fetch(`${API_URL}/stats`),
+        fetch(`${API_URL}/featured-random?limit=3`),
       ]);
       const featured  = await featuredRes.json();
       const latest    = await latestRes.json();
       const statsData = await statsRes.json();
+      const heroRandom = await heroRes.json();
 
       const featuredList = Array.isArray(featured) ? featured : [];
       const latestList   = Array.isArray(latest)   ? latest   : [];
@@ -140,6 +147,11 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
       const filtered = latestList.filter(p => !featuredIds.has(p.id));
       setLatestProperties(filtered.length > 0 ? filtered : latestList);
       if (statsData && statsData.total != null) setStats(statsData);
+
+      // Hero slides — slide 0 = cover branding, slides 1+ = random featured from API
+      const heroProperties = Array.isArray(heroRandom) ? heroRandom.filter(p => p.thumbnail_url || (p.images && p.images.length > 0)) : [];
+      const coverSlide = { id: '__cover__', isCover: true };
+      setHeroSlides([coverSlide, ...heroProperties]);
     } catch (err) {
       console.error('Error fetching properties:', err);
     } finally {
@@ -152,70 +164,125 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
     fetchData();
   }, [location.key]);
 
-  // Re-fetch เมื่อ user สลับแท็บกลับมา (เช่น จากหน้า admin)
+  // Re-fetch เมื่อ user สลับแท็บกลับมา
   useEffect(() => {
-    const onFocus = () => fetchData();
-    window.addEventListener('focus', onFocus);
-    return () => window.removeEventListener('focus', onFocus);
+    const onVis = () => { if (!document.hidden) fetchData(); };
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
   }, []);
 
-  // Auto-refresh ทุก 30 วินาที (real-time update)
-  useEffect(() => {
-    const id = setInterval(fetchData, 30000);
-    return () => clearInterval(id);
-  }, []);
+  // Hero auto-slide every 7 seconds with progress bar
+  const HERO_INTERVAL = 7000;
+  const [heroProgress, setHeroProgress] = useState(0);
+  const heroProgressTimer = useRef(null);
 
+  useEffect(() => {
+    if (heroSlides.length <= 1) return;
+    setHeroProgress(0);
+    const startTime = Date.now();
+    heroProgressTimer.current = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min((elapsed % HERO_INTERVAL) / HERO_INTERVAL * 100, 100);
+      setHeroProgress(pct);
+    }, 50);
+    heroTimer.current = setInterval(() => {
+      setHeroIndex(prev => (prev + 1) % heroSlides.length);
+      setHeroProgress(0);
+    }, HERO_INTERVAL);
+    return () => { clearInterval(heroTimer.current); clearInterval(heroProgressTimer.current); };
+  }, [heroSlides.length, heroIndex]);
+
+  const heroGo = (idx) => { clearInterval(heroTimer.current); clearInterval(heroProgressTimer.current); setHeroProgress(0); setHeroIndex(idx); };
+  const heroNext = () => heroGo((heroIndex + 1) % heroSlides.length);
+  const heroPrev = () => heroGo((heroIndex - 1 + heroSlides.length) % heroSlides.length);
+
+  // Helper: get property image URL
+  const getPropertyImage = (p) => {
+    if (p.thumbnail_url) return p.thumbnail_url.startsWith('http') ? p.thumbnail_url : `${API_BASE}${p.thumbnail_url}`;
+    if (p.images && p.images.length > 0) {
+      const url = p.images[0].image_url || p.images[0];
+      return typeof url === 'string' && url.startsWith('http') ? url : `${API_BASE}${url}`;
+    }
+    return imgHeroCover;
+  };
+
+  const formatPrice = (price) => {
+    if (!price) return '';
+    const n = Number(price);
+    if (n >= 1000000) return `฿${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1)} ล้าน`;
+    return `฿${n.toLocaleString()}`;
+  };
 
   return (
     <div>
       <Navbar />
 
-      {/* === HERO SECTION — Full-bleed Editorial Style === */}
-      <section style={{
-        position: 'relative',
-        zIndex: 10,
-        backgroundImage: `url(${imgHeroCover})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        padding: 'calc(80px + 80px) 16px 140px',
-        overflow: 'visible',
-        textAlign: 'center',
-        minHeight: '85vh',
-        display: 'flex',
-        alignItems: 'center',
+      {/* === SEARCH HEADER — soft gradient green === */}
+      <section className="hero-search-band" style={{
+        background: 'linear-gradient(180deg, #A1D99B 0%, #8fce86 50%, #7ec276 100%)',
+        paddingTop: 'calc(66px + 22px)', paddingLeft: 20, paddingRight: 20, paddingBottom: 22,
+        boxShadow: '0 4px 20px rgba(61,122,58,0.12)',
       }}>
-        {/* Dark overlay — ดำเทาทึบให้อ่านชัด */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(20,20,20,0.82) 0%, rgba(30,30,30,0.7) 50%, rgba(0,0,0,0.85) 100%)', pointerEvents:'none' }} />
-        {/* Subtle vignette edges */}
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.35) 100%)', pointerEvents:'none' }} />
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
 
-        <div className="container" style={{ position:'relative', zIndex:1 }}>
-          {/* Eyebrow */}
-          <div style={{ display:'inline-flex', alignItems:'center', gap:8, marginBottom:28 }}>
-            <div style={{ width:40, height:1, background:gold }} />
-            <span style={{ fontSize:'0.72rem', fontWeight:700, letterSpacing:'0.25em', textTransform:'uppercase', color:gold, fontFamily:"'Manrope', sans-serif" }}>
-              Curated Properties
-            </span>
-            <div style={{ width:40, height:1, background:gold }} />
+          {/* Row: Headline left + Tabs right */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
+            <h2 style={{
+              color: '#1a3a18', fontSize: 'clamp(1.2rem, 3vw, 1.55rem)',
+              fontFamily: "'Prompt', sans-serif", fontWeight: 400,
+              margin: 0, lineHeight: 1.4, letterSpacing: '-0.01em',
+            }}>
+              ค้นหาบ้านที่ใช่สำหรับคุณ
+            </h2>
+            {/* Tabs */}
+            <div style={{ display: 'flex', gap: 0 }}>
+              {[
+                { key: 'sale', label: 'ซื้อ' },
+                { key: 'rent', label: 'เช่า' },
+              ].map(t => (
+                <button key={t.key} type="button" onClick={() => setActiveTab(t.key)}
+                  style={{
+                    padding: '8px 20px', border: 'none', background: 'transparent',
+                    color: '#1a3a18', fontSize: '0.85rem', fontWeight: 700,
+                    letterSpacing: '0.1em', textTransform: 'uppercase',
+                    cursor: 'pointer', fontFamily: "'Manrope', sans-serif",
+                    borderBottom: activeTab === t.key ? '2.5px solid #2d5e2b' : '2.5px solid transparent',
+                    transition: 'all 0.25s', opacity: activeTab === t.key ? 1 : 0.5,
+                  }}
+                  onMouseEnter={e => { if (activeTab !== t.key) e.currentTarget.style.opacity = '0.8'; }}
+                  onMouseLeave={e => { if (activeTab !== t.key) e.currentTarget.style.opacity = '0.5'; }}
+                >
+                  {t.label}
+                </button>
+              ))}
+              {/* Property type as tab */}
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <select value={heroPropertyType} onChange={e => setHeroPropertyType(e.target.value)}
+                  style={{
+                    padding: '8px 26px 8px 20px', border: 'none', background: 'transparent',
+                    color: '#1a3a18', fontSize: '0.85rem', fontWeight: 700,
+                    letterSpacing: '0.1em', cursor: 'pointer',
+                    fontFamily: "'Manrope', sans-serif", appearance: 'none', WebkitAppearance: 'none',
+                    borderBottom: heroPropertyType ? '2.5px solid #2d5e2b' : '2.5px solid transparent',
+                    opacity: heroPropertyType ? 1 : 0.5, transition: 'all 0.25s', outline: 'none',
+                  }}>
+                  <option value="">ประเภท</option>
+                  <option value="condo">คอนโด</option>
+                  <option value="house">บ้านเดี่ยว</option>
+                  <option value="townhouse">ทาวน์เฮ้าส์</option>
+                  <option value="townhome">ทาวน์โฮม</option>
+                  <option value="land">ที่ดิน</option>
+                  <option value="commercial">อาคารพาณิชย์</option>
+                  <option value="home_office">โฮมออฟฟิศ</option>
+                  <option value="warehouse">โกดัง/โรงงาน</option>
+                </select>
+                <i className="fas fa-chevron-down" style={{ color: 'rgba(26,58,24,0.4)', fontSize: '0.5rem', position: 'absolute', right: 8, pointerEvents: 'none' }} />
+              </div>
+            </div>
           </div>
 
-          {/* Editorial Headline — Noto Serif Thai */}
-          <h1 className="hero-editorial-heading" style={{ color:'#fff', fontSize:'clamp(2.2rem, 6vw, 3.8rem)', marginBottom:20, fontFamily:"'Noto Serif Thai', serif", fontWeight:400 }}>
-            ทรัพย์รีโนเวทพร้อมอยู่
-          </h1>
-          <p style={{ color:'rgba(255,255,255,0.6)', fontSize:'1.05rem', maxWidth:560, margin:'0 auto 16px', lineHeight:1.8, fontWeight:300 }}>
-            อสังหาริมทรัพย์คัดสรรโดย <span style={{ color:gold, fontWeight:600 }}>บ้าน D มีเชง</span> รีโนเวทเอง
-            <br />คุณภาพครบ ราคาเป็นธรรม ตรวจสอบโฉนดแล้วทุกรายการ
-          </p>
-          {/* Trust line */}
-          <div style={{ display:'inline-flex', alignItems:'center', gap:8, background:'rgba(255,255,255,0.06)', backdropFilter:'blur(8px)', borderRadius:50, padding:'8px 20px', fontSize:'0.78rem', color:'rgba(255,255,255,0.7)', marginBottom:40, border:'1px solid rgba(255,255,255,0.1)' }}>
-            <i className="fas fa-shield-alt" style={{ color:gold, fontSize:'0.72rem' }} />
-            ทรัพย์ทุกรายการผ่านการตรวจสอบโฉนดแล้ว
-          </div>
-
-          {/* ===== UNIFIED SEARCH BAR — Buy/Rent tabs + Location + Property Type + Search ===== */}
-          <div style={{ maxWidth: 780, margin: '0 auto', position: 'relative' }}>
+          {/* Search input — frosted card style */}
+          <div style={{ position: 'relative' }}>
             <form
               onSubmit={e => {
                 e.preventDefault();
@@ -228,325 +295,312 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
               }}
               style={{
                 display: 'flex', alignItems: 'center',
-                background: '#fff',
-                borderRadius: 60,
-                overflow: 'visible',
-                boxShadow: '0 12px 48px rgba(0,0,0,0.28)',
-                padding: '6px 6px 6px 8px',
-                gap: 0, flexWrap: 'nowrap',
+                background: 'rgba(255,255,255,0.45)',
+                backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+                borderRadius: 12, padding: '12px 18px', gap: 12,
+                border: '1px solid rgba(255,255,255,0.6)',
+                boxShadow: '0 2px 12px rgba(61,122,58,0.08)',
+                transition: 'all 0.3s',
               }}
             >
-              {/* Tab pills — Buy / Rent */}
-              <div style={{ display: 'flex', background: '#f0f0f0', borderRadius: 30, padding: 3, flexShrink: 0, marginRight: 8 }}>
-                {[
-                  { key: 'sale', label: 'ซื้อ' },
-                  { key: 'rent', label: 'เช่า' },
-                ].map(t => (
-                  <button key={t.key} type="button" onClick={() => setActiveTab(t.key)}
-                    style={{
-                      padding: '8px 18px',
-                      borderRadius: 26,
-                      border: 'none',
-                      background: activeTab === t.key ? brandGreen : 'transparent',
-                      color: activeTab === t.key ? '#fff' : '#888',
-                      fontWeight: 700, fontSize: '0.82rem',
-                      cursor: 'pointer', fontFamily: 'inherit',
-                      transition: 'all 0.2s',
-                      whiteSpace: 'nowrap',
-                    }}>
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Divider */}
-              <div style={{ width: 1, height: 28, background: '#e0e0e0', flexShrink: 0 }} />
-
-              {/* Location input */}
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 12px', gap: 8, minWidth: 0 }}>
-                <i className="fas fa-map-marker-alt" style={{ color: '#aaa', flexShrink: 0, fontSize: '0.9rem' }} />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  onFocus={() => setShowHomeSuggest(true)}
-                  onBlur={() => setTimeout(() => setShowHomeSuggest(false), 150)}
-                  placeholder="ทำเล, จังหวัด หรือ BTS/MRT"
-                  style={{ flex: 1, border: 'none', outline: 'none', fontSize: '0.88rem', background: 'transparent', fontFamily: 'inherit', color: '#1A8C6E', minWidth: 0 }}
-                />
-                {searchTerm && (
-                  <button type="button" onClick={() => setSearchTerm('')} style={{ border: 'none', background: 'none', color: '#ccc', cursor: 'pointer', padding: 0, fontSize: '0.8rem' }}>
-                    <i className="fas fa-times" />
-                  </button>
-                )}
-              </div>
-
-              {/* Divider */}
-              <div style={{ width: 1, height: 28, background: '#e0e0e0', flexShrink: 0 }} />
-
-              {/* Property Type dropdown */}
-              <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px', gap: 6, flexShrink: 0, position: 'relative' }}>
-                <i className="fas fa-building" style={{ color: '#aaa', fontSize: '0.85rem' }} />
-                <select
-                  value={heroPropertyType}
-                  onChange={e => setHeroPropertyType(e.target.value)}
-                  style={{
-                    border: 'none', outline: 'none',
-                    background: 'transparent', color: '#1A8C6E',
-                    fontSize: '0.84rem', fontWeight: 600,
-                    fontFamily: 'inherit', cursor: 'pointer',
-                    appearance: 'none', WebkitAppearance: 'none',
-                    paddingRight: 16,
-                  }}
-                >
-                  <option value="">ประเภททรัพย์</option>
-                  <option value="condo">คอนโด</option>
-                  <option value="house">บ้านเดี่ยว</option>
-                  <option value="townhouse">ทาวน์เฮ้าส์</option>
-                  <option value="townhome">ทาวน์โฮม</option>
-                  <option value="land">ที่ดิน</option>
-                  <option value="commercial">อาคารพาณิชย์</option>
-                  <option value="home_office">โฮมออฟฟิศ</option>
-                  <option value="warehouse">โกดัง/โรงงาน</option>
-                </select>
-                <i className="fas fa-chevron-down" style={{ color: '#aaa', fontSize: '0.6rem', position: 'absolute', right: 12 }} />
-              </div>
-
-              {/* Search button — circle */}
+              <i className="fas fa-search" style={{ color: 'rgba(26,58,24,0.4)', fontSize: '0.9rem', flexShrink: 0 }} />
+              <input
+                type="text" value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                onFocus={() => setShowHomeSuggest(true)}
+                onBlur={() => setTimeout(() => setShowHomeSuggest(false), 150)}
+                placeholder="ค้นหาทำเล, โครงการ, จังหวัด..."
+                style={{
+                  flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                  color: '#1a3a18', fontSize: '1.05rem', fontFamily: "'Prompt', sans-serif",
+                  fontWeight: 300, letterSpacing: '0.01em',
+                }}
+              />
+              {searchTerm && (
+                <button type="button" onClick={() => setSearchTerm('')}
+                  style={{ border: 'none', background: 'none', color: 'rgba(26,58,24,0.4)', cursor: 'pointer', padding: 0, fontSize: '0.9rem' }}>
+                  <i className="fas fa-times" />
+                </button>
+              )}
               <button type="submit" style={{
-                width: 48, height: 48, borderRadius: '50%',
-                background: brandGreen, color: '#fff', border: 'none',
+                background: '#2d5e2b', border: 'none', color: '#fff', cursor: 'pointer',
+                width: 36, height: 36, borderRadius: 8, flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', flexShrink: 0,
-                fontSize: '1.1rem',
-                boxShadow: '0 4px 16px rgba(0,50,42,0.3)',
-                transition: 'transform 0.15s, box-shadow 0.15s',
+                fontSize: '0.85rem', transition: 'all 0.25s',
+                boxShadow: '0 2px 8px rgba(45,94,43,0.25)',
               }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.08)'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#1a3a18'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#2d5e2b'; e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                <i className="fas fa-search" />
+                <i className="fas fa-arrow-right" />
               </button>
             </form>
-
-            {/* Suggestion dropdown */}
             <SearchSuggestBox
-              visible={showHomeSuggest}
-              inputValue={searchTerm}
+              visible={showHomeSuggest} inputValue={searchTerm}
               onSelect={val => setSearchTerm(val)}
               onClose={() => setShowHomeSuggest(false)}
               activeFilters={{ listing_type: activeTab, property_type: heroPropertyType }}
             />
           </div>
-
-          {/* CTA below search */}
-          <div style={{ marginTop: 32, display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
-            <Link to="/search" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '14px 36px', background: '#c9a84c', color: '#fff',
-              borderRadius: 0, textDecoration: 'none',
-              fontSize: '0.88rem', fontWeight: 700,
-              fontFamily: "'Manrope', sans-serif",
-              letterSpacing: '0.08em',
-              transition: 'all 0.3s',
-              boxShadow: '0 4px 24px rgba(201,168,76,0.3)',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#b8943f'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = '#c9a84c'; e.currentTarget.style.transform = 'translateY(0)'; }}
-            >
-              ดูทรัพย์ทั้งหมด
-              <i className="fas fa-arrow-right" style={{ fontSize: '0.75rem' }} />
-            </Link>
-            <Link to="/contact" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '14px 36px',
-              background: 'transparent', color: '#fff',
-              border: '1.5px solid rgba(255,255,255,0.3)',
-              borderRadius: 0, textDecoration: 'none',
-              fontSize: '0.88rem', fontWeight: 700,
-              fontFamily: "'Manrope', sans-serif",
-              letterSpacing: '0.08em',
-              transition: 'all 0.3s',
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'; }}
-            >
-              <i className="fas fa-phone-alt" style={{ fontSize: '0.75rem' }} />
-              ติดต่อเรา
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* === STATS STRIP — architectural grid, no borders === */}
-      <section style={{ background: brandGreen, padding: '0' }}>
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 0 }}>
-            {[
-              { value: stats.total > 0 ? `${stats.total}+` : '—',   label: 'ทรัพย์ทั้งหมด',    icon: 'fa-building' },
-              { value: stats.for_sale > 0 ? `${stats.for_sale}` : '—', label: 'รายการขาย',      icon: 'fa-tag' },
-              { value: stats.for_rent > 0 ? `${stats.for_rent}` : '—', label: 'รายการเช่า',    icon: 'fa-key' },
-              { value: stats.province_count > 0 ? `${stats.province_count} จังหวัด` : '—', label: 'ครอบคลุม', icon: 'fa-map-marker-alt' },
-            ].map((s, i, arr) => (
-              <div key={i} style={{
-                flex: '1 1 140px', textAlign: 'center', padding: '36px 20px',
-                borderRight: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-              }}>
-                <div style={{ marginBottom: 10 }}>
-                  <i className={`fas ${s.icon}`} style={{ fontSize: '0.85rem', color: '#c9a84c' }} />
-                </div>
-                <div style={{ fontFamily: "'Noto Serif Thai', serif", fontWeight: 400, fontSize: '1.7rem', color: '#fff', lineHeight: 1.1, letterSpacing: '-0.02em' }}>{s.value}</div>
-                <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.5)', marginTop: 8, letterSpacing: '0.08em', textTransform: 'uppercase', fontFamily: "'Manrope', sans-serif", fontWeight: 600 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* === HERO — Full-screen Slideshow (Sotheby's Style) === */}
+      <style>{`
+        @keyframes heroKenBurns {
+          0% { transform: scale(1.0); }
+          100% { transform: scale(1.08); }
+        }
+        .hero-slide-bg { position: absolute; inset: 0; will-change: opacity; }
+        .hero-slide-bg img {
+          width: 100%; height: 100%; object-fit: cover; object-position: center;
+          animation: heroKenBurns ${HERO_INTERVAL / 1000 + 1}s ease-out forwards;
+        }
+        .hero-slide-bg.active { opacity: 1; z-index: 1; }
+        .hero-slide-bg.inactive { opacity: 0; z-index: 0; }
+      `}</style>
+      <section style={{ position: 'relative', height: 'calc(100vh - 180px)', minHeight: 480, overflow: 'hidden' }}
+        onTouchStart={e => { heroTouchRef.current.startX = e.touches[0].clientX; }}
+        onTouchEnd={e => {
+          const dx = e.changedTouches[0].clientX - heroTouchRef.current.startX;
+          if (Math.abs(dx) > 50) { dx < 0 ? heroNext() : heroPrev(); }
+        }}
+      >
 
-      {/* === PROPERTY TYPE ICONS — clean, no emojis, tonal cards === */}
-      <section style={{ background: 'var(--surface-lowest)', padding: '52px 0 48px' }}>
-        <div className="container">
-          {/* Header row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
-            <div>
-              <div className="section-eyebrow" style={{ marginBottom: 6 }}>Property Types</div>
-              <h3 style={{ margin: 0, fontSize: 'clamp(1.05rem,2.5vw,1.25rem)', fontWeight: 500, color: 'var(--on-surface)', fontFamily: "'Noto Serif Thai', serif" }}>
-                ค้นหาตามประเภทอสังหาริมทรัพย์
-              </h3>
-            </div>
-            <Link to="/search" style={{ fontSize: '0.82rem', color: brandGreen, fontWeight: 700, textDecoration: 'none' }}>
-              ดูทั้งหมด
-            </Link>
+        {/* Slide backgrounds with Ken Burns zoom */}
+        {heroSlides.map((slide, i) => (
+          <div key={slide.id + '-' + i}
+            className={`hero-slide-bg ${i === heroIndex ? 'active' : 'inactive'}`}
+            style={{ transition: 'opacity 1.4s ease-in-out' }}
+          >
+            <img
+              key={heroIndex === i ? `active-${heroIndex}` : `idle-${i}`}
+              src={slide.isCover ? imgHeroCover : getPropertyImage(slide)}
+              alt={slide.isCover ? 'บ้าน D มีเชง' : slide.title}
+            />
           </div>
+        ))}
 
-          {/* Icon grid — unified color palette, no emojis */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(105px, 1fr))',
-            gap: 14,
-          }}>
-            {[
-              { icon: 'fa-building',    label: 'คอนโด',        type: 'condo' },
-              { icon: 'fa-home',        label: 'บ้านเดี่ยว',   type: 'house' },
-              { icon: 'fa-city',        label: 'ทาวน์เฮ้าส์',  type: 'townhouse' },
-              { icon: 'fa-house-user',  label: 'ทาวน์โฮม',     type: 'townhome' },
-              { icon: 'fa-mountain',    label: 'ที่ดิน',        type: 'land' },
-              { icon: 'fa-store',       label: 'อาคารพาณิชย์', type: 'commercial' },
-              { icon: 'fa-hotel',       label: 'อพาร์ทเม้นท์', type: 'apartment' },
-              { icon: 'fa-briefcase',   label: 'โฮมออฟฟิศ',    type: 'home_office' },
-              { icon: 'fa-warehouse',   label: 'โกดัง/โรงงาน', type: 'warehouse' },
-            ].map(pt => (
-              <Link
-                key={pt.type}
-                to={`/search?property_type=${pt.type}`}
-                style={{ textDecoration: 'none' }}
-              >
-                <div
-                  style={{
-                    display: 'flex', flexDirection: 'column', alignItems: 'center',
-                    gap: 10, padding: '22px 10px 18px',
-                    borderRadius: 14, background: 'var(--surface-low)', cursor: 'pointer',
-                    transition: 'all 0.22s', position: 'relative', overflow: 'hidden',
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = brandGreen;
-                    e.currentTarget.style.boxShadow = '0 8px 28px rgba(0,50,42,0.15)';
-                    e.currentTarget.style.transform = 'translateY(-4px)';
-                    const icon = e.currentTarget.querySelector('i');
-                    const label = e.currentTarget.querySelector('.type-label');
-                    if (icon) icon.style.color = '#fff';
-                    if (label) label.style.color = '#fff';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = 'var(--surface-low)';
-                    e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    const icon = e.currentTarget.querySelector('i');
-                    const label = e.currentTarget.querySelector('.type-label');
-                    if (icon) icon.style.color = brandGreen;
-                    if (label) label.style.color = 'var(--on-surface)';
-                  }}
-                >
-                  {/* Icon */}
-                  <div style={{
-                    width: 50, height: 50, borderRadius: '50%',
-                    background: `${brandGreen}0c`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'all 0.22s',
-                  }}>
-                    <i className={`fas ${pt.icon}`} style={{ fontSize: '1.3rem', color: brandGreen, transition: 'color 0.22s' }} />
+        {/* Cinematic gradient overlay — deeper, more atmospheric */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 2, background: 'linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.08) 35%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.82) 100%)', pointerEvents: 'none' }} />
+
+        {/* Content overlay */}
+        <div style={{ position: 'relative', zIndex: 3, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+
+          {/* Property info — Sotheby's style: vertically centered, left-aligned */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 clamp(24px, 5vw, 80px)' }}>
+            <div style={{ maxWidth: 700, width: '100%' }}>
+              {heroSlides[heroIndex]?.isCover ? (
+                /* === Slide 0: Cover branding — Sotheby's editorial === */
+                <>
+                  <div style={{ width: 48, height: 1, background: 'rgba(255,255,255,0.4)', marginBottom: 20 }} />
+                  <div style={{ fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', marginBottom: 18, fontFamily: "'Manrope', sans-serif" }}>
+                    Curated Properties
                   </div>
-                  {/* Label */}
-                  <span className="type-label" style={{
-                    fontSize: '0.76rem', fontWeight: 700,
-                    color: 'var(--on-surface)', textAlign: 'center', lineHeight: 1.3,
-                    transition: 'color 0.22s',
-                  }}>{pt.label}</span>
-                </div>
-              </Link>
-            ))}
+                  <h1 style={{ color: '#fff', fontSize: 'clamp(2.6rem, 7vw, 4.2rem)', fontFamily: "'Prompt', sans-serif", fontWeight: 500, letterSpacing: '-0.02em', margin: '0 0 20px', lineHeight: 1.08, textShadow: '0 2px 40px rgba(0,0,0,0.4)' }}>
+                    ทรัพย์รีโนเวทพร้อมอยู่
+                  </h1>
+                  <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1.05rem', margin: '0 0 22px', fontFamily: "'Prompt', sans-serif", fontWeight: 300, lineHeight: 1.8, maxWidth: 520 }}>
+                    อสังหาริมทรัพย์คัดสรรโดย บ้าน D มีเชง<br />คุณภาพครบ ราคาเป็นธรรม ตรวจสอบโฉนดแล้วทุกรายการ
+                  </p>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: '0.72rem', color: 'rgba(255,255,255,0.45)', fontFamily: "'Manrope', sans-serif", letterSpacing: '0.04em' }}>
+                    <i className="fas fa-shield-alt" style={{ fontSize: '0.6rem' }} />
+                    ทรัพย์ทุกรายการผ่านการตรวจสอบโฉนดแล้ว
+                  </div>
+                </>
+              ) : heroSlides[heroIndex] ? (
+                /* === Slides 1+: Featured property — Sotheby's layout === */
+                (() => {
+                  const s = heroSlides[heroIndex];
+                  const bigTitle = s.title || (s.district ? `${s.district}` : s.province) || 'ทรัพย์แนะนำ';
+                  const locationLine = s.province ? (s.district && s.title ? `${s.district}, ${s.province}` : (!s.title && s.district ? s.province : (s.district ? `${s.district}, ${s.province}` : s.province))) : '';
+                  const typeLabel = s.property_type && typeLabels[s.property_type] ? typeLabels[s.property_type] : '';
+                  return <>
+                    <div style={{ width: 48, height: 1, background: 'rgba(255,255,255,0.4)', marginBottom: 20 }} />
+                    {typeLabel && (
+                      <div style={{ fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', marginBottom: 14, fontFamily: "'Manrope', sans-serif" }}>
+                        {typeLabel}
+                      </div>
+                    )}
+                    <h1 style={{
+                      color: '#fff', fontSize: 'clamp(2.6rem, 8vw, 4.2rem)',
+                      fontFamily: "'Prompt', sans-serif", fontWeight: 500,
+                      letterSpacing: '-0.02em', margin: '0 0 16px', lineHeight: 1.08,
+                      textShadow: '0 2px 40px rgba(0,0,0,0.4)',
+                    }}>
+                      {bigTitle}
+                    </h1>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginBottom: 24 }}>
+                      {locationLine && (
+                        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1rem', fontFamily: "'Prompt', sans-serif", fontWeight: 300, letterSpacing: '0.01em' }}>
+                          <i className="fas fa-map-marker-alt" style={{ fontSize: '0.75rem', marginRight: 6, opacity: 0.7 }} />
+                          {locationLine}
+                        </span>
+                      )}
+                      {s.price_requested > 0 && (
+                        <>
+                          {locationLine && <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.6rem' }}>|</span>}
+                          <span style={{ color: '#fff', fontWeight: 600, fontSize: '1.15rem', fontFamily: "'Prompt', sans-serif", letterSpacing: '0.01em' }}>
+                            {formatPrice(s.price_requested)}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    <Link
+                      to={`/property/${s.id}`}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 12,
+                        color: '#fff', textDecoration: 'none',
+                        fontSize: '0.78rem', fontWeight: 700, fontFamily: "'Manrope', sans-serif",
+                        letterSpacing: '0.16em', textTransform: 'uppercase',
+                        transition: 'all 0.35s', borderBottom: '1px solid rgba(255,255,255,0.35)',
+                        paddingBottom: 5,
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.letterSpacing = '0.22em'; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)'; e.currentTarget.style.letterSpacing = '0.16em'; }}
+                    >
+                      ดูรายละเอียด <i className="fas fa-long-arrow-alt-right" style={{ fontSize: '1rem' }} />
+                    </Link>
+                  </>;
+                })()
+              ) : null}
+            </div>
+          </div>
+
+          {/* Bottom: Navigation + Progress bar — Sotheby's minimal */}
+          <div style={{ padding: '0 clamp(20px, 5vw, 80px) 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 8, paddingBottom: 18 }}>
+              {heroSlides.length > 1 && (
+                <>
+                  <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.72rem', fontFamily: "'Manrope', sans-serif", fontWeight: 500, letterSpacing: '0.12em', marginRight: 14 }}>
+                    {String(heroIndex + 1).padStart(2, '0')} <span style={{ opacity: 0.4 }}>/</span> {String(heroSlides.length).padStart(2, '0')}
+                  </span>
+                  <button onClick={heroPrev} style={{
+                    width: 46, height: 46, borderRadius: 0, background: 'transparent',
+                    border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.8)', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '0.75rem', transition: 'all 0.35s',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; }}
+                  >
+                    <i className="fas fa-arrow-left" />
+                  </button>
+                  <button onClick={heroNext} style={{
+                    width: 46, height: 46, borderRadius: 0, background: 'transparent',
+                    border: '1px solid rgba(255,255,255,0.25)', color: 'rgba(255,255,255,0.8)', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '0.75rem', transition: 'all 0.35s',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; }}
+                  >
+                    <i className="fas fa-arrow-right" />
+                  </button>
+                </>
+              )}
+            </div>
+            {/* Progress bar — thin elegant lines */}
+            {heroSlides.length > 1 && (
+              <div style={{ display: 'flex', gap: 6, paddingBottom: 28 }}>
+                {heroSlides.map((_, i) => (
+                  <button key={i} onClick={() => heroGo(i)} style={{
+                    flex: 1, height: 2, padding: 0, border: 'none', cursor: 'pointer',
+                    background: 'rgba(255,255,255,0.15)', position: 'relative', overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      position: 'absolute', left: 0, top: 0, height: '100%',
+                      background: 'rgba(255,255,255,0.85)',
+                      width: i < heroIndex ? '100%' : i === heroIndex ? `${heroProgress}%` : '0%',
+                      transition: i === heroIndex ? 'none' : 'width 0.3s ease',
+                    }} />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
+
+      {/* Stats Strip & Property Type Icons ถูกเอาออก — เจ้านายว่ารก */}
 
       {/* BTSMapSection ถูกเอาออก — เจ้านายไม่ชอบ, ใช้ search suggest แทน */}
 
-      {/* === Popular Locations — Photo Cards Carousel === */}
+      {/* === Popular Locations — Dark theme === */}
       <section style={{ padding: '56px 0 52px', background: 'var(--surface-low)' }}>
-        <style>{`#loc-carousel::-webkit-scrollbar { display: none; }`}</style>
+        <style>{`
+          #loc-carousel::-webkit-scrollbar { display: none; }
+          .loc-card { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; flex-shrink: 0; scroll-snap-align: start; }
+          .loc-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+          .loc-card:hover img { transform: scale(1.08); }
+          .loc-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.12) 50%, rgba(0,0,0,0.04) 100%); transition: background 0.3s; pointer-events: none; }
+          .loc-card:hover::after { background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.05) 100%); }
+          .loc-card .loc-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 16px; z-index: 2; }
+          .loc-card .loc-name { color: #fff; font-weight: 800; font-size: 1.1rem; text-shadow: 0 1px 6px rgba(0,0,0,0.5); line-height: 1.2; }
+          .loc-card .loc-sub-text { color: rgba(255,255,255,0.7); font-size: 0.72rem; font-weight: 500; margin-top: 2px; }
+          .loc-card .loc-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 5px 14px; background: rgba(255,255,255,0.95); color: #1a3a18; font-size: 0.72rem; font-weight: 700; border-radius: 20px; opacity: 0; transform: translateY(8px); transition: opacity 0.3s, transform 0.3s; }
+          .loc-card:hover .loc-cta { opacity: 1; transform: translateY(0); }
+          .loc-card .loc-region { position: absolute; top: 12px; right: 12px; z-index: 2; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); color: #fff; font-size: 0.65rem; font-weight: 700; border-radius: 20px; padding: 3px 10px; }
+        `}</style>
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
             <div>
               <div className="section-eyebrow" style={{ marginBottom: 6 }}>Prime Destinations</div>
-              <h2 style={{ fontWeight: 500, margin: '0 0 4px', fontSize: 'clamp(1.05rem,2.5vw,1.3rem)', color: 'var(--on-surface)', fontFamily: "'Noto Serif Thai', serif" }}>
+              <h2 style={{ fontWeight: 500, margin: '0 0 4px', fontSize: 'clamp(1.05rem,2.5vw,1.3rem)', color: 'var(--on-surface)', fontFamily: "'Prompt', sans-serif" }}>
                 ทำเล<span style={{ color: brandGreen }}>ยอดนิยม</span>
               </h2>
               <p style={{ color: 'var(--outline)', fontSize: '0.82rem', margin: 0 }}>เลือกทำเลที่คุณสนใจ ดูทรัพย์ในพื้นที่นั้นได้ทันที</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              {/* Arrow buttons */}
               {[{ dir: -1, icon: 'fa-chevron-left' }, { dir: 1, icon: 'fa-chevron-right' }].map(({ dir, icon }) => (
                 <button key={dir} onClick={() => scrollLoc(dir)} style={{
-                  width: 32, height: 32, borderRadius: '50%', border: `1.5px solid ${brandGreen}`,
+                  width: 36, height: 36, borderRadius: '50%', border: `1.5px solid ${brandGreen}`,
                   background: '#fff', color: brandGreen, cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  transition: 'all 0.15s', flexShrink: 0,
+                  transition: 'all 0.15s', flexShrink: 0, padding: 0,
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.background = brandGreen; e.currentTarget.style.color = '#fff'; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = brandGreenBg; e.currentTarget.style.color = '#1a3a18'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = brandGreen; }}
                 >
                   <i className={`fas ${icon}`} style={{ fontSize: '0.7rem' }} />
                 </button>
               ))}
-              <Link to="/search" style={{ color: brandGreen, fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none', marginLeft: 4 }}>ทั้งหมด →</Link>
+              <Link to="/search" style={{ color: brandGreen, fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none', marginLeft: 4, whiteSpace: 'nowrap' }}>ทั้งหมด →</Link>
             </div>
           </div>
 
-          {/* Horizontal scroll carousel */}
+          {/* Bento grid — 2 rows, scrollable horizontally with drag + arrows */}
           <div id="loc-carousel" ref={locScrollRef}
             onMouseDown={onLocMouseDown}
             onMouseMove={onLocMouseMove}
             onMouseUp={onLocMouseUp}
             onMouseLeave={onLocMouseUp}
             style={{
-              display: 'flex', gap: 14, overflowX: 'auto',
-              scrollSnapType: 'x proximity', scrollbarWidth: 'none',
-              WebkitOverflowScrolling: 'touch', paddingBottom: 4,
+              display: 'grid',
+              gridTemplateRows: '1fr 1fr',
+              gridAutoFlow: 'column',
+              gridAutoColumns: 'minmax(220px, 280px)',
+              gap: 12,
+              overflowX: 'auto',
+              scrollSnapType: 'x proximity',
+              scrollbarWidth: 'none',
+              WebkitOverflowScrolling: 'touch',
+              paddingBottom: 4,
               cursor: 'grab',
+              minHeight: 420,
             }}>
             {[
-              { name: 'สุขุมวิท',      sub: 'กรุงเทพฯ',    search: 'สุขุมวิท',  province: 'กรุงเทพมหานคร', img: imgSukhumvit  },
+              { name: 'สุขุมวิท',      sub: 'กรุงเทพฯ',    search: 'สุขุมวิท',  province: 'กรุงเทพมหานคร', img: imgSukhumvit,  span: true  },
               { name: 'พระราม 9',      sub: 'กรุงเทพฯ',    search: 'พระราม 9',  province: 'กรุงเทพมหานคร', img: imgRama9      },
               { name: 'อโศก–ทองหล่อ', sub: 'กรุงเทพฯ',    search: 'อโศก',      province: 'กรุงเทพมหานคร', img: imgAsok       },
               { name: 'บางนา',         sub: 'กรุงเทพฯ',    search: 'บางนา',     province: 'กรุงเทพมหานคร', img: imgBangna     },
-              { name: 'สาทร–สีลม',    sub: 'กรุงเทพฯ',    search: 'สาทร',      province: 'กรุงเทพมหานคร', img: imgSathorn    },
+              { name: 'สาทร–สีลม',    sub: 'กรุงเทพฯ',    search: 'สาทร',      province: 'กรุงเทพมหานคร', img: imgSathorn,   span: true  },
               { name: 'ลาดพร้าว',      sub: 'กรุงเทพฯ',    search: 'ลาดพร้าว', province: 'กรุงเทพมหานคร', img: imgLadprao    },
               { name: 'เชียงใหม่',     sub: 'ภาคเหนือ',    province: 'เชียงใหม่', img: imgChiangmai  },
-              { name: 'ชลบุรี–พัทยา', sub: 'ภาคตะวันออก', province: 'ชลบุรี',   img: imgPattaya    },
+              { name: 'ชลบุรี–พัทยา', sub: 'ภาคตะวันออก', province: 'ชลบุรี',   img: imgPattaya,   span: true  },
               { name: 'ภูเก็ต',        sub: 'ภาคใต้',      province: 'ภูเก็ต',    img: imgPhuket     },
               { name: 'นนทบุรี',       sub: 'ปริมณฑล',     province: 'นนทบุรี',   img: imgNonthaburi },
             ].map(loc => {
-              // สร้าง URL: ทำเลกรุงเทพ → province + search, จังหวัดอื่น → province เท่านั้น
               const params = new URLSearchParams({ page: '1' });
               if (loc.province) params.set('province', loc.province);
               if (loc.search) params.set('search', loc.search);
@@ -554,55 +608,19 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
                 <Link
                   key={loc.name}
                   to={`/search?${params.toString()}`}
-                  style={{ textDecoration: 'none', flexShrink: 0, scrollSnapAlign: 'start' }}
+                  className="loc-card"
+                  style={{
+                    textDecoration: 'none',
+                    gridRow: loc.span ? 'span 2' : 'auto',
+                    minHeight: loc.span ? 420 : 200,
+                  }}
                   onClick={e => { if (locDragObj.current.state.moved) e.preventDefault(); }}
                 >
-                  <div
-                    style={{
-                      width: 200, height: 155, borderRadius: 16,
-                      position: 'relative', overflow: 'hidden', cursor: 'pointer',
-                      boxShadow: '0 4px 18px rgba(0,0,0,0.16)',
-                      transition: 'transform 0.28s ease, box-shadow 0.28s ease',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.transform = 'translateY(-4px)';
-                      e.currentTarget.style.boxShadow = '0 14px 36px rgba(0,0,0,0.28)';
-                      const img = e.currentTarget.querySelector('img');
-                      if (img) img.style.transform = 'scale(1.1)';
-                      const line = e.currentTarget.querySelector('.loc-line');
-                      if (line) line.style.opacity = '1';
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 4px 18px rgba(0,0,0,0.16)';
-                      const img = e.currentTarget.querySelector('img');
-                      if (img) img.style.transform = 'scale(1)';
-                      const line = e.currentTarget.querySelector('.loc-line');
-                      if (line) line.style.opacity = '0';
-                    }}
-                  >
-                    {/* Photo */}
-                    <img
-                      src={loc.img} alt={loc.name} draggable={false}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.45s ease' }}
-                    />
-                    {/* Vignette overlay */}
-                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 55%, rgba(0,0,0,0.06) 100%)' }} />
-                    {/* Region tag — top right */}
-                    <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,0.42)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)', color: 'rgba(255,255,255,0.88)', fontSize: '0.6rem', fontWeight: 600, borderRadius: 10, padding: '2px 8px' }}>
-                      {loc.sub}
-                    </div>
-                    {/* Bottom text */}
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '0 13px 12px' }}>
-                      <div style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', letterSpacing: '-0.01em', lineHeight: 1.2, textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
-                        {loc.name}
-                      </div>
-                      <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.67rem', marginTop: 3 }}>
-                        ดูทรัพย์ในพื้นที่นี้ →
-                      </div>
-                    </div>
-                    {/* Brand accent line — animates on hover */}
-                    <div className="loc-line" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${brandGreen}, #34d399)`, opacity: 0, transition: 'opacity 0.25s' }} />
+                  <img src={loc.img} alt={loc.name} draggable={false} />
+                  <div className="loc-region">{loc.sub}</div>
+                  <div className="loc-info">
+                    <div className="loc-name">{loc.name}</div>
+                    <div className="loc-cta">ดูทรัพย์ <i className="fas fa-chevron-right" style={{ fontSize: '0.6rem' }} /></div>
                   </div>
                 </Link>
               );
@@ -635,27 +653,46 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
         </div>
       </section>
 
-      {/* === FEATURED PROPERTIES === */}
+      {/* === FEATURED PROPERTIES — 1 Large + 2 Small Grid === */}
       <section style={{ background: 'var(--surface-low)', padding: '56px 0 52px' }}>
-        <style>{`#feat-carousel::-webkit-scrollbar { display: none; }`}</style>
+        <style>{`
+          #feat-carousel::-webkit-scrollbar { display: none; }
+          .feat-grid { display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 1fr 1fr; gap: 16px; min-height: 480px; }
+          .feat-grid .feat-main { grid-row: 1 / 3; }
+          .feat-grid .feat-main .prop-card { height: 100%; }
+          .feat-grid .feat-main .prop-card > div:first-child { padding-top: 0 !important; height: 100% !important; }
+          .feat-grid .feat-side .prop-card { height: 100%; }
+          .feat-grid .feat-side .prop-card > div:first-child { padding-top: 0 !important; height: 100% !important; }
+          .feat-grid-2 { grid-template-rows: 1fr; }
+          .feat-grid-2 .feat-side { grid-row: 1 / 2; }
+          @media (max-width: 768px) {
+            .feat-grid { display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-bottom: 8px; cursor: grab; min-height: auto; }
+            .feat-grid > div { flex-shrink: 0; width: 82vw; scroll-snap-align: start; }
+            .feat-grid .feat-main { grid-row: auto; }
+            .feat-grid .feat-main .prop-card > div:first-child { padding-top: 72% !important; height: auto !important; }
+          }
+        `}</style>
         <div className="container">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
               <div className="section-eyebrow" style={{ marginBottom: 6 }}>Curated Selection</div>
-              <h3 style={{ fontFamily: "'Noto Serif Thai', serif", fontWeight: 500, fontSize: 'clamp(1.05rem,2.5vw,1.3rem)', color: 'var(--on-surface)', margin: '0 0 4px' }}>ทรัพย์สิน<span style={{ color: brandGreen }}>แนะนำ</span></h3>
+              <h3 style={{ fontFamily: "'Prompt', sans-serif", fontWeight: 500, fontSize: 'clamp(1.05rem,2.5vw,1.3rem)', color: 'var(--on-surface)', margin: '0 0 4px' }}>ทรัพย์สิน<span style={{ color: brandGreen }}>แนะนำ</span></h3>
               <p style={{ color: 'var(--outline)', fontSize: '0.82rem', margin: 0 }}>ทรัพย์ที่ บ้าน D มีเชง รีโนเวทเองทุกหลัง พร้อมเข้าอยู่</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              {[{ dir: -1, icon: 'fa-chevron-left' }, { dir: 1, icon: 'fa-chevron-right' }].map(({ dir, icon }) => (
-                <button key={dir} onClick={() => scrollFeat(dir)} style={{
-                  width: 32, height: 32, borderRadius: '50%', border: `1.5px solid ${brandGreen}`,
-                  background: '#fff', color: brandGreen, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, padding: 0,
-                }}>
-                  <i className={`fas ${icon}`} style={{ fontSize: '0.7rem' }} />
-                </button>
-              ))}
+              {/* Arrows only show on mobile (handled via CSS) */}
+              <div className="d-md-none d-flex" style={{ gap: 6 }}>
+                {[{ dir: -1, icon: 'fa-chevron-left' }, { dir: 1, icon: 'fa-chevron-right' }].map(({ dir, icon }) => (
+                  <button key={dir} onClick={() => scrollFeat(dir)} style={{
+                    width: 32, height: 32, borderRadius: '50%', border: `1.5px solid ${brandGreen}`,
+                    background: '#fff', color: brandGreen, cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, padding: 0,
+                  }}>
+                    <i className={`fas ${icon}`} style={{ fontSize: '0.7rem' }} />
+                  </button>
+                ))}
+              </div>
               <Link to="/search?is_featured=1" className="btn btn-outline-success rounded-pill px-4 fw-bold ms-2">
                 ดูทั้งหมด <i className="fas fa-arrow-right ms-1"></i>
               </Link>
@@ -664,14 +701,13 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
 
           {loading ? (
             <div style={{ display: 'flex', gap: 16, overflow: 'hidden' }}>
-              {[...Array(4)].map((_, i) => (
-                <div key={i} style={{ flexShrink: 0, width: 260 }}>
-                  <div style={{ background: '#fff', borderRadius: 8, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
-                    <div className="skeleton-box" style={{ height: 170, borderRadius: 0 }} />
+              {[...Array(3)].map((_, i) => (
+                <div key={i} style={{ flexShrink: 0, flex: i === 0 ? 1.15 : 1 }}>
+                  <div style={{ background: '#fff', borderRadius: 12, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+                    <div className="skeleton-box" style={{ height: i === 0 ? 340 : 160, borderRadius: 0 }} />
                     <div style={{ padding: '14px 16px' }}>
                       <div className="skeleton-box" style={{ height: 12, width: '60%', marginBottom: 10 }} />
-                      <div className="skeleton-box" style={{ height: 16, width: '85%', marginBottom: 12 }} />
-                      <div className="skeleton-box" style={{ height: 10, width: '50%' }} />
+                      <div className="skeleton-box" style={{ height: 16, width: '85%' }} />
                     </div>
                   </div>
                 </div>
@@ -679,18 +715,14 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
             </div>
           ) : featuredProperties.length > 0 ? (
             <div id="feat-carousel" ref={featScrollRef}
+              className={`feat-grid${featuredProperties.length <= 2 ? ' feat-grid-2' : ''}`}
               onMouseDown={onFeatMouseDown}
               onMouseMove={onFeatMouseMove}
               onMouseUp={onFeatMouseUp}
               onMouseLeave={onFeatMouseUp}
-              style={{
-                display: 'flex', gap: 16, overflowX: 'auto',
-                scrollSnapType: 'x proximity', scrollbarWidth: 'none',
-                WebkitOverflowScrolling: 'touch', paddingBottom: 8,
-                cursor: 'grab',
-              }}>
-              {featuredProperties.map(p => (
-                <div key={p.id} style={{ flexShrink: 0, width: 260, scrollSnapAlign: 'start' }}
+            >
+              {featuredProperties.slice(0, 3).map((p, i) => (
+                <div key={p.id} className={i === 0 ? 'feat-main' : 'feat-side'}
                   onClick={e => { if (featDrag.moved) e.preventDefault(); }}>
                   <PropertyCard property={p} />
                 </div>
@@ -712,7 +744,7 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
               <div className="section-eyebrow" style={{ marginBottom: 6 }}>New Arrivals</div>
-              <h3 style={{ fontFamily: "'Noto Serif Thai', serif", fontWeight: 500, fontSize: 'clamp(1.05rem,2.5vw,1.3rem)', color: 'var(--on-surface)', margin: '0 0 4px' }}>ประกาศ<span style={{ color: brandGreen }}>ล่าสุด</span></h3>
+              <h3 style={{ fontFamily: "'Prompt', sans-serif", fontWeight: 500, fontSize: 'clamp(1.05rem,2.5vw,1.3rem)', color: 'var(--on-surface)', margin: '0 0 4px' }}>ประกาศ<span style={{ color: brandGreen }}>ล่าสุด</span></h3>
               <p style={{ color: 'var(--outline)', fontSize: '0.82rem', margin: 0 }}>อสังหาริมทรัพย์ที่เพิ่งลงประกาศใหม่</p>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -760,7 +792,7 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
                 cursor: 'grab',
               }}>
               {latestProperties.map(p => (
-                <div key={p.id} style={{ flexShrink: 0, width: 260, scrollSnapAlign: 'start' }}
+                <div key={p.id} style={{ flexShrink: 0, width: 'clamp(300px, 42vw, 520px)', scrollSnapAlign: 'start' }}
                   onClick={e => { if (latDrag.moved) e.preventDefault(); }}>
                   <PropertyCard property={p} />
                 </div>
@@ -782,7 +814,7 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
             <div className="section-eyebrow" style={{ marginBottom: 10 }}>
               Our Distinction
             </div>
-            <h2 style={{ fontWeight: 400, margin: '0 0 10px', fontSize: 'clamp(1.2rem,3vw,1.6rem)', color: 'var(--on-surface)', fontFamily: "'Noto Serif Thai', serif" }}>
+            <h2 style={{ fontWeight: 400, margin: '0 0 10px', fontSize: 'clamp(1.2rem,3vw,1.6rem)', color: 'var(--on-surface)', fontFamily: "'Prompt', sans-serif" }}>
               ทำไมต้องเลือก <span style={{ color: brandGreen }}>บ้าน D มีเชง</span>?
             </h2>
             <p style={{ color: 'var(--on-surface-variant)', margin: 0, fontSize: '0.9rem' }}>ทรัพย์ทุกหลังผ่านมือ บ้าน D มีเชง รีโนเวทเอง พร้อมทีมดูแลคุณตลอดกระบวนการ</p>
@@ -804,12 +836,12 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
               >
                 <div style={{
                   width: 60, height: 60, borderRadius: '50%',
-                  background: `${brandGreen}0c`,
+                  background: `${brandGreenBg}0c`,
                   margin: '0 auto 18px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <i className={`fas ${v.icon}`} style={{ fontSize: '1.4rem', color: brandGreen }} />
                 </div>
-                <div style={{ fontFamily: "'Noto Serif Thai', serif", fontWeight: 500, fontSize: '0.95rem', color: 'var(--on-surface)', marginBottom: 10 }}>{v.title}</div>
+                <div style={{ fontFamily: "'Prompt', sans-serif", fontWeight: 500, fontSize: '0.95rem', color: 'var(--on-surface)', marginBottom: 10 }}>{v.title}</div>
                 <div style={{ fontSize: '0.8rem', color: 'var(--on-surface-variant)', lineHeight: 1.7 }}>{v.desc}</div>
               </div>
             ))}
@@ -817,30 +849,29 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
         </div>
       </section>
 
-      {/* === FOOTER — Premium Editorial Dark === */}
-      <footer className="footer-premium" style={{ backgroundColor: '#147A5E', color: 'rgba(255,255,255,0.5)' }}>
-        {/* Gold accent line is added via CSS ::before */}
+      {/* === FOOTER — Light green matching navbar === */}
+      <footer className="footer-premium" style={{ backgroundColor: '#A1D99B', color: '#1a3a18' }}>
 
         {/* Top section: Brand statement */}
-        <div style={{ padding: '64px 0 48px', textAlign: 'center' }}>
+        <div style={{ padding: '56px 0 44px', textAlign: 'center', background: 'linear-gradient(180deg, #A1D99B 0%, #8fce86 100%)' }}>
           <div className="container">
-            <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 56, objectFit: 'contain', marginBottom: 20, opacity: 0.9 }} />
-            <h3 style={{ fontFamily: "'Noto Serif Thai', serif", fontWeight: 400, fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', color: '#fff', margin: '0 0 12px', letterSpacing: '-0.01em' }}>
+            <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 56, objectFit: 'contain', marginBottom: 20, opacity: 0.85 }} />
+            <h3 style={{ fontFamily: "'Prompt', sans-serif", fontWeight: 400, fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', color: '#1a3a18', margin: '0 0 12px', letterSpacing: '-0.01em' }}>
               ทรัพย์รีโนเวทพร้อมอยู่ โดย บ้าน D มีเชง
             </h3>
-            <p style={{ fontSize: '0.85rem', lineHeight: 1.8, maxWidth: 480, margin: '0 auto', color: 'rgba(255,255,255,0.4)' }}>
+            <p style={{ fontSize: '0.85rem', lineHeight: 1.8, maxWidth: 480, margin: '0 auto', color: 'rgba(26,58,24,0.7)' }}>
               คุณภาพครบ ราคาเป็นธรรม ตรวจสอบโฉนดแล้วทุกรายการ
             </p>
           </div>
         </div>
 
         {/* Links grid */}
-        <div style={{ background: 'rgba(0,0,0,0.15)', padding: '48px 0' }}>
+        <div style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.12) 100%)', padding: '48px 0' }}>
           <div className="container">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 40 }}>
               {/* Market Listings */}
               <div>
-                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#c9a84c', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>ทรัพย์สิน</div>
+                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#3d7a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>ทรัพย์สิน</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {[
                     { to: '/search?listing_type=sale', label: 'ทรัพย์ขาย' },
@@ -848,9 +879,9 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
                     { to: '/search?is_featured=1', label: 'ทรัพย์แนะนำ' },
                     { to: '/search', label: 'ค้นหาทั้งหมด' },
                   ].map((lnk, i) => (
-                    <Link key={i} to={lnk.to} style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.84rem', textDecoration: 'none', transition: 'color 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#c9a84c'}
-                      onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}
+                    <Link key={i} to={lnk.to} style={{ color: '#1a3a18', fontSize: '0.84rem', textDecoration: 'none', transition: 'color 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#1a3a18'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'rgba(26,58,24,0.55)'}
                     >{lnk.label}</Link>
                   ))}
                 </div>
@@ -858,16 +889,16 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
 
               {/* Support */}
               <div>
-                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#c9a84c', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>ช่วยเหลือ</div>
+                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#3d7a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>ช่วยเหลือ</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {[
                     { to: '/contact', label: 'ติดต่อเรา' },
                     { to: '/faq', label: 'คำถามที่พบบ่อย' },
                     { to: '/guide', label: 'คู่มือการใช้งาน' },
                   ].map((lnk, i) => (
-                    <Link key={i} to={lnk.to} style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.84rem', textDecoration: 'none', transition: 'color 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#c9a84c'}
-                      onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}
+                    <Link key={i} to={lnk.to} style={{ color: '#1a3a18', fontSize: '0.84rem', textDecoration: 'none', transition: 'color 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.color = '#1a3a18'}
+                      onMouseLeave={e => e.currentTarget.style.color = 'rgba(26,58,24,0.55)'}
                     >{lnk.label}</Link>
                   ))}
                 </div>
@@ -875,17 +906,17 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
 
               {/* Contact info */}
               <div>
-                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#c9a84c', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>ติดต่อ</div>
+                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#3d7a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>ติดต่อ</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: '0.84rem' }}>
-                  <a href="tel:081-638-6966" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, transition: 'color 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#c9a84c'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}
+                  <a href="tel:081-638-6966" style={{ color: '#1a3a18', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, transition: 'color 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#1a3a18'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(26,58,24,0.55)'}
                   >
                     <i className="fas fa-phone-alt" style={{ fontSize: '0.72rem' }} /> 081-638-6966
                   </a>
-                  <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.45)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, transition: 'color 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#c9a84c'}
-                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}
+                  <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer" style={{ color: '#1a3a18', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, transition: 'color 0.2s' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#1a3a18'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(26,58,24,0.55)'}
                   >
                     <i className="fab fa-line" style={{ fontSize: '0.78rem' }} /> @loan_dd
                   </a>
@@ -894,7 +925,7 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
 
               {/* Social */}
               <div>
-                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#c9a84c', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>Follow Us</div>
+                <div style={{ fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: '0.72rem', color: '#3d7a3a', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 18 }}>Follow Us</div>
                 <div style={{ display: 'flex', gap: 12 }}>
                   {[
                     { icon: 'fab fa-facebook-f', href: 'https://www.facebook.com/share/1HWR1pe2XM/?mibextid=wwXIfr' },
@@ -903,15 +934,15 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
                   ].map((s, i) => (
                     <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
                       style={{
-                        width: 40, height: 40, borderRadius: 0,
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.08)',
+                        width: 40, height: 40, borderRadius: 8,
+                        background: 'rgba(26,58,24,0.06)',
+                        border: '1px solid rgba(26,58,24,0.12)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: 'rgba(255,255,255,0.4)', fontSize: '0.88rem',
+                        color: '#1a3a18', fontSize: '0.88rem',
                         transition: 'all 0.25s', textDecoration: 'none',
                       }}
-                      onMouseEnter={e => { e.currentTarget.style.background = '#c9a84c'; e.currentTarget.style.color = '#001a14'; e.currentTarget.style.borderColor = '#c9a84c'; }}
-                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                      onMouseEnter={e => { e.currentTarget.style.background = '#3d7a3a'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = '#3d7a3a'; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = 'rgba(26,58,24,0.06)'; e.currentTarget.style.color = 'rgba(26,58,24,0.45)'; e.currentTarget.style.borderColor = 'rgba(26,58,24,0.12)'; }}
                     >
                       <i className={s.icon} />
                     </a>
@@ -922,11 +953,11 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
           </div>
         </div>
 
-        {/* Bottom bar — no border, tonal shift */}
-        <div style={{ padding: '20px 0', background: 'rgba(0,0,0,0.2)' }}>
+        {/* Bottom bar — subtle darker shade */}
+        <div style={{ padding: '20px 0', background: 'rgba(0,0,0,0.08)' }}>
           <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-            <span style={{ fontSize: '0.72rem', letterSpacing: '0.06em', color: 'rgba(255,255,255,0.3)' }}>&copy; {new Date().getFullYear()} บ้าน D มีเชง Co., Ltd. All rights reserved.</span>
-            <span style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.25)', letterSpacing: '0.15em', fontWeight: 700, fontFamily: "'Manrope', sans-serif" }}>Bangkok &middot; Phuket &middot; Chiang Mai</span>
+            <span style={{ fontSize: '0.72rem', letterSpacing: '0.06em', color: 'rgba(26,58,24,0.6)' }}>&copy; {new Date().getFullYear()} บ้าน D มีเชง Co., Ltd. All rights reserved.</span>
+            <span style={{ fontSize: '0.68rem', color: 'rgba(26,58,24,0.55)', letterSpacing: '0.15em', fontWeight: 700, fontFamily: "'Manrope', sans-serif" }}>Bangkok &middot; Phuket &middot; Chiang Mai</span>
           </div>
         </div>
       </footer>

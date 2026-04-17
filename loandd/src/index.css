@@ -4,15 +4,16 @@
    ============================================= */
 
 /* -- Google Fonts -- */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Thai:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200;300;400;500;600;700;800&family=Noto+Serif+Thai:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* ── Brand Colors — Fresh Green Gradient + Gold ── */
-  --primary:             #1A8C6E;
+  --primary:             #3d7a3a;
+  --primary-bg:          #A1D99B;
   --primary-bright:      #2DB88E;
-  --primary-container:   #22A07C;
+  --primary-container:   #2d5e2b;
   --primary-fixed:       #8ED9BF;
-  --on-primary:          #ffffff;
+  --on-primary:          #1a3a18;
 
   --secondary:           #1A1A1A;
   --tertiary:            #C9A84C;
@@ -20,7 +21,7 @@
 
   /* ── Surfaces — Warm neutrals (Sotheby's inspired) ── */
   --surface:             #FAF9F7;
-  --surface-low:         #F3F2EF;
+  --surface-low:         #f0f9e8;
   --surface-lowest:      #ffffff;
   --surface-container:   #ECEAE6;
   --surface-high:        #E5E3DF;
@@ -31,21 +32,22 @@
   --outline-variant:     #D1D1D1;
 
   /* Legacy compat */
-  --brand-green:         #1A8C6E;
-  --brand-green-dark:    #147A5E;
-  --brand-green-light:   #8ED9BF;
+  --brand-green:         #3d7a3a;
+  --brand-green-bg:      #A1D99B;
+  --brand-green-dark:    #2d5e2b;
+  --brand-green-light:   #e8f5e6;
   --brand-navy:          #1A1A1A;
   --text-primary:        #1A1A1A;
   --text-secondary:      #6B6B6B;
   --white:               #ffffff;
 
   /* Gradient shortcuts — fresh vivid green */
-  --grad-green:          linear-gradient(135deg, #1A8C6E 0%, #2DB88E 100%);
+  --grad-green:          linear-gradient(135deg, #A1D99B 0%, #2DB88E 100%);
   --grad-gold:           linear-gradient(135deg, #C9A84C 0%, #E8D5A0 100%);
   --grad-green-gold:     linear-gradient(135deg, #22A07C 0%, #C9A84C 100%);
 
   /* ── Typography ── */
-  --font-heading:        'Noto Serif Thai', 'Noto Serif', Georgia, serif;
+  --font-heading:        'Prompt', 'Noto Serif Thai', Georgia, sans-serif;
   --font-body:           'Sarabun', 'Noto Sans Thai', sans-serif;
   --font-ui:             'Manrope', sans-serif;
 
@@ -53,7 +55,7 @@
   --shadow-sm:           0 1px 3px rgba(0,0,0,0.05);
   --shadow-md:           0 3px 4px -1px rgba(0,0,0,0.08), 0 2px 1px rgba(0,0,0,0.10), 0 -1px 1px rgba(0,0,0,0.04);
   --shadow-lg:           0 20px 60px rgba(0,0,0,0.07);
-  --shadow-hover:        0 20px 50px rgba(26,140,110,0.14);
+  --shadow-hover:        0 20px 50px rgba(61,122,58,0.14);
 
   /* ── Transitions (luxury = slower) ── */
   --ease-luxury:         cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -83,10 +85,10 @@ body {
   font-weight: 400;
 }
 
-/* Placeholder styling for dark-bg contact form */
+/* Placeholder styling for contact form */
 .detail-page-wrapper input::placeholder,
 .detail-page-wrapper textarea::placeholder {
-  color: rgba(255, 255, 255, 0.55) !important;
+  color: #999 !important;
   opacity: 1;
 }
 
@@ -245,12 +247,12 @@ img { max-width: 100%; height: auto; }
   transition: all 0.22s ease;
 }
 .type-icon-card:hover {
-  background: var(--primary);
-  box-shadow: 0 8px 32px rgba(0,50,42,0.14);
+  background: var(--primary-bg);
+  box-shadow: 0 8px 32px rgba(61,122,58,0.14);
   transform: translateY(-3px);
 }
-.type-icon-card:hover .type-icon-label { color: #fff !important; }
-.type-icon-card:hover i { color: #fff !important; }
+.type-icon-card:hover .type-icon-label { color: #1a3a18 !important; }
+.type-icon-card:hover i { color: #1a3a18 !important; }
 
 /* -- Scrollbar (subtle) -- */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -260,7 +262,7 @@ img { max-width: 100%; height: auto; }
 
 /* -- Legacy compat -- */
 .text-brand-green { color: var(--primary) !important; }
-.bg-brand-green   { background-color: var(--primary) !important; }
+.bg-brand-green   { background-color: var(--primary-bg) !important; }
 .border-brand     { border-color: var(--primary) !important; }
 
 /* -- Card no-border rule (quiet luxury: tonal layering only) -- */
@@ -274,12 +276,13 @@ img { max-width: 100%; height: auto; }
 
 /* -- Property Card: grayscale → color hover (editorial feel) -- */
 .prop-card .prop-card-img {
-  filter: grayscale(30%) brightness(0.97);
-  transition: filter 0.5s ease, transform 0.5s ease;
+  filter: grayscale(15%) brightness(0.98);
+  transition: filter 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .prop-card:hover .prop-card-img {
-  filter: grayscale(0%) brightness(1);
-  transform: scale(1.04);
+  filter: grayscale(0%) brightness(1.02);
+  transform: scale(1.07);
 }
 
 /* -- Hero editorial font — light weight = luxury (Sotheby's insight) -- */
@@ -290,13 +293,7 @@ img { max-width: 100%; height: auto; }
   line-height: 1.15;
 }
 
-/* -- Premium footer accent line -- */
-.footer-premium::before {
-  content: '';
-  display: block;
-  height: 2px;
-  background: linear-gradient(90deg, var(--tertiary) 0%, var(--primary) 50%, var(--tertiary) 100%);
-}
+/* -- Premium footer accent line (removed) -- */
 
 /* -- Skeleton Shimmer Loading -- */
 @keyframes skeletonShimmer {
@@ -329,7 +326,7 @@ img { max-width: 100%; height: auto; }
   inset: 0;
   z-index: 99999;
   pointer-events: none;
-  background: linear-gradient(135deg, #1A8C6E 0%, #147A5E 100%);
+  background: linear-gradient(135deg, #A1D99B 0%, #8BC683 100%);
   opacity: 0;
   transition: opacity 0.35s var(--ease-luxury);
 }
@@ -342,7 +339,7 @@ img { max-width: 100%; height: auto; }
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: #fff;
+  color: #1a3a18;
   opacity: 0;
   transition: opacity 0.25s ease 0.1s;
 }
@@ -373,3 +370,59 @@ img { max-width: 100%; height: auto; }
 .stagger-in > *:nth-child(6) { animation-delay: 0.3s; }
 .stagger-in > *:nth-child(7) { animation-delay: 0.35s; }
 .stagger-in > *:nth-child(8) { animation-delay: 0.4s; }
+
+/* -- Scroll Reveal Animation (Sotheby's / Knight Frank style) -- */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-reveal-delay-1 { transition-delay: 0.1s; }
+.scroll-reveal-delay-2 { transition-delay: 0.2s; }
+.scroll-reveal-delay-3 { transition-delay: 0.3s; }
+
+/* -- Property Card Premium Hover -- */
+.property-card-premium {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.property-card-premium:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+.property-card-premium .card-img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.property-card-premium:hover .card-img {
+  transform: scale(1.06);
+}
+
+/* -- Hero Image Crossfade -- */
+.hero-crossfade {
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* -- Price Count-Up Animation -- */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.price-animate {
+  animation: countUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* -- Section Reveal with gold line -- */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.section-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

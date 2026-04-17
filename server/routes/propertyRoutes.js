@@ -7,6 +7,7 @@ const tracker = require('../utils/viewerTracker');
 // Public — ไม่ต้อง login
 // ⚠️ featured, latest, counts ต้องอยู่ก่อน /:id เพราะจะตีกับ param
 router.get('/featured', propertyController.getFeaturedProperties);
+router.get('/featured-random', propertyController.getRandomFeaturedProperties);
 router.get('/latest', propertyController.getLatestProperties);
 router.get('/counts', propertyController.getPropertyCounts);
 router.get('/province-counts', propertyController.getProvinceCounts);

@@ -9,49 +9,49 @@ const API = BASE_URL;
 
 // ===== CONFIG =====
 const PROPERTY_TYPES = [
-  { value:'house',      label:'บ้านเดี่ยว',       icon:'fa-home' },
-  { value:'townhouse',  label:'ทาวน์เฮ้าส์',      icon:'fa-city' },
-  { value:'townhome',   label:'ทาวน์โฮม',         icon:'fa-house-user' },
-  { value:'condo',      label:'คอนโด',             icon:'fa-building' },
-  { value:'land',       label:'ที่ดิน',             icon:'fa-mountain' },
-  { value:'commercial',  label:'อาคารพาณิชย์',    icon:'fa-store' },
-  { value:'apartment',   label:'อพาร์ทเม้นท์',    icon:'fa-hotel' },
-  { value:'home_office', label:'โฮมออฟฟิศ',        icon:'fa-briefcase' },
-  { value:'warehouse',   label:'โกดัง/โรงงาน',    icon:'fa-warehouse' },
+  { value: 'house', label: 'บ้านเดี่ยว', icon: 'fa-home' },
+  { value: 'townhouse', label: 'ทาวน์เฮ้าส์', icon: 'fa-city' },
+  { value: 'townhome', label: 'ทาวน์โฮม', icon: 'fa-house-user' },
+  { value: 'condo', label: 'คอนโด', icon: 'fa-building' },
+  { value: 'land', label: 'ที่ดิน', icon: 'fa-mountain' },
+  { value: 'commercial', label: 'อาคารพาณิชย์', icon: 'fa-store' },
+  { value: 'apartment', label: 'อพาร์ทเม้นท์', icon: 'fa-hotel' },
+  { value: 'home_office', label: 'โฮมออฟฟิศ', icon: 'fa-briefcase' },
+  { value: 'warehouse', label: 'โกดัง/โรงงาน', icon: 'fa-warehouse' },
 ];
 
 const AMENITY_PRESETS = [
-  { name:'แอร์',               icon:'fa-snowflake' },
-  { name:'เครื่องทำน้ำอุ่น',    icon:'fa-hot-tub' },
-  { name:'เฟอร์นิเจอร์บิ้วอิน',  icon:'fa-couch' },
-  { name:'ตู้เย็น',             icon:'fa-cube' },
-  { name:'เครื่องซักผ้า',       icon:'fa-tshirt' },
-  { name:'สระว่ายน้ำ',         icon:'fa-swimming-pool' },
-  { name:'สวน',                 icon:'fa-leaf' },
-  { name:'ที่จอดรถ',            icon:'fa-car' },
-  { name:'ลิฟท์',               icon:'fa-arrow-up' },
-  { name:'ฟิตเนส',              icon:'fa-dumbbell' },
-  { name:'รปภ. 24 ชม.',         icon:'fa-shield-alt' },
-  { name:'กล้องวงจรปิด',       icon:'fa-video' },
-  { name:'สัญญาณกันขโมย',      icon:'fa-bell' },
-  { name:'อินเทอร์เน็ต',        icon:'fa-wifi' },
-  { name:'เลี้ยงสัตว์ได้',      icon:'fa-paw' },
-  { name:'ใกล้ BTS/MRT',       icon:'fa-train' },
+  { name: 'แอร์', icon: 'fa-snowflake' },
+  { name: 'เครื่องทำน้ำอุ่น', icon: 'fa-hot-tub' },
+  { name: 'เฟอร์นิเจอร์บิ้วอิน', icon: 'fa-couch' },
+  { name: 'ตู้เย็น', icon: 'fa-cube' },
+  { name: 'เครื่องซักผ้า', icon: 'fa-tshirt' },
+  { name: 'สระว่ายน้ำ', icon: 'fa-swimming-pool' },
+  { name: 'สวน', icon: 'fa-leaf' },
+  { name: 'ที่จอดรถ', icon: 'fa-car' },
+  { name: 'ลิฟท์', icon: 'fa-arrow-up' },
+  { name: 'ฟิตเนส', icon: 'fa-dumbbell' },
+  { name: 'รปภ. 24 ชม.', icon: 'fa-shield-alt' },
+  { name: 'กล้องวงจรปิด', icon: 'fa-video' },
+  { name: 'สัญญาณกันขโมย', icon: 'fa-bell' },
+  { name: 'อินเทอร์เน็ต', icon: 'fa-wifi' },
+  { name: 'เลี้ยงสัตว์ได้', icon: 'fa-paw' },
+  { name: 'ใกล้ BTS/MRT', icon: 'fa-train' },
 ];
 
 const NEARBY_TYPES = [
-  { value:'bts',        label:'BTS/สายสีเขียว' },
-  { value:'mrt',        label:'MRT/สายสีน้ำเงิน' },
-  { value:'arl',        label:'Airport Rail Link' },
-  { value:'school',     label:'โรงเรียน / มหาวิทยาลัย' },
-  { value:'hospital',   label:'โรงพยาบาล / คลินิก' },
-  { value:'mall',       label:'ห้างสรรพสินค้า' },
-  { value:'market',     label:'ตลาด / ร้านอาหาร' },
-  { value:'airport',    label:'สนามบิน' },
-  { value:'highway',    label:'ทางด่วน / ถนนสายหลัก' },
+  { value: 'bts', label: 'BTS/สายสีเขียว' },
+  { value: 'mrt', label: 'MRT/สายสีน้ำเงิน' },
+  { value: 'arl', label: 'Airport Rail Link' },
+  { value: 'school', label: 'โรงเรียน / มหาวิทยาลัย' },
+  { value: 'hospital', label: 'โรงพยาบาล / คลินิก' },
+  { value: 'mall', label: 'ห้างสรรพสินค้า' },
+  { value: 'market', label: 'ตลาด / ร้านอาหาร' },
+  { value: 'airport', label: 'สนามบิน' },
+  { value: 'highway', label: 'ทางด่วน / ถนนสายหลัก' },
 ];
 
-const STEPS = ['ข้อมูลพื้นฐาน','ที่ตั้ง','รายละเอียด','รูปภาพ','สิ่งอำนวยฯ'];
+const STEPS = ['ข้อมูลพื้นฐาน', 'ที่ตั้ง', 'รายละเอียด', 'รูปภาพ', 'สิ่งอำนวยฯ'];
 
 // ===== UTILS =====
 // แปลงเลขไทย (๐-๙) → เลขอาหรับ (0-9)
@@ -76,6 +76,7 @@ const EMPTY_FORM = {
   year_built: '',
   pet_friendly: false,
   video_url: '',
+  virtual_tour_id: '',
   description: '',
   internal_notes: '',
 };
@@ -89,8 +90,8 @@ const fieldStyle = {
 const errStyle = (e) => e ? { ...fieldStyle, borderColor: '#e53e3e', background: '#fff5f5', color: '#111827' } : fieldStyle;
 const prefix = { position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#888', fontSize: '0.9rem', pointerEvents: 'none' };
 const chipBtn = (active) => ({
-  padding: '7px 16px', borderRadius: 20, border: `1.5px solid ${active ? '#00463d' : '#dde3ed'}`,
-  background: active ? '#00463d' : '#fff', color: active ? '#fff' : '#555',
+  padding: '7px 16px', borderRadius: 20, border: `1.5px solid ${active ? '#6aab62' : '#dde3ed'}`,
+  background: active ? '#6aab62' : '#fff', color: active ? '#1a3a18' : '#555',
   cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem', fontFamily: "'Sarabun',sans-serif",
   transition: 'all 0.15s',
 });
@@ -98,8 +99,8 @@ const chipBtn = (active) => ({
 function FormCard({ title, icon, children, tip }) {
   return (
     <div style={{ background: '#fff', borderRadius: 12, padding: '20px 22px', marginBottom: 16, boxShadow: '0 1px 8px rgba(0,0,0,0.07)' }}>
-      <h3 style={{ margin: '0 0 14px', fontSize: '0.95rem', fontWeight: 700, color: '#00463d', display: 'flex', alignItems: 'center', gap: 8 }}>
-        {icon && <i className={`fas ${icon}`} style={{ color: '#1A8C6E' }} />} {title}
+      <h3 style={{ margin: '0 0 14px', fontSize: '0.95rem', fontWeight: 700, color: '#6aab62', display: 'flex', alignItems: 'center', gap: 8 }}>
+        {icon && <i className={`fas ${icon}`} style={{ color: '#3d7a3a' }} />} {title}
       </h3>
       {tip && (
         <div style={{ background: '#f0faf5', border: '1px solid #c6f0da', borderRadius: 8, padding: '9px 13px', marginBottom: 14, fontSize: '0.82rem', color: '#2d6a4f', display: 'flex', gap: 8 }}>
@@ -131,7 +132,7 @@ function Stepper({ label, value, onChange, min = 0, max = 20 }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <button type="button" onClick={() => onChange(Math.max(min, n - 1))}
           style={{ width: 30, height: 30, borderRadius: '50%', border: '1.5px solid #dde', background: '#f5f7fa', color: '#444', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
-        <span style={{ fontWeight: 800, fontSize: '1.1rem', minWidth: 24, textAlign: 'center', color: '#1A8C6E' }}>{n}</span>
+        <span style={{ fontWeight: 800, fontSize: '1.1rem', minWidth: 24, textAlign: 'center', color: '#3d7a3a' }}>{n}</span>
         <button type="button" onClick={() => onChange(Math.min(max, n + 1))}
           style={{ width: 30, height: 30, borderRadius: '50%', border: '1.5px solid #dde', background: '#f5f7fa', color: '#444', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
       </div>
@@ -145,7 +146,7 @@ function TipCard({ icon, title, desc }) {
     <div style={{ background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: 10, padding: '12px 14px', display: 'flex', gap: 12, alignItems: 'flex-start' }}>
       <div style={{ fontSize: '1.4rem' }}>{icon}</div>
       <div>
-        <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#00463d', marginBottom: 2 }}>{title}</div>
+        <div style={{ fontWeight: 700, fontSize: '0.82rem', color: '#6aab62', marginBottom: 2 }}>{title}</div>
         <div style={{ fontSize: '0.78rem', color: '#6b7280', lineHeight: 1.4 }}>{desc}</div>
       </div>
     </div>
@@ -153,8 +154,8 @@ function TipCard({ icon, title, desc }) {
 }
 
 // ===== MAIN COMPONENT =====
-const G = '#1A8C6E';
-const N = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
+const N = '#3d7a3a';
 
 function PropertyForm() {
   const { id } = useParams();
@@ -162,18 +163,18 @@ function PropertyForm() {
   const isEdit = Boolean(id);
   const adminUser = (() => { try { return JSON.parse(localStorage.getItem('adminUser') || '{}'); } catch { return {}; } })();
 
-  const [step, setStep]         = useState(1);
-  const [form, setForm]         = useState({ ...EMPTY_FORM });
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({ ...EMPTY_FORM });
   const [provinces, setProvinces] = useState([]);
-  const [errors, setErrors]     = useState({});
+  const [errors, setErrors] = useState({});
 
   // Images
-  const [thumbnail, setThumbnail]               = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState('');
-  const [galleryFiles, setGalleryFiles]         = useState([]);
-  const [galleryPreviews, setGalleryPreviews]   = useState([]);
-  const [existingImages, setExistingImages]     = useState([]);
-  const thumbRef   = useRef();
+  const [galleryFiles, setGalleryFiles] = useState([]);
+  const [galleryPreviews, setGalleryPreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const thumbRef = useRef();
   const galleryRef = useRef();
 
   // Amenities
@@ -186,7 +187,7 @@ function PropertyForm() {
   // Transit auto-detect
   const [nearbyTransit, setNearbyTransit] = useState([]); // สถานีที่ detect ได้จาก lat/lng
 
-  const [saving, setSaving]   = useState(false);
+  const [saving, setSaving] = useState(false);
   const savedIdRef = useRef(null); // guard against double POST
   const savingLock = useRef(false); // hard mutex — prevents ALL concurrent saves
   const [saveMsg, setSaveMsg] = useState('');
@@ -217,7 +218,7 @@ function PropertyForm() {
         const list = Array.isArray(d) ? d : (Array.isArray(d?.data) ? d.data : []);
         setProvinces(list);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // ─── Load Google Maps JS API script (ครั้งเดียว) ───
@@ -227,7 +228,7 @@ function PropertyForm() {
     if (window.google?.maps?.places) { setMapsLoaded(true); return; } // โหลดแล้ว
     if (document.querySelector('#gmap-script')) return; // กำลังโหลด
     const script = document.createElement('script');
-    script.id  = 'gmap-script';
+    script.id = 'gmap-script';
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&language=th&region=TH`;
     script.async = true;
     script.onload = () => setMapsLoaded(true);
@@ -281,19 +282,19 @@ function PropertyForm() {
 
       // ที่อยู่ย่อย — เอาชื่อสถานที่ หรือ route
       const streetNum = getComp('street_number');
-      const route     = getComp('route');
+      const route = getComp('route');
       const addressStr = place.name
         || (streetNum ? `${streetNum} ${route}` : route)
         || '';
 
       setForm(prev => ({
         ...prev,
-        ...(province     ? { province }     : {}),
-        ...(district     ? { district }     : {}),
+        ...(province ? { province } : {}),
+        ...(district ? { district } : {}),
         ...(sub_district ? { sub_district } : {}),
-        ...(postal_code  ? { postal_code }  : {}),
+        ...(postal_code ? { postal_code } : {}),
         ...(addressStr && !prev.address ? { address: addressStr } : {}),
-        latitude:  lat.toFixed(7),
+        latitude: lat.toFixed(7),
         longitude: lng.toFixed(7),
       }));
     });
@@ -316,45 +317,46 @@ function PropertyForm() {
         // helper: แปลงค่าเป็น number — ใช้ ?? แทน || เพื่อรองรับค่า 0
         const num = (val, fallback) => (val != null && val !== '' && !isNaN(Number(val))) ? Number(val) : fallback;
         setForm({
-          title:             data.title || '',
-          listing_type:      data.listing_type || 'sale',
-          property_type:     data.property_type || 'house',
-          sale_status:       data.sale_status || 'available',
-          is_featured:       Number(data.is_featured) === 1,
-          is_active:         Number(data.is_active) === 1,
-          price_requested:   data.price_requested || '',
-          original_price:    data.original_price || '',
-          is_discounted:     Number(data.is_discounted) === 1,
-          price_per_sqm:     data.price_per_sqm || '',
-          monthly_rent:      data.monthly_rent || '',
-          province:          data.province || '',
-          district:          data.district || '',
-          sub_district:      data.sub_district || '',
-          postal_code:       data.postal_code || '',
-          address:           data.address || '',
-          project_name:      data.project_name || '',
-          latitude:          data.latitude || '',
-          longitude:         data.longitude || '',
-          bts_station:       data.bts_station || '',
-          bts_distance_km:   data.bts_distance_km || '',
-          mrt_station:       data.mrt_station || '',
-          mrt_distance_km:   data.mrt_distance_km || '',
-          bedrooms:          num(data.bedrooms, 0),
-          bathrooms:         num(data.bathrooms, 0),
-          floors:            num(data.floors, 1),
-          parking:           num(data.parking, 0),
-          usable_area:       data.usable_area || '',
-          land_area_rai:     num(data.land_area_rai, 0),
-          land_area_ngan:    num(data.land_area_ngan, 0),
-          land_area_wah:     num(data.land_area_wah, 0),
-          condition_status:  data.condition_status || 'unfurnished',
+          title: data.title || '',
+          listing_type: data.listing_type || 'sale',
+          property_type: data.property_type || 'house',
+          sale_status: data.sale_status || 'available',
+          is_featured: Number(data.is_featured) === 1,
+          is_active: Number(data.is_active) === 1,
+          price_requested: data.price_requested || '',
+          original_price: data.original_price || '',
+          is_discounted: Number(data.is_discounted) === 1,
+          price_per_sqm: data.price_per_sqm || '',
+          monthly_rent: data.monthly_rent || '',
+          province: data.province || '',
+          district: data.district || '',
+          sub_district: data.sub_district || '',
+          postal_code: data.postal_code || '',
+          address: data.address || '',
+          project_name: data.project_name || '',
+          latitude: data.latitude || '',
+          longitude: data.longitude || '',
+          bts_station: data.bts_station || '',
+          bts_distance_km: data.bts_distance_km || '',
+          mrt_station: data.mrt_station || '',
+          mrt_distance_km: data.mrt_distance_km || '',
+          bedrooms: num(data.bedrooms, 0),
+          bathrooms: num(data.bathrooms, 0),
+          floors: num(data.floors, 1),
+          parking: num(data.parking, 0),
+          usable_area: data.usable_area || '',
+          land_area_rai: num(data.land_area_rai, 0),
+          land_area_ngan: num(data.land_area_ngan, 0),
+          land_area_wah: num(data.land_area_wah, 0),
+          condition_status: data.condition_status || 'unfurnished',
           property_condition: data.property_condition || 'good',
-          title_deed_type:   data.title_deed_type || '',
-          year_built:        data.year_built || '',
-          pet_friendly:      Number(data.pet_friendly) === 1,
-          video_url:         data.video_url || '',
-          description:       data.description || '',
-          internal_notes:    data.internal_notes || '',
+          title_deed_type: data.title_deed_type || '',
+          year_built: data.year_built || '',
+          pet_friendly: Number(data.pet_friendly) === 1,
+          video_url: data.video_url || '',
+          virtual_tour_id: data.virtual_tour_id || '',
+          description: data.description || '',
+          internal_notes: data.internal_notes || '',
         });
         if (data.thumbnail_url) {
           setThumbnailPreview(data.thumbnail_url.startsWith('http') ? data.thumbnail_url : `${API}${data.thumbnail_url}`);
@@ -370,7 +372,7 @@ function PropertyForm() {
         adminFetch(`/api/admin/properties/${id}/deeds`)
           .then(r => r.ok ? r.json() : [])
           .then(deeds => { if (Array.isArray(deeds)) setExistingDeeds(deeds); })
-          .catch(() => {});
+          .catch(() => { });
       });
   }, [id, isEdit]);
 
@@ -379,10 +381,10 @@ function PropertyForm() {
   const validate = (s) => {
     const e = {};
     if (s === 1) {
-      if (!form.title.trim())        e.title = 'กรุณาระบุชื่อประกาศ';
-      if (!form.property_type)       e.property_type = 'กรุณาเลือกประเภท';
+      if (!form.title.trim()) e.title = 'กรุณาระบุชื่อประกาศ';
+      if (!form.property_type) e.property_type = 'กรุณาเลือกประเภท';
       if (!form.price_requested && form.listing_type !== 'rent') e.price_requested = 'กรุณาระบุราคาขาย';
-      if (!form.monthly_rent && form.listing_type === 'rent')    e.monthly_rent = 'กรุณาระบุค่าเช่า';
+      if (!form.monthly_rent && form.listing_type === 'rent') e.monthly_rent = 'กรุณาระบุค่าเช่า';
     }
     if (s === 2) {
       if (!form.province) e.province = 'กรุณาเลือกจังหวัด';
@@ -406,17 +408,17 @@ function PropertyForm() {
     try {
       const existingId = savedIdRef.current || savedId || (isEdit ? id : null);
       const method = existingId ? 'PUT' : 'POST';
-      const url    = existingId
+      const url = existingId
         ? `${API}/api/admin/properties/${existingId}`
         : `${API}/api/admin/properties`;
 
       const payload = { ...form };
       // Ensure numbers are sent as numbers
-      ['bedrooms','bathrooms','floors','parking','land_area_rai','land_area_ngan','land_area_wah'].forEach(k => {
+      ['bedrooms', 'bathrooms', 'floors', 'parking', 'land_area_rai', 'land_area_ngan', 'land_area_wah'].forEach(k => {
         if (payload[k] !== undefined) payload[k] = Number(payload[k]) || 0;
       });
       // Ensure booleans are sent as 1/0 for MySQL TINYINT
-      ['is_featured','is_active','is_discounted','pet_friendly'].forEach(k => {
+      ['is_featured', 'is_active', 'is_discounted', 'pet_friendly'].forEach(k => {
         if (payload[k] !== undefined) payload[k] = payload[k] ? 1 : 0;
       });
       if (!payload.title && !existingId) payload.title = 'ทรัพย์ใหม่ (ร่าง)';
@@ -453,12 +455,12 @@ function PropertyForm() {
           const numSafe = (val, fallback) => (val != null && val !== '' && !isNaN(Number(val))) ? Number(val) : fallback;
           setForm(prev => ({
             ...prev,
-            bedrooms:      numSafe(vData.bedrooms, prev.bedrooms),
-            bathrooms:     numSafe(vData.bathrooms, prev.bathrooms),
-            floors:        numSafe(vData.floors, prev.floors),
-            parking:       numSafe(vData.parking, prev.parking),
+            bedrooms: numSafe(vData.bedrooms, prev.bedrooms),
+            bathrooms: numSafe(vData.bathrooms, prev.bathrooms),
+            floors: numSafe(vData.floors, prev.floors),
+            parking: numSafe(vData.parking, prev.parking),
             land_area_rai: numSafe(vData.land_area_rai, prev.land_area_rai),
-            land_area_ngan:numSafe(vData.land_area_ngan, prev.land_area_ngan),
+            land_area_ngan: numSafe(vData.land_area_ngan, prev.land_area_ngan),
             land_area_wah: numSafe(vData.land_area_wah, prev.land_area_wah),
           }));
           // Warn if DB values don't match what was sent
@@ -512,7 +514,7 @@ function PropertyForm() {
       if (!pid) {
         setSaveMsg('⏳ กำลังบันทึกข้อมูลพื้นฐาน...');
         const imgPayload = { ...form, title: form.title || 'ทรัพย์ใหม่ (ร่าง)' };
-        ['bedrooms','bathrooms','floors','parking','land_area_rai','land_area_ngan','land_area_wah'].forEach(k => {
+        ['bedrooms', 'bathrooms', 'floors', 'parking', 'land_area_rai', 'land_area_ngan', 'land_area_wah'].forEach(k => {
           if (imgPayload[k] !== undefined) imgPayload[k] = Number(imgPayload[k]) || 0;
         });
         const res = await adminFetch(`${API}/api/admin/properties`, {
@@ -602,9 +604,9 @@ function PropertyForm() {
     const nearest = findNearestByType(latN, lngN, 3);
     setForm(prev => ({
       ...prev,
-      bts_station:     prev.bts_station     ? prev.bts_station     : (nearest.bts?.name    || ''),
+      bts_station: prev.bts_station ? prev.bts_station : (nearest.bts?.name || ''),
       bts_distance_km: prev.bts_distance_km ? prev.bts_distance_km : (nearest.bts ? nearest.bts.distance.toFixed(2) : ''),
-      mrt_station:     prev.mrt_station     ? prev.mrt_station     : (nearest.mrt?.name    || ''),
+      mrt_station: prev.mrt_station ? prev.mrt_station : (nearest.mrt?.name || ''),
       mrt_distance_km: prev.mrt_distance_km ? prev.mrt_distance_km : (nearest.mrt ? nearest.mrt.distance.toFixed(2) : ''),
     }));
   };
@@ -618,7 +620,7 @@ function PropertyForm() {
     let added = 0;
     for (const s of nearbyTransit.slice(0, 8)) { // จำกัด 8 สถานีแรก
       const type = s.type === 'bts' ? 'bts' : s.type === 'mrt' ? 'mrt' : 'arl';
-      const travelMin = Math.round((s.distance / 0.08) ); // เดิน ~80m/min
+      const travelMin = Math.round((s.distance / 0.08)); // เดิน ~80m/min
       try {
         const res = await adminFetch(`/api/admin/properties/${pid}/nearby`, {
           method: 'POST',
@@ -674,11 +676,11 @@ function PropertyForm() {
         : `${API}/api/admin/properties`;
       // ensure numeric fields are numbers (same as saveBasicInfo)
       const exitPayload = { ...form };
-      ['bedrooms','bathrooms','floors','parking','land_area_rai','land_area_ngan','land_area_wah'].forEach(k => {
+      ['bedrooms', 'bathrooms', 'floors', 'parking', 'land_area_rai', 'land_area_ngan', 'land_area_wah'].forEach(k => {
         if (exitPayload[k] !== undefined) exitPayload[k] = Number(exitPayload[k]) || 0;
       });
       // ensure booleans are 1/0
-      ['is_featured','is_active','is_discounted','pet_friendly'].forEach(k => {
+      ['is_featured', 'is_active', 'is_discounted', 'pet_friendly'].forEach(k => {
         if (exitPayload[k] !== undefined) exitPayload[k] = exitPayload[k] ? 1 : 0;
       });
       console.log('[EXIT-SAVE] payload:', JSON.stringify({ floors: exitPayload.floors, parking: exitPayload.parking, bedrooms: exitPayload.bedrooms, bathrooms: exitPayload.bathrooms }));
@@ -741,7 +743,7 @@ function PropertyForm() {
         const postal = getComp('postal_code');
         setForm(prev => ({
           ...prev,
-          latitude:  String(lat.toFixed ? lat.toFixed(7) : lat),
+          latitude: String(lat.toFixed ? lat.toFixed(7) : lat),
           longitude: String(lng.toFixed ? lng.toFixed(7) : lng),
           ...(postal && !prev.postal_code ? { postal_code: postal } : {}),
         }));
@@ -749,7 +751,7 @@ function PropertyForm() {
         setSaveMsg('📍 พิกัดอัตโนมัติจากโฉนด');
         setTimeout(() => setSaveMsg(''), 3000);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   // ===== Reverse Geocode จาก lat/lng → ที่อยู่ + รหัสไปรษณีย์ =====
@@ -766,9 +768,9 @@ function PropertyForm() {
           const c = (result.address_components || []).find(a => a.types.includes(type));
           return c ? c.long_name : '';
         };
-        const postal       = getComp('postal_code');
-        const rawProv      = getComp('administrative_area_level_1').replace(/^จังหวัด/, '').trim();
-        const district     = (getComp('administrative_area_level_2') || getComp('locality'))
+        const postal = getComp('postal_code');
+        const rawProv = getComp('administrative_area_level_1').replace(/^จังหวัด/, '').trim();
+        const district = (getComp('administrative_area_level_2') || getComp('locality'))
           .replace(/^(อำเภอ|เขต)/, '').trim();
         const sub_district = (
           getComp('sublocality_level_1') ||
@@ -780,26 +782,26 @@ function PropertyForm() {
           || rawProv;
 
         // บ้านเลขที่ + ถนน — แปลงเลขไทยด้วย
-        const streetNum  = thaiToArabic(getComp('street_number'));
-        const route      = getComp('route').replace(/^ถนน/, '').trim();
+        const streetNum = thaiToArabic(getComp('street_number'));
+        const route = getComp('route').replace(/^ถนน/, '').trim();
         const addressStr = streetNum
           ? (route ? `${streetNum} ${route}` : streetNum)
           : route;
 
         setForm(prev => ({
           ...prev,
-          ...(postal          && !prev.postal_code   ? { postal_code:   postal }          : {}),
-          ...(matchedProvince && !prev.province      ? { province:      matchedProvince } : {}),
-          ...(district        && !prev.district      ? { district }                       : {}),
-          ...(sub_district    && !prev.sub_district  ? { sub_district }                  : {}),
-          ...(addressStr      && !prev.address       ? { address:       addressStr }      : {}),
+          ...(postal && !prev.postal_code ? { postal_code: postal } : {}),
+          ...(matchedProvince && !prev.province ? { province: matchedProvince } : {}),
+          ...(district && !prev.district ? { district } : {}),
+          ...(sub_district && !prev.sub_district ? { sub_district } : {}),
+          ...(addressStr && !prev.address ? { address: addressStr } : {}),
         }));
         setSaveMsg('📍 กรอกที่อยู่ + รหัสไปรษณีย์ + บ้านเลขที่อัตโนมัติ');
         setTimeout(() => setSaveMsg(''), 3000);
         // auto-detect สถานีรถไฟฟ้าใกล้เคียง
         autoFillTransit(lat, lng);
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   // ===== Multi-Deed: เพิ่ม slot ใหม่ =====
@@ -851,24 +853,24 @@ function PropertyForm() {
       if (f.deed_number) f.deed_number = thaiToArabic(f.deed_number).trim();
       if (f.land_number) f.land_number = thaiToArabic(f.land_number).trim();
       if (f.survey_page) f.survey_page = thaiToArabic(f.survey_page).trim();
-      if (f.house_no)    f.house_no    = thaiToArabic(f.house_no).trim();
-      if (f.moo)         f.moo         = thaiToArabic(f.moo).trim();
+      if (f.house_no) f.house_no = thaiToArabic(f.house_no).trim();
+      if (f.moo) f.moo = thaiToArabic(f.moo).trim();
 
       // ── กรอก fields หลักอัตโนมัติ (ทับค่าเดิมถ้ามี) ──
-      if (f.province)       { set('province', f.province);             filled.push('จังหวัด'); }
-      if (f.district)       { set('district', f.district);             filled.push('อำเภอ/เขต'); }
-      if (f.sub_district)   { set('sub_district', f.sub_district);     filled.push('ตำบล/แขวง'); }
-      if (f.postal_code)    { set('postal_code', f.postal_code);       filled.push('รหัสไปรษณีย์'); }
-      if (f.title_deed_type){ set('title_deed_type',f.title_deed_type);filled.push('ประเภทโฉนด'); }
-      if (f.land_area_rai  != null) { set('land_area_rai',  Number(f.land_area_rai));  filled.push(`ที่ดิน ${f.land_area_rai} ไร่`); }
+      if (f.province) { set('province', f.province); filled.push('จังหวัด'); }
+      if (f.district) { set('district', f.district); filled.push('อำเภอ/เขต'); }
+      if (f.sub_district) { set('sub_district', f.sub_district); filled.push('ตำบล/แขวง'); }
+      if (f.postal_code) { set('postal_code', f.postal_code); filled.push('รหัสไปรษณีย์'); }
+      if (f.title_deed_type) { set('title_deed_type', f.title_deed_type); filled.push('ประเภทโฉนด'); }
+      if (f.land_area_rai != null) { set('land_area_rai', Number(f.land_area_rai)); filled.push(`ที่ดิน ${f.land_area_rai} ไร่`); }
       if (f.land_area_ngan != null) { set('land_area_ngan', Number(f.land_area_ngan)); filled.push(`${f.land_area_ngan} งาน`); }
-      if (f.land_area_wah  != null) { set('land_area_wah',  Number(f.land_area_wah));  filled.push(`${f.land_area_wah} ตร.วา`); }
+      if (f.land_area_wah != null) { set('land_area_wah', Number(f.land_area_wah)); filled.push(`${f.land_area_wah} ตร.วา`); }
 
       // ── บ้านเลขที่ + หมู่ + ถนน ──
       const addrParts = [];
       if (f.house_no) addrParts.push(f.house_no);
-      if (f.moo)      addrParts.push(`หมู่ ${f.moo}`);
-      if (f.road)     addrParts.push(`ถ.${f.road}`);
+      if (f.moo) addrParts.push(`หมู่ ${f.moo}`);
+      if (f.road) addrParts.push(`ถ.${f.road}`);
       const deedAddress = addrParts.join(' ');
       if (deedAddress) { set('address', deedAddress); filled.push(`บ้านเลขที่: ${deedAddress}`); }
 
@@ -876,11 +878,11 @@ function PropertyForm() {
       const deedMeta = [];
       if (f.deed_number) deedMeta.push(`เลขที่โฉนด: ${f.deed_number}`);
       if (f.land_number) deedMeta.push(`เลขที่ดิน: ${f.land_number}`);
-      if (f.zone)        deedMeta.push(`ระวาง: ${f.zone}`);
+      if (f.zone) deedMeta.push(`ระวาง: ${f.zone}`);
       if (f.survey_page) deedMeta.push(`หน้าสำรวจ: ${f.survey_page}`);
-      if (f.owner_name)  deedMeta.push(`ชื่อผู้ถือ: ${f.owner_name}`);
-      if (f.issue_date)  deedMeta.push(`วันออกโฉนด: ${f.issue_date}`);
-      if (deedAddress)   deedMeta.push(`บ้านเลขที่: ${deedAddress}`);
+      if (f.owner_name) deedMeta.push(`ชื่อผู้ถือ: ${f.owner_name}`);
+      if (f.issue_date) deedMeta.push(`วันออกโฉนด: ${f.issue_date}`);
+      if (deedAddress) deedMeta.push(`บ้านเลขที่: ${deedAddress}`);
 
       if (deedMeta.length > 0) {
         const slotNum = deedSlots.findIndex(s => s.slotId === slotId) + 1;
@@ -937,7 +939,7 @@ function PropertyForm() {
     try {
       const res = await adminFetch(`/api/admin/properties/${propertyId}/deeds/${deedId}`, { method: 'DELETE' });
       if (res.ok) setExistingDeeds(prev => prev.filter(d => d.id !== deedId));
-    } catch (_) {}
+    } catch (_) { }
   };
 
   // ===== RENDER =====
@@ -945,12 +947,12 @@ function PropertyForm() {
     <div style={{ minHeight: '100vh', background: '#f5f7fa', fontFamily: "'Sarabun',sans-serif" }}>
 
       {/* Navbar — consistent with Dashboard / AdminProperties / AdminInquiries */}
-      <div style={{ background: `linear-gradient(135deg,${N},#00463d)`, height: 60, position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16 }}>
+      <div style={{ background: `linear-gradient(135deg,${N},#6aab62)`, height: 60, position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16 }}>
         {/* Logo */}
         <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <div style={{ width: 34, height: 34, borderRadius: 8, background: G, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#fff', fontSize: '1rem', letterSpacing: -1 }}>L</div>
+          <div style={{ width: 34, height: 34, borderRadius: 8, background: Gl, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#1a3a18', fontSize: '1rem', letterSpacing: -1 }}>L</div>
           <span style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', letterSpacing: 0.5 }}>LOANDD</span>
-          <span style={{ background: 'rgba(255,255,255,0.15)', color: '#fff', fontSize: '0.62rem', padding: '2px 7px', borderRadius: 20, fontWeight: 700 }}>Admin</span>
+          <span style={{ background: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.85)', fontSize: '0.62rem', padding: '2px 7px', borderRadius: 20, fontWeight: 700 }}>Admin</span>
         </Link>
 
         {/* Right side: save msg + preview btn + avatar + logout */}
@@ -965,7 +967,7 @@ function PropertyForm() {
             </button>
           )}
           <NotificationBell />
-          <div style={{ width: 32, height: 32, borderRadius: '50%', background: G, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#fff', fontSize: '0.85rem', cursor: 'default', flexShrink: 0 }}>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: Gl, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#1a3a18', fontSize: '0.85rem', cursor: 'default', flexShrink: 0 }}>
             {(adminUser?.username || adminUser?.name || 'A')[0].toUpperCase()}
           </div>
           <button onClick={() => { localStorage.removeItem('adminToken'); localStorage.removeItem('adminUser'); navigate('/admin'); }}
@@ -980,22 +982,22 @@ function PropertyForm() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Link to="/dashboard" style={{ color: '#6b7280', fontSize: '0.8rem', textDecoration: 'none', fontWeight: 600 }}>← ภาพรวม</Link>
           <span style={{ color: '#d1d5db' }}>›</span>
-          <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#00463d' }}>
+          <span style={{ fontSize: '0.88rem', fontWeight: 700, color: '#6aab62' }}>
             {isEdit ? '✏️ แก้ไขทรัพย์สิน' : '➕ เพิ่มทรัพย์ใหม่'}
           </span>
         </div>
         {/* Pill tab nav */}
-        <div className="admin-pill-nav" style={{ position:'relative', display:'inline-flex', background:'#e2e8f0', borderRadius:14, padding:4, gap:0 }}>
-          <div style={{ position:'absolute', top:4, bottom:4, width:'calc(25% - 4px)', left:'calc(25% + 2px)', background:'#fff', borderRadius:10, boxShadow:'0 2px 10px rgba(0,0,0,0.12)', zIndex:0 }} />
+        <div className="admin-pill-nav" style={{ position: 'relative', display: 'inline-flex', background: '#e2e8f0', borderRadius: 14, padding: 4, gap: 0 }}>
+          <div style={{ position: 'absolute', top: 4, bottom: 4, width: 'calc(25% - 4px)', left: 'calc(25% + 2px)', background: '#fff', borderRadius: 10, boxShadow: '0 2px 10px rgba(0,0,0,0.12)', zIndex: 0 }} />
           {[
-            { label:'ภาพรวม',  path:'/dashboard' },
-            { label:'ทรัพย์',  path:'/admin/properties' },
-            { label:'ข้อความ', path:'/admin/inquiries' },
-            { label:'ผู้ใช้',  path:'/admin/users' },
+            { label: 'ภาพรวม', path: '/dashboard' },
+            { label: 'ทรัพย์', path: '/admin/properties' },
+            { label: 'ข้อความ', path: '/admin/inquiries' },
+            { label: 'ผู้ใช้', path: '/admin/users' },
           ].map((t) => {
             const active = t.path === '/admin/properties';
             return (
-              <Link key={t.path} to={t.path} style={{ position:'relative', zIndex:1, textDecoration:'none', padding:'7px 18px', borderRadius:10, fontWeight: active ? 800 : 500, color: active ? N : '#94a3b8', fontSize:'0.8rem', fontFamily:"'Sarabun',sans-serif", transition:'color 0.2s', display:'flex', alignItems:'center', gap:6, whiteSpace:'nowrap' }}>
+              <Link key={t.path} to={t.path} style={{ position: 'relative', zIndex: 1, textDecoration: 'none', padding: '7px 18px', borderRadius: 10, fontWeight: active ? 800 : 500, color: active ? N : '#94a3b8', fontSize: '0.8rem', fontFamily: "'Sarabun',sans-serif", transition: 'color 0.2s', display: 'flex', alignItems: 'center', gap: 6, whiteSpace: 'nowrap' }}>
                 {t.label}
               </Link>
             );
@@ -1016,17 +1018,17 @@ function PropertyForm() {
                   onClick={() => done && setStep(n)}>
                   <div style={{
                     width: 30, height: 30, borderRadius: '50%',
-                    background: done ? '#1A8C6E' : active ? '#00463d' : '#e8edf2',
-                    color: (done || active) ? '#fff' : '#aaa',
+                    background: done ? '#A1D99B' : active ? '#6aab62' : '#e8edf2',
+                    color: (done || active) ? '#1a3a18' : '#aaa',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontWeight: 800, fontSize: '0.85rem', transition: 'all 0.2s',
                   }}>
                     {done ? '✓' : n}
                   </div>
-                  <span style={{ fontSize: '0.68rem', marginTop: 4, color: active ? '#00463d' : done ? '#1A8C6E' : '#aaa', fontWeight: active ? 700 : 400, textAlign: 'center', whiteSpace: 'nowrap' }}>{label}</span>
+                  <span style={{ fontSize: '0.68rem', marginTop: 4, color: active ? '#6aab62' : done ? '#A1D99B' : '#aaa', fontWeight: active ? 700 : 400, textAlign: 'center', whiteSpace: 'nowrap' }}>{label}</span>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div style={{ flex: 1, height: 2, background: done ? '#1A8C6E' : '#e8edf2', marginTop: 14, transition: 'background 0.2s' }} />
+                  <div style={{ flex: 1, height: 2, background: done ? '#A1D99B' : '#e8edf2', marginTop: 14, transition: 'background 0.2s' }} />
                 )}
               </React.Fragment>
             );
@@ -1055,7 +1057,7 @@ function PropertyForm() {
 
               <FieldRow label="ประเภทธุรกรรม">
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                  {[{v:'sale',l:'🏷️ ขาย'},{v:'rent',l:'🔑 ให้เช่า'},{v:'sale_rent',l:'💼 ขาย/เช่า'}].map(o => (
+                  {[{ v: 'sale', l: '🏷️ ขาย' }, { v: 'rent', l: '🔑 ให้เช่า' }, { v: 'sale_rent', l: '💼 ขาย/เช่า' }].map(o => (
                     <button key={o.v} type="button" onClick={() => set('listing_type', o.v)} style={chipBtn(form.listing_type === o.v)}>{o.l}</button>
                   ))}
                 </div>
@@ -1075,9 +1077,9 @@ function PropertyForm() {
 
               <FieldRow label="สถานะการขาย">
                 <div style={{ display: 'flex', gap: 8 }}>
-                  {[{v:'available',l:'✅ ว่างอยู่',c:'#1A8C6E'},{v:'reserved',l:'🔖 จองแล้ว',c:'#d4890a'},{v:'sold',l:'🔴 ขายแล้ว',c:'#c0392b'}].map(s => (
+                  {[{ v: 'available', l: '✅ ว่างอยู่', c: '#A1D99B' }, { v: 'reserved', l: '🔖 จองแล้ว', c: '#d4890a' }, { v: 'sold', l: '🔴 ขายแล้ว', c: '#c0392b' }].map(s => (
                     <button key={s.v} type="button" onClick={() => set('sale_status', s.v)}
-                      style={{ padding:'8px 14px', borderRadius:8, border:`1.5px solid ${form.sale_status===s.v?s.c:'#dde'}`, background:form.sale_status===s.v?s.c:'#fff', color:form.sale_status===s.v?'#fff':'#555', cursor:'pointer', fontWeight:600, fontSize:'0.82rem', transition:'all 0.15s' }}>
+                      style={{ padding: '8px 14px', borderRadius: 8, border: `1.5px solid ${form.sale_status === s.v ? s.c : '#dde'}`, background: form.sale_status === s.v ? s.c : '#fff', color: form.sale_status === s.v ? '#1a3a18' : '#555', cursor: 'pointer', fontWeight: 600, fontSize: '0.82rem', transition: 'all 0.15s' }}>
                       {s.l}
                     </button>
                   ))}
@@ -1133,11 +1135,11 @@ function PropertyForm() {
 
               <div style={{ display: 'flex', gap: 20, marginTop: 4, paddingTop: 12, borderTop: '1px solid #f0f0f0' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600 }}>
-                  <input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#00463d' }} />
+                  <input type="checkbox" checked={form.is_featured} onChange={e => set('is_featured', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#6aab62' }} />
                   <span>⭐ ตั้งเป็นทรัพย์แนะนำ</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600 }}>
-                  <input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#1A8C6E' }} />
+                  <input type="checkbox" checked={form.is_active} onChange={e => set('is_active', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#A1D99B' }} />
                   <span>👁️ แสดงบนเว็บ</span>
                 </label>
               </div>
@@ -1149,20 +1151,20 @@ function PropertyForm() {
         {step === 2 && (
           <>
             {/* ===== MULTI-DEED OCR CARD ===== */}
-            <div style={{ background: 'linear-gradient(135deg,#001a16,#00463d)', borderRadius: 14, padding: '18px 20px', marginBottom: 16, color: '#fff' }}>
+            <div style={{ background: 'linear-gradient(135deg,#4a8a43,#6aab62)', borderRadius: 14, padding: '18px 20px', marginBottom: 16, color: '#1a3a18' }}>
               {/* Header */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', flexShrink: 0 }}>📄</div>
                   <div>
                     <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>สแกนโฉนดอัตโนมัติ</div>
-                    <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.6)' }}>อัพโหลดได้สูงสุด 5 รูป · AI กรอกที่ตั้ง · เนื้อที่ · ประเภทโฉนด ลง Notes อัตโนมัติ</div>
+                    <div style={{ fontSize: '0.72rem', color: 'rgba(26,58,24,0.6)' }}>อัพโหลดได้สูงสุด 5 รูป · AI กรอกที่ตั้ง · เนื้อที่ · ประเภทโฉนด ลง Notes อัตโนมัติ</div>
                   </div>
                 </div>
                 {/* + เพิ่มรูป button */}
                 {deedSlots.length < 5 && (
                   <button type="button" onClick={addDeedSlot}
-                    style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', color: '#fff', borderRadius: 8, padding: '6px 14px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: 5 }}>
+                    style={{ background: 'rgba(26,58,24,0.12)', border: '1px solid rgba(26,58,24,0.2)', color: '#1a3a18', borderRadius: 8, padding: '6px 14px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: 5 }}>
                     <i className="fas fa-plus" /> เพิ่มรูป
                   </button>
                 )}
@@ -1176,11 +1178,11 @@ function PropertyForm() {
                     {existingDeeds.map((d, i) => (
                       <div key={d.id} style={{ position: 'relative' }}>
                         <a href={`${API}${d.deed_image_url}`} target="_blank" rel="noreferrer">
-                          <img src={`${API}${d.deed_image_url}`} alt={`deed-${i+1}`}
+                          <img src={`${API}${d.deed_image_url}`} alt={`deed-${i + 1}`}
                             style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 8, border: '2px solid rgba(255,255,255,0.25)', display: 'block' }} />
                         </a>
                         <button type="button" onClick={() => deleteExistingDeed(d.id)}
-                          style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #00463d', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
+                          style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #6aab62', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
                       </div>
                     ))}
                   </div>
@@ -1216,12 +1218,12 @@ function PropertyForm() {
                           style={{ width: 88, height: 88, borderRadius: 8, border: '2px dashed rgba(255,255,255,0.3)', cursor: 'pointer', overflow: 'hidden', background: slot.preview ? 'transparent' : 'rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                           {slot.preview
                             ? <img src={slot.preview} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                            : <><i className="fas fa-camera" style={{ fontSize: '1.4rem', color: 'rgba(255,255,255,0.4)', marginBottom: 3 }} /><span style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>คลิกเลือก<br/>รูปโฉนด</span></>
+                            : <><i className="fas fa-camera" style={{ fontSize: '1.4rem', color: 'rgba(255,255,255,0.4)', marginBottom: 3 }} /><span style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>คลิกเลือก<br />รูปโฉนด</span></>
                           }
                         </div>
                         {slot.preview && (
                           <button type="button" onClick={e => { e.stopPropagation(); removeDeedSlot(slot.slotId); }}
-                            style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #00463d', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
+                            style={{ position: 'absolute', top: -6, right: -6, width: 20, height: 20, borderRadius: '50%', background: '#ef4444', border: '2px solid #6aab62', color: '#fff', cursor: 'pointer', fontWeight: 900, fontSize: '0.65rem', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}>✕</button>
                         )}
                         <input ref={el => { fileInputRefs.current[slot.slotId] = el; }} type="file" accept="image/*"
                           onChange={e => handleDeedFile(slot.slotId, e)} style={{ display: 'none' }} />
@@ -1231,14 +1233,14 @@ function PropertyForm() {
                       <div style={{ flex: 1 }}>
                         {/* Scan button */}
                         <button type="button" onClick={() => scanDeedSlot(slot.slotId)} disabled={!slot.file || slot.scanning}
-                          style={{ width: '100%', padding: '7px 10px', borderRadius: 7, border: 'none', background: (!slot.file || slot.scanning) ? 'rgba(255,255,255,0.12)' : G, color: '#fff', fontWeight: 700, fontSize: '0.78rem', cursor: (!slot.file || slot.scanning) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 5 }}>
+                          style={{ width: '100%', padding: '7px 10px', borderRadius: 7, border: 'none', background: (!slot.file || slot.scanning) ? 'rgba(26,58,24,0.1)' : G, color: (!slot.file || slot.scanning) ? '#1a3a18' : '#fff', fontWeight: 700, fontSize: '0.78rem', cursor: (!slot.file || slot.scanning) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 5 }}>
                           {slot.scanning ? <><i className="fas fa-circle-notch fa-spin" />สแกน...</> : <><i className="fas fa-magic" />สแกน OCR</>}
                         </button>
 
                         {/* Save button */}
                         {slot.file && (savedId || isEdit) && (
                           <button type="button" onClick={() => saveDeedSlot(slot.slotId)} disabled={slot.saving || slot.saved}
-                            style={{ width: '100%', padding: '6px 10px', borderRadius: 7, border: '1px solid rgba(255,255,255,0.2)', background: slot.saved ? 'rgba(4,170,109,0.3)' : 'rgba(255,255,255,0.1)', color: slot.saved ? '#a8f0c6' : '#fff', fontWeight: 600, fontSize: '0.76rem', cursor: (slot.saving || slot.saved) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 5 }}>
+                            style={{ width: '100%', padding: '6px 10px', borderRadius: 7, border: '1px solid rgba(26,58,24,0.15)', background: slot.saved ? 'rgba(4,170,109,0.3)' : 'rgba(26,58,24,0.08)', color: slot.saved ? '#2d6a2e' : '#1a3a18', fontWeight: 600, fontSize: '0.76rem', cursor: (slot.saving || slot.saved) ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, marginBottom: 5 }}>
                             {slot.saving ? <><i className="fas fa-circle-notch fa-spin" />บันทึก...</> : slot.saved ? <><i className="fas fa-check" />บันทึกแล้ว</> : <><i className="fas fa-save" />บันทึกโฉนด</>}
                           </button>
                         )}
@@ -1258,7 +1260,7 @@ function PropertyForm() {
                             {slot.result.fields && (
                               <div style={{ marginTop: 5, fontSize: '0.62rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.7 }}>
                                 {slot.result.fields.deed_number && <span>📄 {slot.result.fields.deed_number}  </span>}
-                                {slot.result.fields.owner_name  && <span>👤 {slot.result.fields.owner_name}</span>}
+                                {slot.result.fields.owner_name && <span>👤 {slot.result.fields.owner_name}</span>}
                               </div>
                             )}
                           </div>
@@ -1271,7 +1273,7 @@ function PropertyForm() {
                         )}
                         {!slot.file && (
                           <div style={{ fontSize: '0.63rem', color: 'rgba(255,255,255,0.35)', lineHeight: 1.6 }}>
-                            JPG · PNG · WEBP<br/>สูงสุด 15 MB
+                            JPG · PNG · WEBP<br />สูงสุด 15 MB
                           </div>
                         )}
                       </div>
@@ -1334,236 +1336,235 @@ function PropertyForm() {
             </div>
 
             <FormCard title="ที่ตั้งทรัพย์สิน" icon="fa-map-marker-alt"
-            tip="ระบุที่อยู่ให้ครบถ้วน ช่วยให้ผู้ซื้อค้นหาเจอและตัดสินใจได้เร็วขึ้น">
+              tip="ระบุที่อยู่ให้ครบถ้วน ช่วยให้ผู้ซื้อค้นหาเจอและตัดสินใจได้เร็วขึ้น">
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-              <FieldRow label="จังหวัด *" error={errors.province}>
-                <select value={form.province} onChange={e => set('province', e.target.value)} style={errStyle(errors.province)}>
-                  <option value="">-- เลือกจังหวัด --</option>
-                  {provinces.map(p => (
-                    <option key={p.id || p.name} value={p.name}>{p.name}</option>
-                  ))}
-                </select>
-              </FieldRow>
-              <FieldRow label="อำเภอ/เขต">
-                <input type="text" value={form.district} onChange={e => set('district', e.target.value)}
-                  placeholder="เช่น ลาดพร้าว" style={fieldStyle} />
-              </FieldRow>
-              <FieldRow label="ตำบล/แขวง">
-                <input type="text" value={form.sub_district} onChange={e => set('sub_district', e.target.value)}
-                  placeholder="เช่น จรเข้บัว" style={fieldStyle} />
-              </FieldRow>
-              <FieldRow label="รหัสไปรษณีย์">
-                <input type="text" value={form.postal_code} onChange={e => set('postal_code', e.target.value)}
-                  placeholder="10230" maxLength={5} style={fieldStyle} />
-              </FieldRow>
-            </div>
-
-            <FieldRow label="ชื่อโครงการ/หมู่บ้าน" hint="ถ้ามี เช่น หมู่บ้านเดอะวิลเลจ / ลลิล ทาวน์วิลล์">
-              <input type="text" value={form.project_name} onChange={e => set('project_name', e.target.value)}
-                placeholder="ชื่อโครงการ (ถ้ามี)" style={fieldStyle} />
-            </FieldRow>
-
-            <FieldRow label="🏠 บ้านเลขที่ / ซอย / ถนน" hint="กรอกเองหรือกรอกอัตโนมัติจาก Google Maps URL ด้านล่าง">
-              <input type="text" value={form.address} onChange={e => set('address', e.target.value)}
-                placeholder="เช่น 123 ซอยสุขุมวิท 11 ถนนสุขุมวิท" style={fieldStyle} />
-            </FieldRow>
-
-            {/* ===== Google Maps Pin + Embedded Preview ===== */}
-            <div style={{ background: '#f0f7ff', border: '1px solid #cce0ff', borderRadius: 10, padding: 14, marginBottom: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#00463d', marginBottom: 8 }}>
-                📍 ปักหมุดบนแผนที่ (Google Maps)
-              </div>
-              <p style={{ fontSize: '0.78rem', color: '#666', margin: '0 0 10px', lineHeight: 1.5 }}>
-                วาง URL จาก Google Maps หรือใส่พิกัด Lat, Lng แล้วระบบจะแสดงแผนที่ให้ตรวจสอบ
-              </p>
-
-              {/* URL input + เปิดแผนที่ */}
-              <FieldRow label="วาง Google Maps URL หรือพิกัด (lat,lng)">
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <input
-                    type="text"
-                    placeholder="https://maps.google.com/... หรือ 13.7563,100.5018"
-                    style={{ ...fieldStyle, flex: 1 }}
-                    onBlur={e => {
-                      const v = e.target.value.trim();
-                      if (!v) return;
-                      // พิกัดตรง: "13.7563,100.5018"
-                      const coordMatch = v.match(/^(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)$/);
-                      if (coordMatch) {
-                        set('latitude', coordMatch[1]);
-                        set('longitude', coordMatch[2]);
-                        reverseGeocodeLatLng(coordMatch[1], coordMatch[2]);
-                        return;
-                      }
-                      // Google Maps URL
-                      if (v.includes('maps.google') || v.includes('goo.gl/maps') || v.includes('@')) {
-                        parseMapsLink(v);
-                      }
-                    }}
-                  />
-                  <button type="button" onClick={() => window.open('https://maps.google.com', '_blank')}
-                    style={{ background: '#4285F4', color: '#fff', border: 'none', borderRadius: 8, padding: '0 14px', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                    <i className="fas fa-map" /> เปิด Maps
-                  </button>
-                </div>
-              </FieldRow>
-
-              {/* Lat / Lng inputs */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <FieldRow label="Latitude">
-                  <input type="number" step="0.0000001" value={form.latitude} onChange={e => set('latitude', e.target.value)}
-                    placeholder="13.7563" style={fieldStyle} />
-                </FieldRow>
-                <FieldRow label="Longitude">
-                  <input type="number" step="0.0000001" value={form.longitude} onChange={e => set('longitude', e.target.value)}
-                    placeholder="100.5018" style={fieldStyle} />
-                </FieldRow>
-              </div>
-
-              {/* ─── Embedded Map Preview ─── */}
-              {form.latitude && form.longitude && (
-                <div style={{ marginTop: 12 }}>
-                  {/* Toggle buttons */}
-                  <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
-                    {[
-                      { key: 'roadmap',   label: '🗺 แผนที่',   t: 'm' },
-                      { key: 'satellite', label: '🛰 ดาวเทียม', t: 'k' },
-                      { key: 'hybrid',    label: '🏙 Hybrid',   t: 'h' },
-                    ].map(({ key, label }) => (
-                      <button key={key} type="button" onClick={() => setMapType(key)}
-                        style={{
-                          padding: '5px 12px', borderRadius: 7, border: 'none', cursor: 'pointer',
-                          fontFamily: "'Sarabun',sans-serif", fontSize: '0.8rem', fontWeight: 600,
-                          background: mapType === key ? '#00463d' : '#e8edf2',
-                          color: mapType === key ? '#fff' : '#555',
-                          transition: 'all 0.15s',
-                        }}>
-                        {label}
-                      </button>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <FieldRow label="จังหวัด *" error={errors.province}>
+                  <select value={form.province} onChange={e => set('province', e.target.value)} style={errStyle(errors.province)}>
+                    <option value="">-- เลือกจังหวัด --</option>
+                    {provinces.map(p => (
+                      <option key={p.id || p.name} value={p.name}>{p.name}</option>
                     ))}
-                    <a
-                      href={`https://www.google.com/maps?q=${form.latitude},${form.longitude}`}
-                      target="_blank" rel="noreferrer"
-                      style={{ marginLeft: 'auto', fontSize: '0.75rem', color: '#4285F4', fontWeight: 600, alignSelf: 'center', textDecoration: 'none' }}>
-                      <i className="fas fa-external-link-alt" style={{ marginRight: 4 }} />เปิดใน Maps
-                    </a>
-                  </div>
+                  </select>
+                </FieldRow>
+                <FieldRow label="อำเภอ/เขต">
+                  <input type="text" value={form.district} onChange={e => set('district', e.target.value)}
+                    placeholder="เช่น ลาดพร้าว" style={fieldStyle} />
+                </FieldRow>
+                <FieldRow label="ตำบล/แขวง">
+                  <input type="text" value={form.sub_district} onChange={e => set('sub_district', e.target.value)}
+                    placeholder="เช่น จรเข้บัว" style={fieldStyle} />
+                </FieldRow>
+                <FieldRow label="รหัสไปรษณีย์">
+                  <input type="text" value={form.postal_code} onChange={e => set('postal_code', e.target.value)}
+                    placeholder="10230" maxLength={5} style={fieldStyle} />
+                </FieldRow>
+              </div>
 
-                  {/* Iframe */}
-                  <div style={{ borderRadius: 10, overflow: 'hidden', border: '1.5px solid #cce0ff', lineHeight: 0 }}>
-                    <iframe
-                      key={`${form.latitude}-${form.longitude}-${mapType}`}
-                      title="map-preview"
-                      width="100%"
-                      height="300"
-                      frameBorder="0"
-                      style={{ display: 'block' }}
-                      src={`https://maps.google.com/maps?q=${form.latitude},${form.longitude}&z=17&t=${
-                        mapType === 'roadmap' ? 'm' : mapType === 'satellite' ? 'k' : 'h'
-                      }&output=embed`}
-                      allowFullScreen
+              <FieldRow label="ชื่อโครงการ/หมู่บ้าน" hint="ถ้ามี เช่น หมู่บ้านเดอะวิลเลจ / ลลิล ทาวน์วิลล์">
+                <input type="text" value={form.project_name} onChange={e => set('project_name', e.target.value)}
+                  placeholder="ชื่อโครงการ (ถ้ามี)" style={fieldStyle} />
+              </FieldRow>
+
+              <FieldRow label="🏠 บ้านเลขที่ / ซอย / ถนน" hint="กรอกเองหรือกรอกอัตโนมัติจาก Google Maps URL ด้านล่าง">
+                <input type="text" value={form.address} onChange={e => set('address', e.target.value)}
+                  placeholder="เช่น 123 ซอยสุขุมวิท 11 ถนนสุขุมวิท" style={fieldStyle} />
+              </FieldRow>
+
+              {/* ===== Google Maps Pin + Embedded Preview ===== */}
+              <div style={{ background: '#f0f7ff', border: '1px solid #cce0ff', borderRadius: 10, padding: 14, marginBottom: 14 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#6aab62', marginBottom: 8 }}>
+                  📍 ปักหมุดบนแผนที่ (Google Maps)
+                </div>
+                <p style={{ fontSize: '0.78rem', color: '#666', margin: '0 0 10px', lineHeight: 1.5 }}>
+                  วาง URL จาก Google Maps หรือใส่พิกัด Lat, Lng แล้วระบบจะแสดงแผนที่ให้ตรวจสอบ
+                </p>
+
+                {/* URL input + เปิดแผนที่ */}
+                <FieldRow label="วาง Google Maps URL หรือพิกัด (lat,lng)">
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <input
+                      type="text"
+                      placeholder="https://maps.google.com/... หรือ 13.7563,100.5018"
+                      style={{ ...fieldStyle, flex: 1 }}
+                      onBlur={e => {
+                        const v = e.target.value.trim();
+                        if (!v) return;
+                        // พิกัดตรง: "13.7563,100.5018"
+                        const coordMatch = v.match(/^(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)$/);
+                        if (coordMatch) {
+                          set('latitude', coordMatch[1]);
+                          set('longitude', coordMatch[2]);
+                          reverseGeocodeLatLng(coordMatch[1], coordMatch[2]);
+                          return;
+                        }
+                        // Google Maps URL
+                        if (v.includes('maps.google') || v.includes('goo.gl/maps') || v.includes('@')) {
+                          parseMapsLink(v);
+                        }
+                      }}
                     />
+                    <button type="button" onClick={() => window.open('https://maps.google.com', '_blank')}
+                      style={{ background: '#4285F4', color: '#fff', border: 'none', borderRadius: 8, padding: '0 14px', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                      <i className="fas fa-map" /> เปิด Maps
+                    </button>
                   </div>
-                  <p style={{ fontSize: '0.73rem', color: '#888', margin: '5px 0 0' }}>
-                    📌 พิกัด: {parseFloat(form.latitude).toFixed(6)}, {parseFloat(form.longitude).toFixed(6)}
-                  </p>
-                </div>
-              )}
-            </div>
+                </FieldRow>
 
-            {/* BTS/MRT shortcut + auto-detect */}
-            <div style={{ background: '#fff8f0', border: '1px solid #ffdcb0', borderRadius: 10, padding: 14 }}>
-              <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#c05621', marginBottom: 10 }}>
-                🚇 ใกล้รถไฟฟ้า
-              </div>
-              {/* BTS */}
-              <div style={{ marginBottom: 8 }}>
-                <div style={{ fontSize: '0.75rem', color: '#6c757d', fontWeight: 700, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ background: '#1A8C6E', color: '#fff', borderRadius: 10, padding: '1px 8px', fontSize: '0.7rem' }}>BTS</span>
-                  BTS / สายสีเขียว
-                </div>
+                {/* Lat / Lng inputs */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  <FieldRow label="ชื่อสถานี BTS">
-                    <input type="text" value={form.bts_station} onChange={e => set('bts_station', e.target.value)}
-                      placeholder="เช่น BTS อ่อนนุช" style={fieldStyle} />
+                  <FieldRow label="Latitude">
+                    <input type="number" step="0.0000001" value={form.latitude} onChange={e => set('latitude', e.target.value)}
+                      placeholder="13.7563" style={fieldStyle} />
                   </FieldRow>
-                  <FieldRow label="ระยะทาง BTS (กม.)">
-                    <input type="number" step="0.01" value={form.bts_distance_km} onChange={e => set('bts_distance_km', e.target.value)}
-                      placeholder="0.5" style={fieldStyle} />
-                  </FieldRow>
-                </div>
-              </div>
-              {/* MRT */}
-              <div>
-                <div style={{ fontSize: '0.75rem', color: '#6c757d', fontWeight: 700, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <span style={{ background: '#3b5bdb', color: '#fff', borderRadius: 10, padding: '1px 8px', fontSize: '0.7rem' }}>MRT</span>
-                  MRT / สายสีน้ำเงิน
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  <FieldRow label="ชื่อสถานี MRT">
-                    <input type="text" value={form.mrt_station} onChange={e => set('mrt_station', e.target.value)}
-                      placeholder="เช่น MRT ลาดพร้าว" style={fieldStyle} />
-                  </FieldRow>
-                  <FieldRow label="ระยะทาง MRT (กม.)">
-                    <input type="number" step="0.01" value={form.mrt_distance_km} onChange={e => set('mrt_distance_km', e.target.value)}
-                      placeholder="0.8" style={fieldStyle} />
+                  <FieldRow label="Longitude">
+                    <input type="number" step="0.0000001" value={form.longitude} onChange={e => set('longitude', e.target.value)}
+                      placeholder="100.5018" style={fieldStyle} />
                   </FieldRow>
                 </div>
+
+                {/* ─── Embedded Map Preview ─── */}
+                {form.latitude && form.longitude && (
+                  <div style={{ marginTop: 12 }}>
+                    {/* Toggle buttons */}
+                    <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
+                      {[
+                        { key: 'roadmap', label: '🗺 แผนที่', t: 'm' },
+                        { key: 'satellite', label: '🛰 ดาวเทียม', t: 'k' },
+                        { key: 'hybrid', label: '🏙 Hybrid', t: 'h' },
+                      ].map(({ key, label }) => (
+                        <button key={key} type="button" onClick={() => setMapType(key)}
+                          style={{
+                            padding: '5px 12px', borderRadius: 7, border: 'none', cursor: 'pointer',
+                            fontFamily: "'Sarabun',sans-serif", fontSize: '0.8rem', fontWeight: 600,
+                            background: mapType === key ? '#6aab62' : '#e8edf2',
+                            color: mapType === key ? '#1a3a18' : '#555',
+                            transition: 'all 0.15s',
+                          }}>
+                          {label}
+                        </button>
+                      ))}
+                      <a
+                        href={`https://www.google.com/maps?q=${form.latitude},${form.longitude}`}
+                        target="_blank" rel="noreferrer"
+                        style={{ marginLeft: 'auto', fontSize: '0.75rem', color: '#4285F4', fontWeight: 600, alignSelf: 'center', textDecoration: 'none' }}>
+                        <i className="fas fa-external-link-alt" style={{ marginRight: 4 }} />เปิดใน Maps
+                      </a>
+                    </div>
+
+                    {/* Iframe */}
+                    <div style={{ borderRadius: 10, overflow: 'hidden', border: '1.5px solid #cce0ff', lineHeight: 0 }}>
+                      <iframe
+                        key={`${form.latitude}-${form.longitude}-${mapType}`}
+                        title="map-preview"
+                        width="100%"
+                        height="300"
+                        frameBorder="0"
+                        style={{ display: 'block' }}
+                        src={`https://maps.google.com/maps?q=${form.latitude},${form.longitude}&z=17&t=${mapType === 'roadmap' ? 'm' : mapType === 'satellite' ? 'k' : 'h'
+                          }&output=embed`}
+                        allowFullScreen
+                      />
+                    </div>
+                    <p style={{ fontSize: '0.73rem', color: '#888', margin: '5px 0 0' }}>
+                      📌 พิกัด: {parseFloat(form.latitude).toFixed(6)}, {parseFloat(form.longitude).toFixed(6)}
+                    </p>
+                  </div>
+                )}
               </div>
 
-              {/* Auto-detected nearby stations */}
-              {nearbyTransit.length > 0 && (
-                <div style={{ marginTop: 12 }}>
-                  <div style={{ fontSize: '0.78rem', color: '#c05621', fontWeight: 700, marginBottom: 6 }}>
-                    📡 สถานีที่ตรวจพบอัตโนมัติ (รัศมี 3 กม.)
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
-                    {nearbyTransit.slice(0, 10).map(s => (
-                      <button
-                        key={s.id}
-                        type="button"
-                        title={`${s.lineLabel} — ${s.distance.toFixed(2)} กม.`}
-                        onClick={() => {
-                          if (s.type === 'mrt') {
-                            set('mrt_station', s.name);
-                            set('mrt_distance_km', s.distance.toFixed(2));
-                          } else {
-                            // bts หรือ arl → ใส่ BTS field
-                            set('bts_station', s.name);
-                            set('bts_distance_km', s.distance.toFixed(2));
-                          }
-                        }}
-                        style={{
-                          background: s.lineColor, color: '#fff',
-                          border: 'none', borderRadius: 16,
-                          padding: '4px 10px', fontSize: '0.75rem',
-                          cursor: 'pointer', fontFamily: "'Sarabun',sans-serif",
-                          fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4,
-                        }}
-                      >
-                        <span>{s.name}</span>
-                        <span style={{ opacity: 0.85, fontSize: '0.7rem' }}>{s.distance.toFixed(2)} กม.</span>
-                      </button>
-                    ))}
-                  </div>
-                  <p style={{ fontSize: '0.73rem', color: '#888', margin: '0 0 6px' }}>
-                    คลิกสถานีเพื่อเลือก • ไปที่ Step 5 เพื่อเพิ่มทั้งหมดลงรายการสถานที่ใกล้เคียง
-                  </p>
+              {/* BTS/MRT shortcut + auto-detect */}
+              <div style={{ background: '#fff8f0', border: '1px solid #ffdcb0', borderRadius: 10, padding: 14 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#c05621', marginBottom: 10 }}>
+                  🚇 ใกล้รถไฟฟ้า
                 </div>
-              )}
-              {form.latitude && form.longitude && nearbyTransit.length === 0 && (
-                <p style={{ fontSize: '0.76rem', color: '#aaa', margin: '8px 0 0' }}>
-                  ℹ️ ไม่พบสถานีรถไฟฟ้าในรัศมี 3 กม. (พื้นที่ต่างจังหวัดหรือนอกเส้นทาง)
-                </p>
-              )}
-              {!form.latitude && (
-                <p style={{ fontSize: '0.76rem', color: '#aaa', margin: '8px 0 0' }}>
-                  💡 วาง Google Maps URL ด้านบนเพื่อให้กรอกสถานีใกล้เคียงอัตโนมัติ
-                </p>
-              )}
-            </div>
-          </FormCard>
+                {/* BTS */}
+                <div style={{ marginBottom: 8 }}>
+                  <div style={{ fontSize: '0.75rem', color: '#6c757d', fontWeight: 700, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ background: '#A1D99B', color: '#1a3a18', borderRadius: 10, padding: '1px 8px', fontSize: '0.7rem' }}>BTS</span>
+                    BTS / สายสีเขียว
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <FieldRow label="ชื่อสถานี BTS">
+                      <input type="text" value={form.bts_station} onChange={e => set('bts_station', e.target.value)}
+                        placeholder="เช่น BTS อ่อนนุช" style={fieldStyle} />
+                    </FieldRow>
+                    <FieldRow label="ระยะทาง BTS (กม.)">
+                      <input type="number" step="0.01" value={form.bts_distance_km} onChange={e => set('bts_distance_km', e.target.value)}
+                        placeholder="0.5" style={fieldStyle} />
+                    </FieldRow>
+                  </div>
+                </div>
+                {/* MRT */}
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: '#6c757d', fontWeight: 700, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ background: '#3b5bdb', color: '#fff', borderRadius: 10, padding: '1px 8px', fontSize: '0.7rem' }}>MRT</span>
+                    MRT / สายสีน้ำเงิน
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                    <FieldRow label="ชื่อสถานี MRT">
+                      <input type="text" value={form.mrt_station} onChange={e => set('mrt_station', e.target.value)}
+                        placeholder="เช่น MRT ลาดพร้าว" style={fieldStyle} />
+                    </FieldRow>
+                    <FieldRow label="ระยะทาง MRT (กม.)">
+                      <input type="number" step="0.01" value={form.mrt_distance_km} onChange={e => set('mrt_distance_km', e.target.value)}
+                        placeholder="0.8" style={fieldStyle} />
+                    </FieldRow>
+                  </div>
+                </div>
+
+                {/* Auto-detected nearby stations */}
+                {nearbyTransit.length > 0 && (
+                  <div style={{ marginTop: 12 }}>
+                    <div style={{ fontSize: '0.78rem', color: '#c05621', fontWeight: 700, marginBottom: 6 }}>
+                      📡 สถานีที่ตรวจพบอัตโนมัติ (รัศมี 3 กม.)
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
+                      {nearbyTransit.slice(0, 10).map(s => (
+                        <button
+                          key={s.id}
+                          type="button"
+                          title={`${s.lineLabel} — ${s.distance.toFixed(2)} กม.`}
+                          onClick={() => {
+                            if (s.type === 'mrt') {
+                              set('mrt_station', s.name);
+                              set('mrt_distance_km', s.distance.toFixed(2));
+                            } else {
+                              // bts หรือ arl → ใส่ BTS field
+                              set('bts_station', s.name);
+                              set('bts_distance_km', s.distance.toFixed(2));
+                            }
+                          }}
+                          style={{
+                            background: s.lineColor, color: '#fff',
+                            border: 'none', borderRadius: 16,
+                            padding: '4px 10px', fontSize: '0.75rem',
+                            cursor: 'pointer', fontFamily: "'Sarabun',sans-serif",
+                            fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4,
+                          }}
+                        >
+                          <span>{s.name}</span>
+                          <span style={{ opacity: 0.85, fontSize: '0.7rem' }}>{s.distance.toFixed(2)} กม.</span>
+                        </button>
+                      ))}
+                    </div>
+                    <p style={{ fontSize: '0.73rem', color: '#888', margin: '0 0 6px' }}>
+                      คลิกสถานีเพื่อเลือก • ไปที่ Step 5 เพื่อเพิ่มทั้งหมดลงรายการสถานที่ใกล้เคียง
+                    </p>
+                  </div>
+                )}
+                {form.latitude && form.longitude && nearbyTransit.length === 0 && (
+                  <p style={{ fontSize: '0.76rem', color: '#aaa', margin: '8px 0 0' }}>
+                    ℹ️ ไม่พบสถานีรถไฟฟ้าในรัศมี 3 กม. (พื้นที่ต่างจังหวัดหรือนอกเส้นทาง)
+                  </p>
+                )}
+                {!form.latitude && (
+                  <p style={{ fontSize: '0.76rem', color: '#aaa', margin: '8px 0 0' }}>
+                    💡 วาง Google Maps URL ด้านบนเพื่อให้กรอกสถานีใกล้เคียงอัตโนมัติ
+                  </p>
+                )}
+              </div>
+            </FormCard>
           </>
         )}
 
@@ -1572,10 +1573,10 @@ function PropertyForm() {
           <>
             <FormCard title="ขนาดและห้อง" icon="fa-ruler-combined">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginBottom: 16, padding: '16px 0', borderBottom: '1px solid #f0f0f0' }}>
-                <Stepper label="🛏 ห้องนอน"  value={form.bedrooms}  onChange={v => set('bedrooms', v)} />
-                <Stepper label="🚿 ห้องน้ำ"  value={form.bathrooms} onChange={v => set('bathrooms', v)} />
-                <Stepper label="🏢 ชั้น"     value={form.floors}    onChange={v => set('floors', v)} min={1} />
-                <Stepper label="🚗 จอดรถ"    value={form.parking}   onChange={v => set('parking', v)} />
+                <Stepper label="🛏 ห้องนอน" value={form.bedrooms} onChange={v => set('bedrooms', v)} />
+                <Stepper label="🚿 ห้องน้ำ" value={form.bathrooms} onChange={v => set('bathrooms', v)} />
+                <Stepper label="🏢 ชั้น" value={form.floors} onChange={v => set('floors', v)} min={1} />
+                <Stepper label="🚗 จอดรถ" value={form.parking} onChange={v => set('parking', v)} />
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <FieldRow label="พื้นที่ใช้สอย (ตร.ม.)">
@@ -1586,7 +1587,7 @@ function PropertyForm() {
                 <div style={{ gridColumn: '1 / -1' }}>
                   <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: '#374151', marginBottom: 8 }}>ขนาดที่ดิน</label>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                    {[{k:'land_area_rai',l:'ไร่'},{k:'land_area_ngan',l:'งาน'},{k:'land_area_wah',l:'ตร.วา'}].map(f => (
+                    {[{ k: 'land_area_rai', l: 'ไร่' }, { k: 'land_area_ngan', l: 'งาน' }, { k: 'land_area_wah', l: 'ตร.วา' }].map(f => (
                       <div key={f.k} style={{ flex: 1, position: 'relative' }}>
                         <input type="number" value={form[f.k]} onChange={e => set(f.k, parseFloat(e.target.value) || 0)}
                           placeholder="0" style={{ ...fieldStyle, paddingRight: 36, textAlign: 'center' }} />
@@ -1641,7 +1642,7 @@ function PropertyForm() {
 
               {/* เลี้ยงสัตว์ */}
               <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88rem', fontWeight: 600, margin: '8px 0 14px' }}>
-                <input type="checkbox" checked={form.pet_friendly} onChange={e => set('pet_friendly', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#1A8C6E' }} />
+                <input type="checkbox" checked={form.pet_friendly} onChange={e => set('pet_friendly', e.target.checked)} style={{ width: 16, height: 16, accentColor: '#A1D99B' }} />
                 <span>🐾 อนุญาตให้เลี้ยงสัตว์</span>
               </label>
 
@@ -1652,6 +1653,25 @@ function PropertyForm() {
                   <input type="url" value={form.video_url} onChange={e => set('video_url', e.target.value)}
                     placeholder="https://youtube.com/watch?v=..." style={{ ...fieldStyle, paddingLeft: 28 }} />
                 </div>
+              </FieldRow>
+
+              {/* Matterport 3D Tour */}
+              <FieldRow label="3D Virtual Tour (Matterport)" hint="วาง Matterport Space ID เช่น YscKkc6oP5c เพื่อแสดง 3D Tour หมุน 360 องศา">
+                <div style={{ position: 'relative' }}>
+                  <i className="fas fa-cube" style={{ ...prefix, color: '#E44D7B' }} />
+                  <input type="text" value={form.virtual_tour_id} onChange={e => set('virtual_tour_id', e.target.value)}
+                    placeholder="Matterport Space ID เช่น YscKkc6oP5c" style={{ ...fieldStyle, paddingLeft: 28 }} />
+                </div>
+                {form.virtual_tour_id && (
+                  <div style={{ marginTop: 8, borderRadius: 10, overflow: 'hidden', border: '1px solid #e0e0e0' }}>
+                    <iframe
+                      src={`https://my.matterport.com/show/?m=${form.virtual_tour_id}&play=1`}
+                      width="100%" height="280" frameBorder="0" allowFullScreen
+                      style={{ display: 'block' }}
+                      title="Matterport 3D Tour Preview"
+                    />
+                  </div>
+                )}
               </FieldRow>
             </FormCard>
 
@@ -1748,7 +1768,7 @@ function PropertyForm() {
                         </div>
                       ))}
                     </div>
-                    <span style={{ fontSize: '0.78rem', color: '#1A8C6E', fontWeight: 600 }}>+ เพิ่มรูปอีก คลิกที่นี่</span>
+                    <span style={{ fontSize: '0.78rem', color: '#3d7a3a', fontWeight: 600 }}>+ เพิ่มรูปอีก คลิกที่นี่</span>
                   </div>
                 ) : (
                   <>
@@ -1765,7 +1785,7 @@ function PropertyForm() {
                   }} />
               </div>
               {galleryFiles.length > 0 && (
-                <div style={{ marginTop: 8, fontSize: '0.78rem', color: '#1A8C6E', fontWeight: 600 }}>
+                <div style={{ marginTop: 8, fontSize: '0.78rem', color: '#3d7a3a', fontWeight: 600 }}>
                   <i className="fas fa-check-circle" style={{ marginRight: 5 }} />เลือก {galleryFiles.length} รูปใหม่ — กด "บันทึกรูป" เพื่ออัพโหลด
                 </div>
               )}
@@ -1785,21 +1805,21 @@ function PropertyForm() {
                     <button key={a.name} type="button" onClick={() => toggleAmenity(a.name, a.icon)}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', borderRadius: 8,
-                        border: `1.5px solid ${active ? '#1A8C6E' : '#dde3ed'}`,
+                        border: `1.5px solid ${active ? '#A1D99B' : '#dde3ed'}`,
                         background: active ? '#f0faf5' : '#fff',
-                        color: active ? '#1A8C6E' : '#555',
+                        color: active ? '#A1D99B' : '#555',
                         cursor: 'pointer', fontWeight: active ? 700 : 400, fontSize: '0.82rem',
                         fontFamily: "'Sarabun',sans-serif", transition: 'all 0.15s',
                       }}>
                       <i className={`fas ${a.icon}`} style={{ fontSize: '0.9rem', width: 16, textAlign: 'center' }} />
                       {a.name}
-                      {active && <i className="fas fa-check-circle" style={{ marginLeft: 'auto', color: '#1A8C6E', fontSize: '0.85rem' }} />}
+                      {active && <i className="fas fa-check-circle" style={{ marginLeft: 'auto', color: '#3d7a3a', fontSize: '0.85rem' }} />}
                     </button>
                   );
                 })}
               </div>
               {existingAmenities.length > 0 && (
-                <p style={{ fontSize: '0.78rem', color: '#1A8C6E', fontWeight: 600, marginTop: 10, marginBottom: 0 }}>
+                <p style={{ fontSize: '0.78rem', color: '#3d7a3a', fontWeight: 600, marginTop: 10, marginBottom: 0 }}>
                   <i className="fas fa-check-circle" style={{ marginRight: 5 }} />เลือกแล้ว {existingAmenities.length} รายการ
                 </p>
               )}
@@ -1827,7 +1847,7 @@ function PropertyForm() {
                     ))}
                   </div>
                   <button type="button" onClick={addTransitToNearby}
-                    style={{ background: '#00463d', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 16px', cursor: 'pointer', fontSize: '0.83rem', fontWeight: 600, fontFamily: "'Sarabun',sans-serif" }}>
+                    style={{ background: '#6aab62', color: '#1a3a18', border: 'none', borderRadius: 8, padding: '7px 16px', cursor: 'pointer', fontSize: '0.83rem', fontWeight: 600, fontFamily: "'Sarabun',sans-serif" }}>
                     <i className="fas fa-magic" style={{ marginRight: 6 }} />เพิ่มทั้งหมดอัตโนมัติ
                   </button>
                   <span style={{ fontSize: '0.73rem', color: '#666', marginLeft: 10 }}>หรือเพิ่มทีละสถานีด้านล่าง</span>
@@ -1855,7 +1875,7 @@ function PropertyForm() {
                 </FieldRow>
               </div>
               <button type="button" onClick={addNearby}
-                style={{ background: '#00463d', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 18px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, marginBottom: 14 }}>
+                style={{ background: '#6aab62', color: '#1a3a18', border: 'none', borderRadius: 8, padding: '8px 18px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, marginBottom: 14 }}>
                 <i className="fas fa-plus" style={{ marginRight: 6 }} />เพิ่มสถานที่
               </button>
 
@@ -1866,9 +1886,9 @@ function PropertyForm() {
                     return (
                       <div key={n.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: 8, padding: '8px 12px' }}>
                         <div>
-                          <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#00463d' }}>{n.place_name}</span>
+                          <span style={{ fontWeight: 600, fontSize: '0.85rem', color: '#6aab62' }}>{n.place_name}</span>
                           <span style={{ fontSize: '0.75rem', color: '#888', marginLeft: 8 }}>({typeLabel})</span>
-                          {n.distance_km && <span style={{ fontSize: '0.75rem', color: '#1A8C6E', marginLeft: 8, fontWeight: 600 }}>{n.distance_km} กม.</span>}
+                          {n.distance_km && <span style={{ fontSize: '0.75rem', color: '#3d7a3a', marginLeft: 8, fontWeight: 600 }}>{n.distance_km} กม.</span>}
                           {n.travel_time_min && <span style={{ fontSize: '0.75rem', color: '#888', marginLeft: 4 }}>• {n.travel_time_min} นาที</span>}
                         </div>
                         <button type="button" onClick={() => deleteNearby(n.id)}
@@ -1900,25 +1920,25 @@ function PropertyForm() {
           <div style={{ display: 'flex', gap: 10 }}>
             {/* Save & Exit — always visible */}
             <button type="button" onClick={finishAndExit} disabled={saving}
-              style={{ background: '#fff', color: '#1A8C6E', border: '1.5px solid #1A8C6E', borderRadius: 8, padding: '10px 18px', cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem' }}>
+              style={{ background: '#fff', color: '#3d7a3a', border: '1.5px solid #A1D99B', borderRadius: 8, padding: '10px 18px', cursor: 'pointer', fontWeight: 600, fontSize: '0.88rem' }}>
               💾 บันทึก & ออก
             </button>
             {/* Step-specific next button */}
             {step < 4 && (
               <button type="button" onClick={saveAndNext} disabled={saving}
-                style={{ background: '#1A8C6E', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
+                style={{ background: '#A1D99B', color: '#1a3a18', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
                 {saving ? '⏳ กำลังบันทึก...' : 'บันทึก & ถัดไป →'}
               </button>
             )}
             {step === 4 && (
               <button type="button" onClick={saveImages} disabled={saving}
-                style={{ background: '#1A8C6E', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
+                style={{ background: '#A1D99B', color: '#1a3a18', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem', opacity: saving ? 0.7 : 1 }}>
                 {saving ? '⏳ กำลังอัพโหลด...' : '📷 บันทึกรูป & ถัดไป →'}
               </button>
             )}
             {step === 5 && (
               <button type="button" onClick={finishAndExit} disabled={saving}
-                style={{ background: '#00463d', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem' }}>
+                style={{ background: '#6aab62', color: '#1a3a18', border: 'none', borderRadius: 8, padding: '10px 24px', cursor: 'pointer', fontWeight: 700, fontSize: '0.88rem' }}>
                 ✅ เสร็จสิ้น — กลับหน้ารายการ
               </button>
             )}

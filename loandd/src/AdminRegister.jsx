@@ -96,10 +96,10 @@ export default function AdminRegister() {
       <div style={css.brand}>
         <div style={css.brandInner}>
           <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 64, objectFit: 'contain', marginBottom: 28 }} />
-          <h1 style={{ margin: '0 0 8px', fontSize: '1.5rem', fontWeight: 800, color: '#fff' }}>
+          <h1 style={{ margin: '0 0 8px', fontSize: '1.5rem', fontWeight: 800, color: '#1a3a18' }}>
             เพิ่มบัญชีแอดมิน
           </h1>
-          <p style={{ margin: '0 0 32px', color: 'rgba(255,255,255,0.65)', fontSize: '0.87rem', lineHeight: 1.7 }}>
+          <p style={{ margin: '0 0 32px', color: 'rgba(26,58,24,0.65)', fontSize: '0.87rem', lineHeight: 1.7 }}>
             สร้างบัญชีเจ้าหน้าที่ บ้าน D มีเชง<br />สำหรับจัดการระบบอสังหาริมทรัพย์
           </p>
 
@@ -112,10 +112,10 @@ export default function AdminRegister() {
               { icon: '🔑', text: 'เปลี่ยนรหัสผ่านได้เองหลัง login' },
             ].map((f, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                <div style={{ width: 30, height: 30, borderRadius: 8, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', flexShrink: 0 }}>
+                <div style={{ width: 30, height: 30, borderRadius: 8, background: 'rgba(26,58,24,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem', flexShrink: 0 }}>
                   {f.icon}
                 </div>
-                <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.8rem' }}>{f.text}</span>
+                <span style={{ color: 'rgba(26,58,24,0.75)', fontSize: '0.8rem' }}>{f.text}</span>
               </div>
             ))}
           </div>
@@ -130,15 +130,15 @@ export default function AdminRegister() {
           <div style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 20, padding: '4px 12px' }}>
-                <i className="fas fa-user-plus" style={{ color: '#1A8C6E', fontSize: '0.7rem' }} />
-                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#1A8C6E', letterSpacing: '0.5px' }}>NEW ADMIN</span>
+                <i className="fas fa-user-plus" style={{ color: '#3d7a3a', fontSize: '0.7rem' }} />
+                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#3d7a3a', letterSpacing: '0.5px' }}>NEW ADMIN</span>
               </div>
               <Link to="/admin/properties" style={{ color: '#9ca3af', fontSize: '0.78rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}>
                 <i className="fas fa-arrow-left" style={{ fontSize: '0.7rem' }} />
                 กลับ Dashboard
               </Link>
             </div>
-            <h2 style={{ margin: '0 0 4px', fontSize: '1.35rem', fontWeight: 800, color: '#00463d' }}>
+            <h2 style={{ margin: '0 0 4px', fontSize: '1.35rem', fontWeight: 800, color: '#6aab62' }}>
               สร้างบัญชีเจ้าหน้าที่
             </h2>
             <p style={{ margin: 0, color: '#9ca3af', fontSize: '0.82rem' }}>
@@ -267,7 +267,7 @@ const css = {
   brand: {
     width: '360px',
     flexShrink: 0,
-    background: 'linear-gradient(145deg, #001a16 0%, #00463d 60%, #1A8C6E 160%)',
+    background: 'linear-gradient(145deg, #4a8a43 0%, #6aab62 60%, #A1D99B 160%)',
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -357,8 +357,8 @@ const css = {
   btnPrimary: (loading) => ({
     flex: 1,
     padding: '11px',
-    background: loading ? '#9ca3af' : 'linear-gradient(135deg, #00463d, #001a16)',
-    color: '#fff',
+    background: loading ? '#9ca3af' : 'linear-gradient(135deg, #6aab62, #4a8a43)',
+    color: '#1a3a18',
     border: 'none',
     borderRadius: 9,
     fontSize: '0.9rem',

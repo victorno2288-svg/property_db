@@ -133,7 +133,7 @@ export default function ProfilePage() {
     }
   };
 
-  const G = '#1A8C6E';
+  const G = '#3d7a3a'; const Gl = '#A1D99B';
 
   const tabs = [
     { key: 'profile',  icon: 'fa-user-edit',    label: 'ข้อมูลของฉัน' },
@@ -158,24 +158,24 @@ export default function ProfilePage() {
       <Navbar />
 
       {/* Hero strip */}
-      <div style={{ background: 'linear-gradient(135deg,#1A8C6E,#00463d)', paddingTop: 64 }}>
+      <div style={{ background: 'linear-gradient(135deg,#A1D99B,#6aab62)', paddingTop: 64 }}>
         <div className="container" style={{ padding: '28px 16px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, paddingBottom: 0 }}>
             {/* Avatar */}
             <div style={{
               width: 60, height: 60, borderRadius: '50%',
-              background: G, color: '#fff',
+              background: '#fff', color: G,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '1.6rem', fontWeight: 800, flexShrink: 0,
-              border: '3px solid rgba(255,255,255,0.3)',
+              border: '3px solid rgba(255,255,255,0.5)',
             }}>
               {profile?.username?.charAt(0)?.toUpperCase() || '?'}
             </div>
             <div>
-              <div style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem' }}>
+              <div style={{ color: '#1a3a18', fontWeight: 800, fontSize: '1.1rem' }}>
                 {profile?.username || '...'}
               </div>
-              <div style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.8rem', marginTop: 2 }}>
+              <div style={{ color: 'rgba(26,58,24,0.65)', fontSize: '0.8rem', marginTop: 2 }}>
                 <span>{profile?.email}</span>
               </div>
             </div>
@@ -186,7 +186,7 @@ export default function ProfilePage() {
             {tabs.map(t => (
               <button key={t.key} onClick={() => { setTab(t.key); setMsg(null); }} style={{
                 background: tab === t.key ? '#fff' : 'transparent',
-                color: tab === t.key ? '#1A8C6E' : 'rgba(255,255,255,0.7)',
+                color: tab === t.key ? '#A1D99B' : 'rgba(255,255,255,0.7)',
                 border: 'none', padding: '10px 18px',
                 fontFamily: '"Noto Sans Thai", sans-serif',
                 fontWeight: tab === t.key ? 700 : 500,
@@ -227,7 +227,7 @@ export default function ProfilePage() {
         {/* ─── TAB: ข้อมูลของฉัน ─────────────────── */}
         {tab === 'profile' && (
           <div style={{ background: '#fff', borderRadius: 14, padding: '24px 24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <h4 style={{ color: '#1A8C6E', fontWeight: 800, marginBottom: 20, fontSize: '1rem' }}>
+            <h4 style={{ color: '#3d7a3a', fontWeight: 800, marginBottom: 20, fontSize: '1rem' }}>
               <i className="fas fa-user-edit" style={{ color: G, marginRight: 8 }} />แก้ไขข้อมูลส่วนตัว
             </h4>
             {loading ? (
@@ -307,7 +307,7 @@ export default function ProfilePage() {
         {tab === 'saved' && (
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h4 style={{ color: '#1A8C6E', fontWeight: 800, margin: 0, fontSize: '1rem' }}>
+              <h4 style={{ color: '#3d7a3a', fontWeight: 800, margin: 0, fontSize: '1rem' }}>
                 <i className="fas fa-heart" style={{ color: '#e53e3e', marginRight: 8 }} />
                 ทรัพย์ที่บันทึกไว้ ({saved.length} รายการ)
               </h4>
@@ -338,7 +338,7 @@ export default function ProfilePage() {
         {/* ─── TAB: เปลี่ยนรหัสผ่าน ──────────────── */}
         {tab === 'password' && (
           <div style={{ background: '#fff', borderRadius: 14, padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <h4 style={{ color: '#1A8C6E', fontWeight: 800, marginBottom: 8, fontSize: '1rem' }}>
+            <h4 style={{ color: '#3d7a3a', fontWeight: 800, marginBottom: 8, fontSize: '1rem' }}>
               <i className="fas fa-lock" style={{ color: G, marginRight: 8 }} />ขอเปลี่ยนรหัสผ่าน
             </h4>
             <p style={{ color: '#666', fontSize: '0.85rem', marginBottom: 20, lineHeight: 1.6 }}>
@@ -426,8 +426,8 @@ export default function ProfilePage() {
                   disabled={saving || !newPw || !newPwConf || newPw !== newPwConf}
                   style={{
                     width: '100%', padding: '12px',
-                    background: (saving || !newPw || !newPwConf || newPw !== newPwConf) ? '#ccc' : 'linear-gradient(135deg,#1A8C6E,#00463d)',
-                    color: '#fff', border: 'none', borderRadius: 10,
+                    background: (saving || !newPw || !newPwConf || newPw !== newPwConf) ? '#ccc' : 'linear-gradient(135deg,#A1D99B,#6aab62)',
+                    color: '#1a3a18', border: 'none', borderRadius: 10,
                     fontWeight: 700, fontSize: '0.95rem',
                     cursor: (saving || !newPw || !newPwConf || newPw !== newPwConf) ? 'not-allowed' : 'pointer',
                     fontFamily: '"Noto Sans Thai", sans-serif',

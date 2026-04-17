@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 
-const brandGreen = '#1A8C6E';
-const navy = '#1A8C6E';
+const brandGreen = '#A1D99B';
+const navy = '#3d7a3a';
 const LINE_URL = 'https://line.me/R/ti/p/@loan_dd';
 const PHONE    = '081-638-6966';
 const FB_URL   = 'https://www.facebook.com/share/1HWR1pe2XM/?mibextid=wwXIfr';
@@ -51,17 +51,17 @@ const ContactPage = () => {
 
       {/* Hero — Quiet Luxury */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #147A5E 60%, ${brandGreen} 100%)`,
+        background: `linear-gradient(135deg, ${navy} 0%, #8BC683 60%, ${brandGreen} 100%)`,
         padding: 'calc(64px + 48px) 16px 40px',
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
+          <div style={{ fontSize: '0.62rem', color: '#e8d48a', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
             Contact Us
           </div>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Prompt', sans-serif", letterSpacing: '-0.01em' }}>
             ติดต่อเรา
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
+          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.88rem', margin: 0 }}>
             มีคำถามเรื่องทรัพย์? สนใจซื้อหรือเช่า? ทีมงาน บ้าน D มีเชง พร้อมช่วยคุณเสมอ
           </p>
         </div>
@@ -185,19 +185,19 @@ const ContactPage = () => {
 
           {/* RIGHT — Inquiry Form */}
           <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #e8ecf0', boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '32px 28px' }}>
-            <h2 style={{ color: navy, fontWeight: 500, fontSize: '1.25rem', marginBottom: 6, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif" }}>
+            <h2 style={{ color: navy, fontWeight: 500, fontSize: '1.25rem', marginBottom: 6, fontFamily: "'Prompt', sans-serif" }}>
               ส่งข้อความหาเรา
             </h2>
             <p style={{ color: '#888', fontSize: '0.85rem', marginBottom: 24 }}>กรอกแบบฟอร์มด้านล่าง ทีมงานจะติดต่อกลับโดยเร็ว</p>
 
             {status === 'sent' ? (
               <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                <i className="fas fa-check-circle" style={{ fontSize: '2.5rem', marginBottom: 16, color: '#1A8C6E', display: 'block' }} />
+                <i className="fas fa-check-circle" style={{ fontSize: '2.5rem', marginBottom: 16, color: '#3d7a3a', display: 'block' }} />
                 <h3 style={{ color: brandGreen, fontWeight: 800, marginBottom: 8 }}>ส่งข้อความสำเร็จ!</h3>
                 <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: 24 }}>ทีมงานจะติดต่อกลับภายใน 1 ชั่วโมง (จ–ส)</p>
                 <button
                   onClick={() => setStatus(null)}
-                  style={{ background: brandGreen, color: '#fff', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}
+                  style={{ background: brandGreen, color: '#1a3a18', border: 'none', borderRadius: 8, padding: '10px 24px', fontWeight: 700, cursor: 'pointer', fontSize: '0.9rem' }}
                 >
                   ส่งข้อความใหม่
                 </button>
@@ -304,7 +304,7 @@ const ContactPage = () => {
                   disabled={status === 'sending'}
                   style={{
                     background: status === 'sending' ? '#9ca3af' : brandGreen,
-                    color: '#fff',
+                    color: '#1a3a18',
                     border: 'none',
                     borderRadius: 10,
                     padding: '14px',
@@ -325,7 +325,7 @@ const ContactPage = () => {
                   )}
                 </button>
 
-                <p style={{ textAlign: 'center', fontSize: '0.78rem', color: '#aaa', margin: 0 }}>
+                <p style={{ textAlign: 'center', fontSize: '0.78rem', color: '#777', margin: 0 }}>
                   หรือติดต่อผ่าน{' '}
                   <a href={LINE_URL} target="_blank" rel="noopener noreferrer" style={{ color: '#06C755', fontWeight: 700 }}>LINE @loan_dd</a>
                   {' '}หรือ{' '}
@@ -337,16 +337,16 @@ const ContactPage = () => {
         </div>
 
         {/* FAQ CTA */}
-        <div style={{ marginTop: 48, background: `linear-gradient(135deg, ${navy}, #00463d)`, borderRadius: 16, padding: '32px 28px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
+        <div style={{ marginTop: 48, background: `linear-gradient(135deg, ${navy}, #6aab62)`, borderRadius: 16, padding: '32px 28px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
           <div>
             <h3 style={{ color: '#fff', fontWeight: 800, fontSize: '1.2rem', marginBottom: 6 }}>มีคำถามเบื้องต้น?</h3>
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem', margin: 0 }}>
+            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.9rem', margin: 0 }}>
               ดูคำถามที่พบบ่อยของเรา — การซื้อ-ขาย เอกสาร ค่าโอน และขั้นตอนต่างๆ
             </p>
           </div>
           <Link to="/faq" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: brandGreen, color: '#fff', textDecoration: 'none',
+            background: brandGreen, color: '#1a3a18', textDecoration: 'none',
             borderRadius: 10, padding: '12px 24px', fontWeight: 700, fontSize: '0.95rem',
             transition: 'opacity 0.2s',
             whiteSpace: 'nowrap',

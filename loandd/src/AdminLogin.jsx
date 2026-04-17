@@ -64,13 +64,13 @@ export default function AdminLogin() {
     <div style={css.page}>
 
       {/* ── ซ้าย: Brand Panel ── */}
-      <div style={css.brand}>
+      <div className="admin-brand" style={css.brand}>
         <div style={css.brandInner}>
           <img src={bigLogo} alt="บ้าน D มีเชง" style={{ height: 64, objectFit: 'contain', marginBottom: 28 }} />
-          <h1 style={{ margin: '0 0 8px', fontSize: '1.6rem', fontWeight: 800, color: '#fff' }}>
+          <h1 style={{ margin: '0 0 8px', fontSize: '1.6rem', fontWeight: 800, color: '#1a3a18' }}>
             Property Admin
           </h1>
-          <p style={{ margin: '0 0 36px', color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+          <p style={{ margin: '0 0 36px', color: 'rgba(26,58,24,0.65)', fontSize: '0.9rem', lineHeight: 1.6 }}>
             ระบบจัดการอสังหาริมทรัพย์<br />สำหรับเจ้าหน้าที่ บ้าน D มีเชง เท่านั้น
           </p>
 
@@ -83,10 +83,10 @@ export default function AdminLogin() {
               { icon: 'fa-chart-bar', text: 'ติดตามสถานะการขาย' },
             ].map((f, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>
-                  <i className={`fas ${f.icon}`} style={{ color: '#a8c5bf', fontSize: '0.95rem' }} />
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(26,58,24,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>
+                  <i className={`fas ${f.icon}`} style={{ color: '#3a6a35', fontSize: '0.95rem' }} />
                 </div>
-                <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.87rem' }}>{f.text}</span>
+                <span style={{ color: 'rgba(26,58,24,0.8)', fontSize: '0.87rem' }}>{f.text}</span>
               </div>
             ))}
           </div>
@@ -94,7 +94,7 @@ export default function AdminLogin() {
       </div>
 
       {/* ── ขวา: Login Form ── */}
-      <div style={css.formSide}>
+      <div className="admin-form-side" style={css.formSide}>
         <div style={css.card}>
 
           {/* Back button */}
@@ -104,7 +104,7 @@ export default function AdminLogin() {
             fontFamily: "'Sarabun', sans-serif", marginBottom: 16,
             transition: 'color 0.2s',
           }}
-            onMouseEnter={e => e.currentTarget.style.color = '#1A8C6E'}
+            onMouseEnter={e => e.currentTarget.style.color = '#A1D99B'}
             onMouseLeave={e => e.currentTarget.style.color = '#9ca3af'}
           >
             <i className="fas fa-arrow-left" style={{ fontSize: '0.7rem' }} />
@@ -114,10 +114,10 @@ export default function AdminLogin() {
           {/* Header */}
           <div style={{ marginBottom: 28 }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 20, padding: '4px 12px', marginBottom: 14 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#1A8C6E', animation: 'pulse 2s infinite' }} />
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#1A8C6E', letterSpacing: '0.5px' }}>ADMIN PORTAL</span>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#A1D99B', animation: 'pulse 2s infinite' }} />
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#3d7a3a', letterSpacing: '0.5px' }}>ADMIN PORTAL</span>
             </div>
-            <h2 style={{ margin: '0 0 4px', fontSize: '1.4rem', fontWeight: 800, color: '#00463d' }}>
+            <h2 style={{ margin: '0 0 4px', fontSize: '1.4rem', fontWeight: 800, color: '#6aab62' }}>
               เข้าสู่ระบบ
             </h2>
             <p style={{ margin: 0, color: '#9ca3af', fontSize: '0.83rem' }}>
@@ -202,7 +202,7 @@ export default function AdminLogin() {
                 background: 'linear-gradient(135deg, #f0f4ff, #e8f5e9)',
                 border: '1.5px solid #c7d7f0',
                 borderRadius: 22,
-                color: '#00463d',
+                color: '#6aab62',
                 fontSize: '0.78rem',
                 fontWeight: 700,
                 textDecoration: 'none',
@@ -211,9 +211,9 @@ export default function AdminLogin() {
                 fontFamily: "'Sarabun', sans-serif",
               }}
             >
-              <i className="fas fa-user-plus" style={{ color: '#1A8C6E' }} />
+              <i className="fas fa-user-plus" style={{ color: '#3d7a3a' }} />
               สร้างบัญชีแอดมินใหม่
-              <span style={{ background: '#00463d', color: '#fff', borderRadius: 10, padding: '1px 6px', fontSize: '0.62rem', fontWeight: 700 }}>
+              <span style={{ background: '#3d7a3a', color: '#fff', borderRadius: 10, padding: '1px 6px', fontSize: '0.62rem', fontWeight: 700 }}>
                 Super Admin
               </span>
             </Link>
@@ -235,7 +235,16 @@ export default function AdminLogin() {
         }
         @media (max-width: 768px) {
           .admin-brand { display: none !important; }
-          .admin-form-side { padding: 24px 16px !important; }
+          .admin-form-side {
+            padding: 20px 12px !important;
+            min-height: 100vh;
+            justify-content: flex-start !important;
+            padding-top: 40px !important;
+          }
+          .admin-form-side > div {
+            padding: 24px 18px !important;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
+          }
         }
       `}</style>
     </div>
@@ -253,12 +262,11 @@ const css = {
   brand: {
     width: '420px',
     flexShrink: 0,
-    background: 'linear-gradient(145deg, #001a16 0%, #00463d 60%, #1A8C6E 160%)',
+    background: 'linear-gradient(145deg, #4a8a43 0%, #6aab62 60%, #A1D99B 160%)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     padding: '40px 36px',
-    className: 'admin-brand',
   },
   brandInner: {
     maxWidth: 320,
@@ -270,7 +278,6 @@ const css = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '40px 24px',
-    className: 'admin-form-side',
   },
   card: {
     background: '#fff',
@@ -313,7 +320,7 @@ const css = {
   btn: (loading) => ({
     width: '100%',
     padding: '12px',
-    background: loading ? '#9ca3af' : 'linear-gradient(135deg, #00463d, #001a16)',
+    background: loading ? '#9ca3af' : 'linear-gradient(135deg, #6aab62, #4a8a43)',
     color: '#fff',
     border: 'none',
     borderRadius: 9,

@@ -165,6 +165,36 @@ exports.getFeaturedProperties = (req, res) => {
 };
 
 // ==========================================
+// 3.5 ดึงทรัพย์แนะนำแบบสุ่ม (Random Featured)
+// GET /api/properties/featured-random?limit=3
+// ==========================================
+exports.getRandomFeaturedProperties = (req, res) => {
+    const limit = Math.min(parseInt(req.query.limit) || 3, 6);
+    const sql = `
+        SELECT p.id, p.title, p.property_type, p.listing_type,
+            p.price_requested, p.original_price, p.monthly_rent, p.bedrooms, p.bathrooms, p.usable_area,
+            p.land_area_rai, p.land_area_ngan, p.land_area_wah,
+            p.province, p.district, p.thumbnail_url, p.is_featured,
+            p.sale_status, p.condition_status, p.bts_station, p.bts_distance_km, p.mrt_station, p.mrt_distance_km,
+            p.updated_at,
+            pv.slug AS province_slug,
+            pv.region AS province_region,
+            (SELECT COUNT(*) FROM property_images WHERE property_id = p.id) AS image_count
+        FROM properties p
+        LEFT JOIN (SELECT name, MIN(slug) AS slug, MIN(region) AS region FROM provinces GROUP BY name) pv ON p.province = pv.name
+        WHERE p.is_active = 1 AND p.is_featured = 1
+        GROUP BY p.id
+        ORDER BY RAND()
+        LIMIT ?
+    `;
+
+    db.query(sql, [limit], (err, results) => {
+        if (err) return res.status(500).json({ message: "Server error", error: err });
+        res.status(200).json(results);
+    });
+};
+
+// ==========================================
 // 4. ดึงทรัพย์สินล่าสุด (Latest)
 // GET /api/properties/latest
 // ==========================================

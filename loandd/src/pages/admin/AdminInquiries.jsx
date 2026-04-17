@@ -8,8 +8,8 @@ const STATUS_CONF = {
   contacted: { label:'ติดต่อแล้ว',   bg:'#fffbe6', color:'#d4890a', border:'#ffd666' },
   closed:    { label:'ปิดแล้ว',      bg:'#f0f0f0', color:'#888',    border:'#ccc' },
 };
-const G = '#1A8C6E';
-const N = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
+const N = '#3d7a3a';
 
 // ── ยืนยันลบ Modal ──────────────────────────────────────────────
 function DeleteModal({ inq, onClose, onDeleted }) {
@@ -128,7 +128,7 @@ function EditModal({ inq, onClose, onSaved }) {
 function InfoRow({ icon, label, value, highlight }) {
   return (
     <div style={{ display:'flex', gap:10, padding:'5px 0', alignItems:'flex-start' }}>
-      <i className={`fas ${icon}`} style={{ color:'#00463d', width:16, marginTop:2, fontSize:'0.82rem' }} />
+      <i className={`fas ${icon}`} style={{ color:'#6aab62', width:16, marginTop:2, fontSize:'0.82rem' }} />
       <div style={{ flex:1 }}>
         <div style={{ fontSize:'0.72rem', color:'#aaa' }}>{label}</div>
         <div style={{ fontSize:'0.88rem', fontWeight: highlight ? 800 : 600, color: highlight ? G : '#333' }}>{value}</div>
@@ -173,12 +173,11 @@ export default function AdminInquiries() {
 
   useEffect(() => { fetchInquiries(); }, [fetchInquiries]);
 
-  // Auto-refresh ทุก 30 วินาที + focus (real-time update)
+  // Re-fetch เมื่อ user สลับแท็บกลับมา
   useEffect(() => {
-    const onFocus = () => fetchInquiries();
-    window.addEventListener('focus', onFocus);
-    const id = setInterval(fetchInquiries, 30000);
-    return () => { window.removeEventListener('focus', onFocus); clearInterval(id); };
+    const onVis = () => { if (!document.hidden) fetchInquiries(); };
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
   }, [fetchInquiries]);
 
   // debounce search input 400ms
@@ -215,10 +214,10 @@ export default function AdminInquiries() {
     <div style={{ minHeight:'100vh', background:'#f5f7fa', fontFamily:"'Sarabun',sans-serif" }}>
 
       {/* ── NAVBAR ── */}
-      <div style={{ background:`linear-gradient(135deg,${N},#00463d)`, padding:'0 20px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
+      <div style={{ background:`linear-gradient(135deg,${N},#6aab62)`, padding:'0 20px', height:60, display:'flex', alignItems:'center', justifyContent:'space-between', position:'sticky', top:0, zIndex:100, boxShadow:'0 2px 12px rgba(0,0,0,0.18)' }}>
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-          <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#fff', letterSpacing:1 }}>LOAN<span style={{ color:G }}>DD</span></div>
-          <span style={{ background:'rgba(255,255,255,0.12)', color:'rgba(255,255,255,0.7)', fontSize:'0.7rem', padding:'2px 8px', borderRadius:10, fontWeight:700 }}>Admin</span>
+          <div style={{ fontWeight:900, fontSize:'1.25rem', color:'#fff', letterSpacing:1 }}>LOAN<span style={{ color:Gl }}>DD</span></div>
+          <span style={{ background:'rgba(255,255,255,0.2)', color:'rgba(255,255,255,0.85)', fontSize:'0.7rem', padding:'2px 8px', borderRadius:10, fontWeight:700 }}>Admin</span>
         </div>
         <div style={{ display:'flex', gap:6, alignItems:'center' }}>
           {/* Status filter pills */}
@@ -231,7 +230,7 @@ export default function AdminInquiries() {
             ))}
           </div>
           <div style={{ width:1, height:28, background:'rgba(255,255,255,0.2)', margin:'0 4px' }} className="admin-nav-username" />
-          <div style={{ width:30, height:30, borderRadius:'50%', background:G, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:900, fontSize:'0.78rem' }}>
+          <div style={{ width:30, height:30, borderRadius:'50%', background:Gl, color:'#1a3a18', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:900, fontSize:'0.78rem' }}>
             {(adminUser.username||'A').charAt(0).toUpperCase()}
           </div>
           <span className="admin-nav-username" style={{ color:'#fff', fontSize:'0.82rem', fontWeight:600 }}>{adminUser.username||'Admin'}</span>
@@ -345,7 +344,7 @@ export default function AdminInquiries() {
                         <span><i className="fas fa-phone" style={{ color:G, marginRight:3, fontSize:'0.72rem' }} />{inq.phone}</span>
                         {inq.property_title && (
                           <span style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', maxWidth:200 }}>
-                            <i className="fas fa-home" style={{ color:'#00463d', marginRight:3, fontSize:'0.72rem' }} />{inq.property_title}
+                            <i className="fas fa-home" style={{ color:'#6aab62', marginRight:3, fontSize:'0.72rem' }} />{inq.property_title}
                           </span>
                         )}
                       </div>
@@ -392,7 +391,7 @@ export default function AdminInquiries() {
           {selected ? (
             <div style={{ background:'#fff', borderRadius:14, boxShadow:'0 4px 20px rgba(0,0,0,0.10)', overflow:'hidden' }}>
               {/* Header */}
-              <div style={{ background:`linear-gradient(135deg,${N},#001a16)`, padding:'14px 16px', color:'#fff', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              <div style={{ background:`linear-gradient(135deg,${N},#4a8a43)`, padding:'14px 16px', color:'#fff', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                 <div>
                   <div style={{ fontWeight:800, fontSize:'1rem' }}>{selected.name}</div>
                   <div style={{ opacity:0.6, fontSize:'0.76rem' }}>#{String(selected.id).padStart(4,'0')}</div>
@@ -400,7 +399,7 @@ export default function AdminInquiries() {
                 <div style={{ display:'flex', gap:6, alignItems:'center' }}>
                   <button onClick={() => setEditTarget(selected)}
                     title="แก้ไข"
-                    style={{ background:'rgba(255,255,255,0.15)', border:'none', color:'#fff', borderRadius:7, padding:'5px 10px', cursor:'pointer', fontSize:'0.82rem' }}>
+                    style={{ background:'rgba(255,255,255,0.2)', border:'none', color:'#fff', borderRadius:7, padding:'5px 10px', cursor:'pointer', fontSize:'0.82rem' }}>
                     ✏️ แก้ไข
                   </button>
                   <button onClick={() => setDeleteTarget(selected)}
@@ -409,7 +408,7 @@ export default function AdminInquiries() {
                     🗑 ลบ
                   </button>
                   <button onClick={() => setSelected(null)}
-                    style={{ background:'rgba(255,255,255,0.1)', border:'none', color:'#fff', borderRadius:7, padding:'5px 9px', cursor:'pointer' }}>✕</button>
+                    style={{ background:'rgba(26,58,24,0.08)', border:'none', color:'#1a3a18', borderRadius:7, padding:'5px 9px', cursor:'pointer' }}>✕</button>
                 </div>
               </div>
 

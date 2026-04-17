@@ -451,3 +451,71 @@ lond/add_audit_trail.sql     — เพิ่ม column created_by_admin, update
 - **ครอบคลุม**: Revenue Model comparison, Tech Stack & SEO, Feature Matrix 20+ features, Competitive Positioning Map, What LoanDD Can Learn, LoanDD's Position, Action Plan
 - **Key insights**: Refinn = Nuxt.js (คู่แข่งสินเชื่อที่ tech สูงสุด), DDproperty = ครองตลาด property portal, Sansiri = AI BIM + Big Data, CheckRaka = #1 price comparison Thailand
 - **LoanDD positioning**: "FinTech + PropTech" bridge — ขายฝากอยู่ตรงกลางระหว่าง property portal กับ loan platform ไม่มีใครทำจุดนี้โดยเฉพาะ
+
+---
+
+## 🌐 baand.loandd.co.th — PHP API Production Site
+
+_อัพเดท: 2026-04-17_
+
+### Tech Stack (baand)
+- **Frontend**: React + Vite (build แล้ว deploy เป็น static files)
+- **Backend**: PHP (`api/index.php`) — Single-file PHP router, ไม่ใช่ Node.js/Express
+- **DB**: MySQL — `loanddco_property_db`, ตาราง `properties`
+- **Hosting**: Plesk (thsv88.hostatom.com:8443) — domain baand.loandd.co.th
+
+### PHP API Architecture (`api/index.php`)
+- **841 บรรทัด** — single-file PHP router
+- **URL routing**: ฟังก์ชัน `route($method, $pattern, $handler)` อยู่ที่ line ~119
+  - ใช้ `global $method, $uri;` ภายใน — ไม่ได้ส่ง `$db` เข้า handler
+- **DB Connection**: ฟังก์ชัน `getDB()` (line ~33) — สร้าง PDO connection
+- **Pattern ที่ถูกต้อง**: ทุก route handler เรียก `getDB()->query(...)` หรือ `$db = getDB();`
+- **ห้ามใช้**: `function() use ($db)` — `$db` ไม่มีใน global scope → PHP 500
+
+### Bug ที่แก้แล้ว — GET /api/properties/featured-random (2026-04-17)
+
+**อาการ**: endpoint คืน HTTP 500, หน้าเว็บแสดงว่าง (Featured + New Arrivals หายหมด)
+- ข้อมูลไม่ได้หาย — DB มีครบ 6+ rows, `/api/properties` ยัง 200 OK
+- React frontend crash จาก `SyntaxError: Unexpected end of JSON input` → ทำให้ทั้งหน้าพัง
+
+**สาเหตุ**: Route handler ใช้ `use ($db)` แต่ `$db` ไม่มีใน scope
+```php
+// WRONG
+route('GET', '/properties/featured-random', function() use ($db) {
+    $stmt = $db->query("SELECT * FROM properties WHERE is_featured = 1 ORDER BY RAND() LIMIT " . $limit);
+```
+
+**วิธีแก้** (ใน api/index.php ~line 298-300):
+```php
+// CORRECT
+route('GET', '/properties/featured-random', function() {
+    $limit = isset($_GET['limit']) ? max(1, min(20, (int)$_GET['limit'])) : 3;
+    $stmt = getDB()->query("SELECT * FROM properties WHERE is_featured = 1 ORDER BY RAND() LIMIT " . $limit);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($rows);
+    exit;
+});
+```
+
+### ⚠️ กฎสำคัญ — ถ้าเพิ่ม/แก้ Route ใน api/index.php
+
+1. **ห้ามใช้ `use ($db)` หรือ `use ($pdo)`** ใน handler closure เด็ดขาด
+2. **ต้องใช้ `getDB()`** เสมอ:
+   ```php
+   route('GET', '/properties/example', function() {
+       $db = getDB();  // แบบ 1: assign ก่อน
+       // หรือ
+       $rows = getDB()->query("SELECT ...")->fetchAll(PDO::FETCH_ASSOC);  // แบบ 2: inline
+       echo json_encode($rows);
+       exit;
+   });
+   ```
+3. Route ที่มี path param (เช่น `/:id`) ใช้ `function($p)` แล้วดึง `$p['id']`
+
+### DB ของ baand
+- **Database**: `loanddco_property_db` | **Table**: `properties`
+- ถ้าเว็บแสดงว่าง → ตรวจ API ก่อน ไม่ใช่ data หาย
+- ตรวจสอบ: phpMyAdmin ที่ thsv88.hostatom.com:8443
+
+### แก้ไฟล์ผ่าน Plesk
+- File Manager → `/baand.loandd.co.th/api/` → ดับเบิลคลิก `index.php` → แก้ → Save

@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import adminFetch, { BASE_URL } from '../utils/adminFetch';
 
-const G = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
 
 // สร้างเสียงกริ่งแจ้งเตือนด้วย Web Audio API (ไม่ต้องใช้ไฟล์เสียง)
 function playNotificationSound() {
@@ -157,15 +157,15 @@ export default function NotificationBell() {
       <button
         onClick={() => { setOpen(o => !o); if (!open) fetchNotifs(); /* refetch on open */ }}
         style={{
-          position: 'relative', background: open ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
-          border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8,
+          position: 'relative', background: open ? 'rgba(26,58,24,0.15)' : 'rgba(26,58,24,0.08)',
+          border: '1px solid rgba(26,58,24,0.15)', borderRadius: 8,
           width: 38, height: 38, cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           transition: 'background 0.15s',
         }}
         title="การแจ้งเตือน"
       >
-        <i className="fas fa-bell" style={{ color: '#fff', fontSize: '1rem' }} />
+        <i className="fas fa-bell" style={{ color: '#1a3a18', fontSize: '1rem' }} />
         {total > 0 && (
           <span style={{
             position: 'absolute', top: -5, right: -5,
@@ -173,7 +173,7 @@ export default function NotificationBell() {
             borderRadius: '50%', minWidth: 18, height: 18,
             fontSize: '0.65rem', fontWeight: 900,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '0 3px', border: '2px solid #1A8C6E',
+            padding: '0 3px', border: '2px solid #A1D99B',
             lineHeight: 1,
           }}>
             {total > 99 ? '99+' : total}
@@ -193,7 +193,7 @@ export default function NotificationBell() {
         }}>
           {/* Header */}
           <div style={{ padding: '14px 18px 10px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#1A8C6E' }}>
+            <span style={{ fontWeight: 800, fontSize: '0.9rem', color: '#3d7a3a' }}>
               <i className="fas fa-bell" style={{ color: G, marginRight: 7 }} />
               การแจ้งเตือน
             </span>
@@ -255,13 +255,13 @@ export default function NotificationBell() {
                     <span style={{ fontSize: '0.68rem', color: '#aaa' }}>{formatTime(inq.created_at)}</span>
                   </div>
                   {/* เบอร์โทร */}
-                  <div style={{ fontSize: '0.76rem', color: '#1A8C6E', fontWeight: 600, marginBottom: 2, paddingLeft: 34 }}>
+                  <div style={{ fontSize: '0.76rem', color: '#3d7a3a', fontWeight: 600, marginBottom: 2, paddingLeft: 34 }}>
                     <i className="fas fa-phone-alt" style={{ fontSize: '0.65rem', marginRight: 4 }} />{inq.phone}
                   </div>
                   {/* จังหวัด + ทรัพย์ */}
                   {inq.property_province && (
                     <div style={{ fontSize: '0.72rem', color: '#666', paddingLeft: 34, marginBottom: 2 }}>
-                      <i className="fas fa-home" style={{ fontSize: '0.6rem', marginRight: 4, color: '#1A8C6E' }} />{inq.property_province}
+                      <i className="fas fa-home" style={{ fontSize: '0.6rem', marginRight: 4, color: '#3d7a3a' }} />{inq.property_province}
                     </div>
                   )}
                   {/* ข้อความ */}

@@ -6,12 +6,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import adminFetch from '../../utils/adminFetch';
 
-const G = '#1A8C6E';
-const N = '#1A8C6E';
+const G = '#3d7a3a'; const Gl = '#A1D99B';
+const N = '#3d7a3a';
 
 
 const STATUS_CONF = {
-  active:   { label:'ใช้งาน',  bg:'#e8f8f0', color:'#0a7c3e', border:'#a3e0c0' },
+  active:   { label:'ใช้งาน',  bg:'#e8f8f0', color:'#5a9a52', border:'#a3e0c0' },
   inactive: { label:'ระงับ',   bg:'#fef4e8', color:'#c0711a', border:'#f5d08a' },
   banned:   { label:'แบน',     bg:'#fdf0f0', color:'#c0392b', border:'#e8b4b4' },
 };
@@ -101,7 +101,7 @@ function EditUserModal({ user, onClose, onSaved }) {
       {err && <p style={{ color:'#e53e3e', fontSize:'0.82rem', marginBottom:10 }}>{err}</p>}
       <div style={{ display:'flex', gap:10, justifyContent:'flex-end', marginTop:8 }}>
         <button style={btn('#f0f0f0','#555')} onClick={onClose}>ยกเลิก</button>
-        <button style={btn(G)} onClick={handleSave} disabled={loading}>{loading ? 'กำลังบันทึก…' : 'บันทึก'}</button>
+        <button style={btn(G,'#1a3a18')} onClick={handleSave} disabled={loading}>{loading ? 'กำลังบันทึก…' : 'บันทึก'}</button>
       </div>
     </Modal>
   );
@@ -248,7 +248,7 @@ export default function UsersPanel() {
   const fetchAutoApprove = useCallback(() => {
     adminFetch('/api/admin/settings/auto-approve')
       .then(r => r.json())
-      .then(d => setAutoApprove(d.value === '1' || d.value === 1 || d.value === true))
+      .then(d => setAutoApprove(d.value === '1' || d.value === 1 || d.value === true || d.enabled === true || d.enabled === 1))
       .catch(() => {});
   }, []);
 
@@ -310,7 +310,7 @@ export default function UsersPanel() {
 
   const reqStatusConf = {
     pending:  { label:'รอดำเนินการ', bg:'#fffbe6', color:'#875900', border:'#ffe58f' },
-    approved: { label:'อนุมัติแล้ว',  bg:'#e8f8f0', color:'#0a7c3e', border:'#a3e0c0' },
+    approved: { label:'อนุมัติแล้ว',  bg:'#e8f8f0', color:'#5a9a52', border:'#a3e0c0' },
     rejected: { label:'ปฏิเสธ',      bg:'#fdf0f0', color:'#c0392b', border:'#e8b4b4' },
   };
 
@@ -385,7 +385,7 @@ export default function UsersPanel() {
                         >
                           <td style={{ padding:'10px 12px' }}>
                             <div style={{ display:'flex', alignItems:'center', gap:9 }}>
-                              <div style={{ width:32, height:32, borderRadius:'50%', background:`linear-gradient(135deg,${G},#025d3a)`, color:'#fff', fontWeight:900, fontSize:'0.95rem', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                              <div style={{ width:32, height:32, borderRadius:'50%', background:`linear-gradient(135deg,${Gl},#7ab872)`, color:'#1a3a18', fontWeight:900, fontSize:'0.95rem', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                                 {(u.username||'?')[0].toUpperCase()}
                               </div>
                               <div>
@@ -412,7 +412,7 @@ export default function UsersPanel() {
                           <td style={{ padding:'10px 12px' }}>
                             <div style={{ display:'flex', gap:5, flexWrap:'nowrap' }}>
                               <button onClick={() => setEditUser(u)} title="แก้ไข" style={{ background:'#eef2ff', border:'none', color:'#4361ee', borderRadius:7, padding:'4px 9px', cursor:'pointer', fontSize:'0.8rem', fontWeight:700 }}>✏️</button>
-                              <button onClick={() => setPwUser({ user:u, requestId:null })} title="เปลี่ยนรหัส" style={{ position:'relative', background: hasPendingReq ? '#fffbe6' : '#f0faf4', border:'none', color: hasPendingReq ? '#875900' : '#0a7c3e', borderRadius:7, padding:'4px 9px', cursor:'pointer', fontSize:'0.8rem', fontWeight:700 }}>
+                              <button onClick={() => setPwUser({ user:u, requestId:null })} title="เปลี่ยนรหัส" style={{ position:'relative', background: hasPendingReq ? '#fffbe6' : '#f0faf4', border:'none', color: hasPendingReq ? '#875900' : '#5a9a52', borderRadius:7, padding:'4px 9px', cursor:'pointer', fontSize:'0.8rem', fontWeight:700 }}>
                                 🔑
                                 {hasPendingReq && <span style={{ position:'absolute', top:-4, right:-4, width:8, height:8, background:'#e53e3e', borderRadius:'50%' }} />}
                               </button>
@@ -444,9 +444,9 @@ export default function UsersPanel() {
             display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap',
           }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: '0.9rem', color: autoApprove ? '#0a7c3e' : '#444', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 7 }}>
+              <div style={{ fontWeight: 800, fontSize: '0.9rem', color: autoApprove ? '#5a9a52' : '#444', marginBottom: 3, display: 'flex', alignItems: 'center', gap: 7 }}>
                 {autoApprove ? '✅' : '⏸️'} โหมดอนุมัติอัตโนมัติ
-                <span style={{ fontSize: '0.68rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: autoApprove ? '#0a7c3e' : '#94a3b8', color: '#fff', marginLeft: 4 }}>
+                <span style={{ fontSize: '0.68rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: autoApprove ? '#5a9a52' : '#94a3b8', color: '#1a3a18', marginLeft: 4 }}>
                   {autoApprove ? 'เปิดใช้งาน' : 'ปิดใช้งาน'}
                 </span>
               </div>
@@ -499,7 +499,7 @@ export default function UsersPanel() {
                 return (
                   <div key={req.id} className="admin-request-card" style={{ background:'#fff', borderRadius:12, border:`1px solid ${req.status==='pending' ? '#ffe58f' : '#e8e8e8'}`, padding:'14px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:14, flexWrap:'wrap' }}>
                     <div style={{ display:'flex', alignItems:'center', gap:12, flex:'1 1 200px' }}>
-                      <div style={{ width:38, height:38, borderRadius:'50%', background:`linear-gradient(135deg,${G},#025d3a)`, color:'#fff', fontWeight:900, fontSize:'1rem', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <div style={{ width:38, height:38, borderRadius:'50%', background:`linear-gradient(135deg,${Gl},#7ab872)`, color:'#1a3a18', fontWeight:900, fontSize:'1rem', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                         {(req.username||'?')[0].toUpperCase()}
                       </div>
                       <div>
@@ -514,7 +514,7 @@ export default function UsersPanel() {
                       {req.status === 'pending' && (
                         <div style={{ marginTop:5 }}>
                           {req.has_new_password
-                            ? <span style={{ background:'#e8f8f0', color:'#0a7c3e', border:'1px solid #a3e0c0', borderRadius:4, padding:'1px 7px', fontSize:'0.7rem', fontWeight:700 }}>🔑 User ตั้งรหัสใหม่แล้ว</span>
+                            ? <span style={{ background:'#e8f8f0', color:'#5a9a52', border:'1px solid #a3e0c0', borderRadius:4, padding:'1px 7px', fontSize:'0.7rem', fontWeight:700 }}>🔑 User ตั้งรหัสใหม่แล้ว</span>
                             : <span style={{ background:'#fffbe6', color:'#875900', border:'1px solid #ffe58f', borderRadius:4, padding:'1px 7px', fontSize:'0.7rem', fontWeight:700 }}>⚠️ User ยังไม่ตั้งรหัส</span>
                           }
                         </div>
@@ -522,7 +522,7 @@ export default function UsersPanel() {
                       {req.new_password_plain && (
                         <div style={{ marginTop:5, background:'#f0f4ff', border:'1px solid #c7d2fe', borderRadius:6, padding:'4px 8px', fontSize:'0.76rem' }}>
                           <span style={{ color:'#666' }}>รหัสใหม่: </span>
-                          <code style={{ color:'#00463d', fontWeight:800, fontSize:'0.82rem', letterSpacing:'0.5px' }}>{req.new_password_plain}</code>
+                          <code style={{ color:'#6aab62', fontWeight:800, fontSize:'0.82rem', letterSpacing:'0.5px' }}>{req.new_password_plain}</code>
                         </div>
                       )}
                     </div>

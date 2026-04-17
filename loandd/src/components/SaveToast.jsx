@@ -75,10 +75,10 @@ function SaveToast() {
       >
         <div style={{
           background: toast.saved
-            ? 'linear-gradient(135deg, #1A8C6E, #004d40)'
+            ? 'linear-gradient(135deg, #A1D99B, #8BC683)'
             : 'rgba(30,30,28,0.92)',
           backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-          color: '#fff',
+          color: toast.saved ? '#1a3a18' : '#fff',
           padding: '14px 22px 14px 16px',
           display: 'flex', alignItems: 'center', gap: 14,
           minWidth: 280, maxWidth: 400,

@@ -153,9 +153,9 @@ export default function BTSMapSection() {
             </div>
             <h2 style={{
               fontWeight: 500, margin: 0, fontSize: 'clamp(1.05rem, 2.5vw, 1.3rem)', color: 'var(--on-surface, #1a1a1a)',
-              fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif",
+              fontFamily: "'Prompt', sans-serif",
             }}>
-              อสังหาฯ ใกล้<span style={{ color: '#1A8C6E' }}>รถไฟฟ้า</span>
+              อสังหาฯ ใกล้<span style={{ color: '#3d7a3a' }}>รถไฟฟ้า</span>
             </h2>
             <p style={{ color: 'var(--outline, #888)', fontSize: '0.82rem', margin: '4px 0 0' }}>เลือกสายรถไฟฟ้า แล้วกดสถานีเพื่อดูแผนที่ทรัพย์ใกล้เคียง</p>
           </div>
@@ -169,8 +169,8 @@ export default function BTSMapSection() {
                 <button key={v} onClick={() => setListingType(v)} style={{
                   padding: '5px 18px', borderRadius: 17, border: 'none', cursor: 'pointer',
                   fontWeight: 700, fontSize: '0.8rem', transition: 'all 0.18s',
-                  background: listingType === v ? '#1A8C6E' : 'transparent',
-                  color:      listingType === v ? '#fff' : '#999',
+                  background: listingType === v ? '#A1D99B' : 'transparent',
+                  color:      listingType === v ? '#1a3a18' : '#999',
                   fontFamily: 'inherit',
                 }}>{l}</button>
               ))}
@@ -327,7 +327,7 @@ export default function BTSMapSection() {
                 { name: 'MRT พระราม 9', line: 'mrt_blue' },
                 { name: 'BTS พญาไท',    line: 'bts_sukhumvit' },
               ].map(({ name, line }) => {
-                const c = TRAIN_LINES[line]?.color || '#1A8C6E';
+                const c = TRAIN_LINES[line]?.color || '#A1D99B';
                 return (
                   <button
                     key={name}

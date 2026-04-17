@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import Navbar from './Navbar';
 
-const brandGreen = '#1A8C6E';
-const navy = '#1A8C6E';
+const brandGreen = '#A1D99B';
+const navy = '#3d7a3a';
 
 // ============================================================
 //  FAQ DATA — grouped by category
@@ -119,7 +119,7 @@ function AccordionItem({ faq, index, isOpen, onToggle }) {
           minWidth: 22, height: 22, borderRadius: '50%',
           background: isOpen ? brandGreen : '#e8ecef',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transition: 'all 0.2s', color: isOpen ? '#fff' : '#999',
+          transition: 'all 0.2s', color: isOpen ? '#1a3a18' : '#999',
           fontSize: '0.7rem', flexShrink: 0,
         }}>
           <i className={`fas fa-chevron-${isOpen ? 'up' : 'down'}`} />
@@ -189,14 +189,14 @@ const FaqPage = () => {
 
       {/* ===== HERO — Quiet Luxury ===== */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #147A5E 60%, ${brandGreen} 100%)`,
+        background: `linear-gradient(135deg, ${navy} 0%, #8BC683 60%, ${brandGreen} 100%)`,
         color: '#fff', padding: 'calc(64px + 48px) 16px 36px',
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
             Frequently Asked Questions
           </div>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Prompt', sans-serif", letterSpacing: '-0.01em' }}>
             คำถามที่พบบ่อย
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', marginBottom: 18 }}>
@@ -317,7 +317,7 @@ const FaqPage = () => {
                       borderBottom: `2px solid ${brandGreen}22`,
                     }}>
                       <i className={`fas ${cat.icon}`} style={{ fontSize: '1.1rem', color: brandGreen }} />
-                      <h3 style={{ fontWeight: 500, color: navy, margin: 0, fontSize: '1.05rem', fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif" }}>
+                      <h3 style={{ fontWeight: 500, color: navy, margin: 0, fontSize: '1.05rem', fontFamily: "'Prompt', sans-serif" }}>
                         {cat.category}
                       </h3>
                       <span style={{
@@ -392,12 +392,12 @@ const FaqPage = () => {
 
       {/* ===== CTA ===== */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #00463d 60%, ${brandGreen} 100%)`,
+        background: `linear-gradient(135deg, ${navy} 0%, #6aab62 60%, ${brandGreen} 100%)`,
         padding: '50px 0', textAlign: 'center', color: '#fff',
       }}>
         <div className="container">
           <i className="fas fa-comments" style={{ fontSize: '2rem', marginBottom: 12, color: '#C9A84C', display: 'block' }} />
-          <h2 style={{ fontWeight: 400, fontSize: '1.5rem', marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif" }}>ยังมีคำถามเพิ่มเติม?</h2>
+          <h2 style={{ fontWeight: 400, fontSize: '1.5rem', marginBottom: 8, fontFamily: "'Prompt', sans-serif" }}>ยังมีคำถามเพิ่มเติม?</h2>
           <p style={{ opacity: 0.85, marginBottom: 28, fontSize: '0.95rem' }}>
             ปรึกษาฟรี ไม่มีข้อผูกมัด ทีมงานพร้อมตอบทุกคำถามเรื่องอสังหาฯ
           </p>

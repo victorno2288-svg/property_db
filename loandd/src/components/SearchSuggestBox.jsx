@@ -106,12 +106,12 @@ const SearchSuggestBox = ({ visible, onSelect, onClose, inputValue = '', activeF
           padding: 5px 12px; border-radius: 20px;
           border: 1px solid #e8e8e8;
           background: #f8f9fa; cursor: pointer;
-          font-size: 0.82rem; color: #1A8C6E;
+          font-size: 0.82rem; color: #3d7a3a;
           transition: all 0.15s; white-space: nowrap;
           font-family: inherit;
         }
         .suggest-chip:hover {
-          background: #e8f8f2; border-color: #1A8C6E; color: #1A8C6E;
+          background: #e8f8f2; border-color: #3d7a3a; color: #3d7a3a;
         }
         .suggest-row { cursor: pointer; padding: 9px 16px; display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: #333; transition: background 0.12s; }
         .suggest-row:hover { background: #f5f5f5; }
@@ -131,7 +131,7 @@ const SearchSuggestBox = ({ visible, onSelect, onClose, inputValue = '', activeF
             onClick={() => { onSelect(inputValue); goSearch({ search: inputValue }); }}
             style={{ borderBottom: '1px solid #f0f0f0', fontWeight: 700 }}
           >
-            <i className="fas fa-search" style={{ color: '#1A8C6E', width: 18 }} />
+            <i className="fas fa-search" style={{ color: '#3d7a3a', width: 18 }} />
             <span>ค้นหา "<strong>{inputValue}</strong>"</span>
           </div>
 
@@ -140,7 +140,7 @@ const SearchSuggestBox = ({ visible, onSelect, onClose, inputValue = '', activeF
             <>
               <div className="suggest-section-title"><i className="fas fa-train" style={{ marginRight: 4 }} /> ใกล้รถไฟฟ้า</div>
               {matchedStations.map((st) => {
-                const lineColor = TRAIN_LINES[st.line]?.color || '#1A8C6E';
+                const lineColor = TRAIN_LINES[st.line]?.color || '#A1D99B';
                 const lineType = st.line.startsWith('bts') || st.line === 'gold' ? 'BTS' : st.line === 'arl' ? 'ARL' : 'MRT';
                 return (
                   <div
@@ -222,7 +222,7 @@ const SearchSuggestBox = ({ visible, onSelect, onClose, inputValue = '', activeF
                 { name: 'BTS อ่อนนุช',  line: 'bts_sukhumvit' },
                 { name: 'BTS พญาไท',    line: 'bts_sukhumvit' },
               ].map(st => {
-                const c = TRAIN_LINES[st.line]?.color || '#1A8C6E';
+                const c = TRAIN_LINES[st.line]?.color || '#A1D99B';
                 return (
                   <button
                     key={st.name}
@@ -264,7 +264,7 @@ const SearchSuggestBox = ({ visible, onSelect, onClose, inputValue = '', activeF
               onClick={() => goSearch({})}
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
-                color: '#1A8C6E', fontWeight: 700, fontSize: '0.85rem',
+                color: '#3d7a3a', fontWeight: 700, fontSize: '0.85rem',
                 fontFamily: 'inherit',
               }}
             >

@@ -10,7 +10,7 @@ const getSavedIds = () => {
   catch { return new Set(); }
 };
 const setSavedIds = (set) => {
-  try { localStorage.setItem('savedPropertyIds', JSON.stringify([...set])); } catch {}
+  try { localStorage.setItem('savedPropertyIds', JSON.stringify([...set])); } catch { }
 };
 
 // ==========================================
@@ -23,14 +23,14 @@ const API_BASE = 'http://localhost:3001';
 // Badge สถานะ
 const SaleStatusBadge = ({ status }) => {
   const map = {
-    available: { label: 'ว่างอยู่', color: '#1A8C6E' },
-    reserved:  { label: 'จองแล้ว',  color: '#f0a500' },
-    sold:      { label: 'ขายแล้ว',  color: '#e74c3c' },
+    available: { label: 'ว่างอยู่', color: '#3d7a3a', text: '#fff' },
+    reserved: { label: 'จองแล้ว', color: '#f0a500', text: '#fff' },
+    sold: { label: 'ขายแล้ว', color: '#e74c3c', text: '#fff' },
   };
   const s = map[status] || map.available;
   return (
     <span style={{
-      background: s.color, color: '#fff',
+      background: s.color, color: s.text || '#fff',
       fontSize: '0.7rem', fontWeight: 700,
       padding: '2px 8px', borderRadius: '20px',
       display: 'inline-block', letterSpacing: '0.3px'
@@ -43,8 +43,8 @@ const SaleStatusBadge = ({ status }) => {
 // ป้ายประเภทการขาย — สีชัดเจน ใหญ่ขึ้น
 const ListingTypeBadge = ({ type }) => {
   const map = {
-    sale:      { label: 'ขาย',      icon: 'fa-tag',        bg: '#1A8C6E', color: '#fff' },
-    rent:      { label: 'เช่า',      icon: 'fa-key',        bg: '#2563eb', color: '#fff' },
+    sale: { label: 'ขาย', icon: 'fa-tag', bg: '#A1D99B', color: '#1a3a18' },
+    rent: { label: 'เช่า', icon: 'fa-key', bg: '#2563eb', color: '#fff' },
     sale_rent: { label: 'ขาย/เช่า', icon: 'fa-right-left', bg: '#7c3aed', color: '#fff' },
   };
   const b = map[type] || map.sale;
@@ -68,8 +68,8 @@ const ListingTypeBadge = ({ type }) => {
 const relativeTime = (dateStr) => {
   if (!dateStr) return null;
   const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (diff < 3600)   return 'อัพเดทวันนี้';
-  if (diff < 86400)  return 'อัพเดทวันนี้';
+  if (diff < 3600) return 'อัพเดทวันนี้';
+  if (diff < 86400) return 'อัพเดทวันนี้';
   if (diff < 86400 * 2) return 'อัพเดทเมื่อวาน';
   if (diff < 86400 * 30) return `อัพเดท ${Math.floor(diff / 86400)} วันที่แล้ว`;
   if (diff < 86400 * 365) return `อัพเดท ${Math.floor(diff / (86400 * 30))} เดือนที่แล้ว`;
@@ -89,18 +89,18 @@ const getNicheBadges = (property) => {
     });
   }
   if (condition_status === 'furnished') {
-    badges.push({ label: 'พร้อมเฟอร์นิเจอร์', icon: 'fa-couch',   bg: '#fff3e0', color: '#c25a00', border: '#ffcc80' });
+    badges.push({ label: 'พร้อมเฟอร์นิเจอร์', icon: 'fa-couch', bg: '#fff3e0', color: '#c25a00', border: '#ffcc80' });
   } else if (condition_status === 'semi_furnished') {
-    badges.push({ label: 'เฟอร์นิเจอร์บางส่วน', icon: 'fa-chair',  bg: '#fafafa', color: '#555', border: '#ddd' });
+    badges.push({ label: 'เฟอร์นิเจอร์บางส่วน', icon: 'fa-chair', bg: '#fafafa', color: '#555', border: '#ddd' });
   }
   if (sale_status === 'available') {
-    badges.push({ label: 'ว่างอยู่', icon: 'fa-circle-check', bg: '#e8f8f2', color: '#1A8C6E', border: '#a8e6cb' });
+    badges.push({ label: 'ว่างอยู่', icon: 'fa-circle-check', bg: '#e8f8f2', color: '#3d7a3a', border: '#a8e6cb' });
   }
   return badges;
 };
 
 function PropertyCard({ property, className = '' }) {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const [saved, setSaved] = useState(() => getSavedIds().has(property?.id));
   const [saving, setSaving] = useState(false);
   const [heartAnim, setHeartAnim] = useState(false); // burst animation
@@ -216,9 +216,9 @@ function PropertyCard({ property, className = '' }) {
   // แสดงขนาดที่ดินเป็นหลัก (ไม่แสดง usable_area ใน card)
   const areaText = (() => {
     const parts = [];
-    if (Number(land_area_rai)  > 0) parts.push(`${land_area_rai} ไร่`);
+    if (Number(land_area_rai) > 0) parts.push(`${land_area_rai} ไร่`);
     if (Number(land_area_ngan) > 0) parts.push(`${land_area_ngan} งาน`);
-    if (Number(land_area_wah)  > 0) parts.push(`${land_area_wah} ตร.ว.`);
+    if (Number(land_area_wah) > 0) parts.push(`${land_area_wah} ตร.ว.`);
     return parts.length ? parts.join(' ') : null;
   })();
 
@@ -238,54 +238,52 @@ function PropertyCard({ property, className = '' }) {
         window.dispatchEvent(new CustomEvent('page-transition', { detail: { to: `/property/${id}` } }));
       }}
       style={{
-        background: '#fff',
-        borderRadius: '8px',
+        borderRadius: 12,
         overflow: 'hidden',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
         cursor: 'pointer',
-        transition: 'transform 0.4s cubic-bezier(0.25,0.1,0.25,1), box-shadow 0.4s cubic-bezier(0.25,0.1,0.25,1)',
-        display: 'flex',
-        flexDirection: 'column',
+        position: 'relative',
+        transition: 'transform 0.35s ease, box-shadow 0.35s ease',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-4px)';
-        e.currentTarget.style.boxShadow = '0 20px 50px rgba(46,125,106,0.12)';
+        e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.18)';
+        const img = e.currentTarget.querySelector('.prop-card-img');
+        if (img) img.style.transform = 'scale(1.06)';
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
+        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.10)';
+        const img = e.currentTarget.querySelector('.prop-card-img');
+        if (img) img.style.transform = 'scale(1)';
       }}
     >
-      {/* Image */}
-      <div style={{ position: 'relative', paddingTop: '68%', background: '#e8edf2', flexShrink: 0, overflow: 'hidden' }}>
+      {/* Full image background */}
+      <div style={{ position: 'relative', paddingTop: '72%', background: '#e8edf2', overflow: 'hidden' }}>
         {imgSrc ? (
           <img
-            src={imgSrc}
-            alt={title}
+            src={imgSrc} alt={title}
             className="prop-card-img"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
             loading="lazy"
           />
         ) : (
-          <div style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#aab', fontSize: '2.5rem'
-          }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aab', fontSize: '2.5rem' }}>
             <i className="fas fa-home" />
           </div>
         )}
 
+        {/* Gradient overlay bottom — dark enough for white text on any image */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.1) 65%, rgba(0,0,0,0) 80%)', pointerEvents: 'none' }} />
+
         {/* Badges — top left */}
         <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 5, flexWrap: 'wrap', zIndex: 3 }}>
-          {/* Listing type badge — ขาย / เช่า / ขาย+เช่า */}
           {listing_type && (
             <span style={{
-              background: listing_type === 'rent' ? '#2563eb' : listing_type === 'sale_rent' ? '#7c3aed' : '#1A8C6E',
-              color: '#fff',
+              background: listing_type === 'rent' ? '#2563eb' : listing_type === 'sale_rent' ? '#7c3aed' : '#A1D99B',
+              color: listing_type === 'sale' || (!listing_type || listing_type === 'sale') ? '#1a3a18' : '#fff',
               fontSize: '0.68rem', fontWeight: 800,
               padding: '4px 10px', borderRadius: 6,
-              letterSpacing: '0.3px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               display: 'inline-flex', alignItems: 'center', gap: 4,
             }}>
@@ -293,27 +291,16 @@ function PropertyCard({ property, className = '' }) {
               {{ sale: 'ขาย', rent: 'เช่า', sale_rent: 'ขาย+เช่า' }[listing_type] || 'ขาย'}
             </span>
           )}
-          {/* Sale status badge — จองแล้ว / ขายแล้ว / ติดเช่า */}
           {sale_status === 'reserved' && (
-            <span style={{
-              background: '#f0a500', color: '#fff',
-              fontSize: '0.68rem', fontWeight: 800,
-              padding: '4px 10px', borderRadius: 6,
-              letterSpacing: '0.5px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-            }}>
+            <span style={{ background: '#f0a500', color: '#fff', fontSize: '0.68rem', fontWeight: 800, padding: '4px 10px', borderRadius: 6, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
               จองแล้ว
             </span>
           )}
           {sale_status === 'sold' && (
             <span style={{
-              background: listing_type === 'rent' ? '#6366f1' : '#e53e3e',
-              color: '#fff',
-              fontSize: '0.68rem', fontWeight: 800,
-              padding: '4px 10px', borderRadius: 6,
-              letterSpacing: '0.5px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-              display: 'inline-flex', alignItems: 'center', gap: 4,
+              background: listing_type === 'rent' ? '#6366f1' : '#e53e3e', color: '#fff',
+              fontSize: '0.68rem', fontWeight: 800, padding: '4px 10px', borderRadius: 6,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)', display: 'inline-flex', alignItems: 'center', gap: 4,
             }}>
               <i className={`fas ${listing_type === 'rent' ? 'fa-check-circle' : 'fa-times-circle'}`} style={{ fontSize: '0.6rem' }} />
               {listing_type === 'rent' ? 'ติดเช่า' : 'ขายแล้ว'}
@@ -322,66 +309,42 @@ function PropertyCard({ property, className = '' }) {
           {is_featured === 1 && (
             <span style={{
               background: 'rgba(0,0,0,0.5)', color: '#C9A84C',
-              fontSize: '0.65rem', fontWeight: 800,
-              padding: '4px 10px', borderRadius: 6,
-              letterSpacing: '0.5px',
-              backdropFilter: 'blur(4px)',
-              display: 'inline-flex', alignItems: 'center', gap: 4,
+              fontSize: '0.65rem', fontWeight: 800, padding: '4px 10px', borderRadius: 6,
+              backdropFilter: 'blur(4px)', display: 'inline-flex', alignItems: 'center', gap: 4,
             }}>
-              <i className="fas fa-shield-alt" style={{ fontSize: '0.55rem' }} />
-              ตรวจสอบแล้ว
+              <i className="fas fa-shield-alt" style={{ fontSize: '0.55rem' }} /> ตรวจสอบแล้ว
             </span>
           )}
         </div>
 
-        {/* Heart button — top right with burst animation */}
+        {/* Heart button — top right */}
         <div ref={heartRef} style={{ position: 'absolute', top: 10, right: 10, zIndex: 5 }}>
           <button
-            onClick={handleHeart}
-            disabled={saving}
+            onClick={handleHeart} disabled={saving}
             style={{
               width: 36, height: 36, borderRadius: '50%',
               background: saved ? '#e53e3e' : 'rgba(255,255,255,0.92)',
-              border: 'none',
-              backdropFilter: 'blur(4px)',
+              border: 'none', backdropFilter: 'blur(4px)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              boxShadow: saved
-                ? '0 2px 14px rgba(229,62,62,0.4)'
-                : '0 2px 10px rgba(0,0,0,0.15)',
+              cursor: 'pointer', transition: 'all 0.2s ease',
+              boxShadow: saved ? '0 2px 14px rgba(229,62,62,0.4)' : '0 2px 10px rgba(0,0,0,0.15)',
               transform: heartAnim ? 'scale(1.25)' : saving ? 'scale(0.85)' : 'scale(1)',
               position: 'relative',
             }}
             title={saved ? 'ยกเลิกบันทึก' : 'บันทึกทรัพย์นี้'}
           >
-            <i
-              className={saved ? 'fas fa-heart' : 'far fa-heart'}
-              style={{
-                fontSize: '0.88rem', color: saved ? '#fff' : '#e53e3e',
-                transition: 'transform 0.3s ease',
-                transform: heartAnim ? 'scale(1.2)' : 'scale(1)',
-              }}
-            />
+            <i className={saved ? 'fas fa-heart' : 'far fa-heart'}
+              style={{ fontSize: '0.88rem', color: saved ? '#fff' : '#e53e3e', transition: 'transform 0.3s ease', transform: heartAnim ? 'scale(1.2)' : 'scale(1)' }} />
           </button>
-
-          {/* Particle burst effect */}
           {heartAnim && saved && (
-            <div style={{
-              position: 'absolute', inset: -12,
-              pointerEvents: 'none',
-            }}>
+            <div style={{ position: 'absolute', inset: -12, pointerEvents: 'none' }}>
               {[...Array(8)].map((_, i) => (
                 <span key={i} className="heart-particle" style={{
-                  position: 'absolute',
-                  top: '50%', left: '50%',
-                  width: i % 2 === 0 ? 5 : 4,
-                  height: i % 2 === 0 ? 5 : 4,
-                  borderRadius: '50%',
+                  position: 'absolute', top: '50%', left: '50%',
+                  width: i % 2 === 0 ? 5 : 4, height: i % 2 === 0 ? 5 : 4, borderRadius: '50%',
                   background: i % 3 === 0 ? '#e53e3e' : i % 3 === 1 ? '#f0a500' : '#c9a84c',
                   transform: `rotate(${i * 45}deg) translateY(-18px)`,
-                  animation: `heart-burst 0.6s ease-out ${i * 0.03}s forwards`,
-                  opacity: 0,
+                  animation: `heart-burst 0.6s ease-out ${i * 0.03}s forwards`, opacity: 0,
                 }} />
               ))}
             </div>
@@ -396,74 +359,98 @@ function PropertyCard({ property, className = '' }) {
           <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', background: listing_type === 'rent' ? 'rgba(99,102,241,0.12)' : 'rgba(0,0,0,0.22)' }} />
         )}
 
-        {/* Price overlay — bottom right of image */}
-        <div style={{
-          position: 'absolute', bottom: 10, right: 10, zIndex: 3,
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(8px)',
-          padding: '5px 12px', borderRadius: 8,
-          boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
-        }}>
-          <div style={{ fontSize: '0.95rem', fontWeight: 900, color: '#1A8C6E', fontFamily: "'Manrope', sans-serif", lineHeight: 1.2 }}>
+        {/* --- Professional Status Banner --- */}
+        {sale_status !== 'available' && (
+          <>
+            {/* Soft dark overlay to make text pop */}
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.25)', zIndex: 4, pointerEvents: 'none' }} />
+            
+            {/* Luxury Status Label */}
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+              minWidth: 160,
+              textAlign: 'center',
+              pointerEvents: 'none',
+              animation: 'fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards'
+            }}>
+              <div style={{
+                background: '#fff',
+                padding: '12px 24px',
+                borderRadius: '0px',
+                boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
+                display: 'inline-block',
+                borderBottom: `5px solid ${sale_status === 'sold' ? (listing_type === 'rent' ? '#3b82f6' : '#dc2626') : '#f59e0b'}`,
+              }}>
+                <div style={{ 
+                  color: '#888', 
+                  fontSize: '0.65rem', 
+                  fontWeight: 900, 
+                  letterSpacing: '2.5px', 
+                  marginBottom: 4,
+                  textTransform: 'uppercase'
+                }}>
+                  Official Status
+                </div>
+                <div style={{
+                  color: sale_status === 'sold' ? (listing_type === 'rent' ? '#3b82f6' : '#b91c1c') : '#d97706',
+                  fontSize: '1.4rem',
+                  fontWeight: 900,
+                  letterSpacing: '1px'
+                }}>
+                  {sale_status === 'sold' ? (listing_type === 'rent' ? 'ติดเช่าแล้ว' : 'ขายแล้ว') : 'จองแล้ว'}
+                </div>
+              </div>
+            </div>
+            
+            <style>{`
+              @keyframes fadeInUp {
+                from { opacity: 0; transform: translate(-50%, -40%); }
+                to { opacity: 1; transform: translate(-50%, -50%); }
+              }
+            `}</style>
+          </>
+        )}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3, padding: '14px 14px 12px' }}>
+          {/* Price */}
+          <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#fff', fontFamily: "'Manrope', sans-serif", lineHeight: 1.1, textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.4)' }}>
             {displayPrice}
           </div>
           {rentSubPrice && (
-            <div style={{ fontSize: '0.68rem', fontWeight: 600, color: '#2563eb', fontFamily: "'Manrope', sans-serif", lineHeight: 1.2, marginTop: 2 }}>
+            <div style={{ fontSize: '0.72rem', fontWeight: 600, color: '#93c5fd', lineHeight: 1.2, marginTop: 2 }}>
               {rentSubPrice}
             </div>
           )}
-        </div>
-      </div>
+          {/* Location */}
+          <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.78rem', fontWeight: 500, marginTop: 4, lineHeight: 1.3 }}>
+            {title}
+          </div>
+          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.7rem', marginTop: 2 }}>
+            {[district, province].filter(Boolean).join(', ')}
+          </div>
 
-      {/* Info section */}
-      <div style={{ padding: '14px 16px 16px', flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {/* Eyebrow: Type + Location */}
-        <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#6a5c4c', textTransform: 'uppercase', letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span>{propertyTypeLabel(property_type)}</span>
-          {(district || province) && (
-            <>
-              <span style={{ color: '#ccc' }}>&bull;</span>
-              <span>{district || province}</span>
-            </>
-          )}
-        </div>
-
-        {/* Title */}
-        <h3 style={{
-          margin: '4px 0 0',
-          fontSize: '0.95rem',
-          fontWeight: 500,
-          color: '#1A1A1A',
-          fontFamily: "'Noto Serif Thai', serif",
-          lineHeight: 1.35,
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}>
-          {title}
-        </h3>
-
-        {/* Specs row — icon style matching reference */}
-        <div style={{ marginTop: 'auto', paddingTop: 10 }}>
+          {/* Specs row — beds | baths | area */}
           {(bedrooms > 0 || bathrooms > 0 || areaText) && (
             <div style={{
-              display: 'flex', gap: 14,
-              fontSize: '0.78rem', color: '#6a5c4c',
+              display: 'flex', gap: 0, marginTop: 8,
+              fontSize: '0.75rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600,
             }}>
               {bedrooms > 0 && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <i className="fas fa-bed" style={{ fontSize: '0.72rem', color: '#999' }} />{bedrooms}
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, paddingRight: 10, borderRight: '1px solid rgba(255,255,255,0.3)' }}>
+                  {bedrooms}<span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', marginLeft: 2 }}>ห้องนอน</span>
                 </span>
               )}
               {bathrooms > 0 && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <i className="fas fa-bath" style={{ fontSize: '0.72rem', color: '#999' }} />{bathrooms}
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 10, paddingRight: 10, borderRight: (areaText ? '1px solid rgba(255,255,255,0.3)' : 'none') }}>
+                  {bathrooms}<span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.6)', marginLeft: 2 }}>ห้องน้ำ</span>
                 </span>
               )}
               {areaText && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <i className="fas fa-mountain-sun" style={{ fontSize: '0.72rem', color: '#999' }} />{areaText}
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 10 }}>
+                  {areaText}
                 </span>
               )}
             </div>

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 
 const Guide = () => {
-  const brandGreen = '#1A8C6E';
-  const navy = '#1A8C6E';
+  const brandGreen = '#A1D99B';
+  const navy = '#3d7a3a';
   const [openFaq, setOpenFaq] = useState(null);
 
   const toggleFaq = (i) => setOpenFaq(openFaq === i ? null : i);
@@ -60,14 +60,14 @@ const Guide = () => {
 
       {/* === HERO — Quiet Luxury === */}
       <section style={{
-        background: `linear-gradient(135deg, ${navy} 0%, #147A5E 60%, ${brandGreen} 100%)`,
+        background: `linear-gradient(135deg, ${navy} 0%, #8BC683 60%, ${brandGreen} 100%)`,
         color: '#fff', padding: 'calc(64px + 48px) 16px 40px',
       }}>
         <div style={{ maxWidth: 960, margin: '0 auto' }}>
           <div style={{ fontSize: '0.62rem', color: '#C9A84C', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700, fontFamily: "'Manrope', sans-serif", marginBottom: 10 }}>
             Buyer's Guide
           </div>
-          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", letterSpacing: '-0.01em' }}>
+          <h1 style={{ color: '#fff', fontSize: 'clamp(1.3rem, 4vw, 1.8rem)', fontWeight: 400, marginBottom: 8, fontFamily: "'Prompt', sans-serif", letterSpacing: '-0.01em' }}>
             คู่มือผู้ซื้อ-ขายอสังหาฯ
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.88rem', margin: 0 }}>
@@ -80,7 +80,7 @@ const Guide = () => {
       <section className="py-5" style={{ background: '#f8faf9' }}>
         <div className="container">
           <div className="text-center mb-5">
-            <h2 style={{ fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", fontWeight: 500 }}>ทำไมต้องเลือก<span style={{ color: brandGreen }}> บ้าน D มีเชง</span></h2>
+            <h2 style={{ fontFamily: "'Prompt', sans-serif", fontWeight: 500 }}>ทำไมต้องเลือก<span style={{ color: brandGreen }}> บ้าน D มีเชง</span></h2>
             <p className="text-muted">แพลตฟอร์มอสังหาริมทรัพย์ที่เชื่อถือได้ ดูแลคุณทุกขั้นตอน</p>
           </div>
 
@@ -146,7 +146,7 @@ const Guide = () => {
       <section className="py-5" style={{ background: '#f8faf9' }}>
         <div className="container">
           <div className="text-center mb-5">
-            <h2 style={{ fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", fontWeight: 500 }}>ประเภทอสังหาฯ<span style={{ color: brandGreen }}> ที่ บ้าน D มีเชง มี</span></h2>
+            <h2 style={{ fontFamily: "'Prompt', sans-serif", fontWeight: 500 }}>ประเภทอสังหาฯ<span style={{ color: brandGreen }}> ที่ บ้าน D มีเชง มี</span></h2>
           </div>
           <div className="row g-3 justify-content-center">
             {[
@@ -241,10 +241,10 @@ const Guide = () => {
       </section>
 
       {/* === CTA === */}
-      <section className="py-5" style={{ background: `linear-gradient(135deg, ${navy} 0%, #00463d 60%, ${brandGreen} 100%)` }}>
+      <section className="py-5" style={{ background: `linear-gradient(135deg, ${navy} 0%, #6aab62 60%, ${brandGreen} 100%)` }}>
         <div className="container text-center text-white">
           <i className="fas fa-comments" style={{ fontSize: '2rem', marginBottom: 12, color: '#C9A84C', display: 'block' }} />
-          <h2 style={{ fontWeight: 400, fontFamily: "'Noto Serif Thai', 'Noto Serif', Georgia, serif", marginBottom: 16 }}>พร้อมหาบ้านในฝันแล้วหรือยัง?</h2>
+          <h2 style={{ fontWeight: 400, fontFamily: "'Prompt', sans-serif", marginBottom: 16 }}>พร้อมหาบ้านในฝันแล้วหรือยัง?</h2>
           <p className="lead mb-4" style={{ opacity: 0.9 }}>ปรึกษาฟรี ทีมงานพร้อมช่วยคุณทุกขั้นตอน</p>
           <div className="d-flex flex-wrap gap-3 justify-content-center">
             <a href="https://line.me/R/ti/p/@loan_dd" target="_blank" rel="noopener noreferrer"
