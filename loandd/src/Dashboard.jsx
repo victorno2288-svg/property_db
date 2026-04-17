@@ -698,9 +698,9 @@ export default function Dashboard() {
                             <td style={{ padding: '8px 12px' }}>
                               <select value={p.sale_status} onChange={e => quickStatus(p.id, e.target.value)}
                                 style={{ background: sc.bg, color: sc.color, border: `1px solid ${sc.color}`, borderRadius: 6, padding: '3px 7px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', fontFamily: "'Sarabun',sans-serif" }}>
-                                <option value="available">{p.listing_type === 'rent' ? 'พร้อมเช่า / Available' : 'ว่างอยู่ / Available'}</option>
-                                <option value="reserved">จองแล้ว / Reserved</option>
-                                <option value="sold">{p.listing_type === 'rent' ? 'ติดเช่าแล้ว / Leased' : 'ขายแล้ว / Sold'}</option>
+                                <option value="available">ว่างอยู่</option>
+                                <option value="reserved">จองแล้ว</option>
+                                <option value="sold">ขายแล้ว</option>
                               </select>
                             </td>
                             {/* ราคา */}
