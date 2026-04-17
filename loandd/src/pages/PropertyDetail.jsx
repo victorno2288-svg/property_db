@@ -356,7 +356,6 @@ function PropertyDetail() {
       </div>
     );
   }
-
   const sStatus = getStatusConfig(property.sale_status, property.listing_type);
   const listingLabel = { sale: 'ขาย', rent: 'เช่า', sale_rent: 'ขาย / เช่า' };
 
@@ -384,19 +383,7 @@ function PropertyDetail() {
     ? haversineKm(userLoc.lat, userLoc.lng, parseFloat(property.latitude), parseFloat(property.longitude))
     : null;
 
-  const scrollToSection = (secId) => {
-    const el = document.getElementById(secId);
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' });
-  };
 
-  const detailTabs = [
-    { id: 'detail-info', label: 'ข้อมูลทรัพย์', show: true },
-    { id: 'detail-amenities', label: 'สิ่งอำนวยฯ', show: !!(property.amenities?.length > 0) },
-    { id: 'detail-map', label: 'ที่ตั้ง', show: !!(property.province || property.district || property.latitude) },
-    { id: 'detail-calculator', label: 'คำนวณสินเชื่อ', show: property.listing_type !== 'rent' && !!property.price_requested },
-    { id: 'detail-video', label: 'วิดีโอ', show: !!property.video_url },
-    { id: 'detail-3dtour', label: '3D Tour 360°', show: !!property.virtual_tour_id },
-  ].filter(t => t.show);
 
   const getYoutubeId = (url) => {
     if (!url) return null;
@@ -485,47 +472,7 @@ function PropertyDetail() {
         </div>
       )}
 
-      {/* ===== STICKY TAB NAV ===== */}
-      {detailTabs.length > 1 && (
-        <div style={{
-          position: 'sticky', top: 64, zIndex: 200,
-          background: '#fff',
-          borderBottom: `1px solid ${T.surfaceMid}`,
-          borderTop: `1px solid ${T.surfaceMid}`,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-        }}>
-          <style>{`
-            #detail-tab-bar::-webkit-scrollbar { display: none; }
-            .dtab { transition: all 0.2s !important; position: relative; }
-            .dtab::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: ${T.primary}; transition: all 0.2s; transform: translateX(-50%); }
-            .dtab:hover::after { width: 100%; }
-            .dtab:hover { color: ${T.primary} !important; }
-          `}</style>
-          <div id="detail-tab-bar" style={{
-            maxWidth: 1100, margin: '0 auto', padding: '0 16px',
-            display: 'flex', overflowX: 'auto', scrollbarWidth: 'none',
-            WebkitOverflowScrolling: 'touch', gap: 0,
-          }}>
-            {detailTabs.map(tab => (
-              <button
-                key={tab.id}
-                className="dtab"
-                onClick={() => scrollToSection(tab.id)}
-                style={{
-                  padding: '14px 22px', border: 'none',
-                  background: 'transparent', color: T.textSoft,
-                  fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer',
-                  whiteSpace: 'nowrap', letterSpacing: '0.04em',
-                  fontFamily: T.fontBody,
-                  textTransform: 'uppercase',
-                }}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+
 
       {/* ===== PHOTO SLIDESHOW — sliding carousel + thumbnails ===== */}
       <style>{`
