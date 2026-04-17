@@ -598,10 +598,55 @@ function PropertyDetail() {
                 </>
               )}
               {property.sale_status && property.sale_status !== 'available' && (
-                <div className="slide-status-badge" style={{ background: property.sale_status === 'sold' ? (property.listing_type === 'rent' ? '#6366f1' : '#c0392b') : '#d4890a' }}>
-                  <i className={`fas ${property.sale_status === 'sold' ? (property.listing_type === 'rent' ? 'fa-check-circle' : 'fa-times-circle') : 'fa-bookmark'}`} style={{ fontSize: '0.72rem' }} />
-                  {property.sale_status === 'sold' ? (property.listing_type === 'rent' ? 'ติดเช่า' : 'ขายแล้ว') : 'จองแล้ว'}
-                </div>
+                <>
+                  <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)', zIndex: 5, pointerEvents: 'none' }} />
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 20,
+                    minWidth: 260,
+                    textAlign: 'center',
+                    pointerEvents: 'none',
+                    animation: 'fadeInUpDetail 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards'
+                  }}>
+                    <div style={{
+                      background: '#fff',
+                      padding: '24px 40px',
+                      borderRadius: '4px',
+                      boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
+                      display: 'inline-block',
+                      borderBottom: `8px solid ${property.sale_status === 'sold' ? (property.listing_type === 'rent' ? '#3b82f6' : '#dc2626') : '#f59e0b'}`,
+                    }}>
+                      <div style={{ 
+                        color: '#94a3b8', 
+                        fontSize: '0.85rem', 
+                        fontWeight: 900, 
+                        letterSpacing: '4px', 
+                        marginBottom: 8,
+                        textTransform: 'uppercase'
+                      }}>
+                        Property Status
+                      </div>
+                      <div style={{
+                        color: property.sale_status === 'sold' ? (property.listing_type === 'rent' ? '#3b82f6' : '#b91c1c') : '#d97706',
+                        fontSize: '2.8rem',
+                        fontWeight: 900,
+                        letterSpacing: '2px',
+                        lineHeight: 1
+                      }}>
+                        {property.sale_status === 'sold' ? (property.listing_type === 'rent' ? 'ติดเช่าแล้ว' : 'ขายแล้ว') : 'จองแล้ว'}
+                      </div>
+                    </div>
+                  </div>
+                  <style>{`
+                    @keyframes fadeInUpDetail {
+                      from { opacity: 0; transform: translate(-50%, -30%); }
+                      to { opacity: 1; transform: translate(-50%, -50%); }
+                    }
+                  `}</style>
+                </>
               )}
               {allImages.length > 1 && (
                 <div className="photo-thumbstrip-wrap">
