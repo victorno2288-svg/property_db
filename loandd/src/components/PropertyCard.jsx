@@ -273,6 +273,77 @@ function PropertyCard({ property, className = '' }) {
           </div>
         )}
 
+        {/* --- Luxury Legacy Acquisition Overlay --- */}
+        {sale_status !== 'available' && (
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 10,
+            background: 'rgba(15, 23, 18, 0.85)',
+            backdropFilter: 'grayscale(1) brightness(0.6) contrast(1.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            textAlign: 'center',
+            pointerEvents: 'none',
+            fontFamily: "'Playfair Display', 'Cinzel', 'Georgia', serif",
+            animation: 'luxuryFadeIn 1s cubic-bezier(0.23, 1, 0.32, 1) forwards'
+          }}>
+            <div style={{ 
+              border: '1px solid rgba(197, 160, 89, 0.3)', 
+              padding: '30px 20px', 
+              width: '100%', 
+              height: '100%', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              justifyContent: 'center' 
+            }}>
+              <div style={{
+                fontSize: '1.6rem',
+                fontWeight: 400,
+                color: '#fff',
+                letterSpacing: '4px',
+                textTransform: 'uppercase',
+                fontStyle: 'italic',
+                lineHeight: 1.2,
+                marginBottom: '12px',
+                textShadow: '0 4px 10px rgba(0,0,0,0.5)'
+              }}>
+                {sale_status === 'sold' 
+                  ? (listing_type === 'rent' ? 'Exclusive\nChapter' : 'Legacy\nAcquired') 
+                  : 'Future\nSecured'}
+              </div>
+              
+              <div style={{ 
+                width: '40px', 
+                height: '1px', 
+                background: '#c5a059', 
+                margin: '15px 0' 
+              }} />
+              
+              <div style={{
+                fontSize: '0.65rem',
+                color: 'rgba(255,255,255,0.7)',
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                fontWeight: 600
+              }}>
+                {property.district || property.province} • {sale_status === 'sold' ? (listing_type === 'rent' ? 'RENTED' : 'SOLD') : 'RESERVED'}
+              </div>
+            </div>
+            
+            <style>{`
+              @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&family=Cinzel:wght@400;700&display=swap');
+              @keyframes luxuryFadeIn {
+                from { opacity: 0; transform: scale(1.05); }
+                to { opacity: 1; transform: scale(1); }
+              }
+            `}</style>
+          </div>
+        )}
+
         {/* Gradient overlay bottom — dark enough for white text on any image */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.1) 65%, rgba(0,0,0,0) 80%)', pointerEvents: 'none' }} />
 

@@ -259,8 +259,15 @@ function AdminProperties() {
 
                         {/* สถานะ — badge */}
                         <td style={{ padding: '8px 12px' }}>
-                          <span style={{ background: sc.bg, color: sc.color, border: `1px solid ${sc.color}`, borderRadius: 6, padding: '3px 10px', fontSize: '0.78rem', fontWeight: 700, whiteSpace: 'nowrap' }}>
-                            {sc.label}
+                          <span style={{ 
+                            background: p.sale_status === 'sold' ? (p.listing_type === 'rent' ? '#ebf5ff' : '#fef2f2') : (p.sale_status === 'reserved' ? '#fffbeb' : '#ecfdf5'),
+                            color: p.sale_status === 'sold' ? (p.listing_type === 'rent' ? '#2563eb' : '#dc2626') : (p.sale_status === 'reserved' ? '#d97706' : '#059669'),
+                            border: `1px solid ${p.sale_status === 'sold' ? (p.listing_type === 'rent' ? '#3b82f6' : '#f87171') : (p.sale_status === 'reserved' ? '#fbbf24' : '#34d399')}`,
+                            borderRadius: 6, padding: '4px 12px', fontSize: '0.78rem', fontWeight: 700, whiteSpace: 'nowrap' 
+                          }}>
+                            {p.sale_status === 'available' ? (p.listing_type === 'rent' ? 'พร้อมเช่า' : 'ว่างอยู่') : 
+                             p.sale_status === 'sold' ? (p.listing_type === 'rent' ? 'ติดเช่าแล้ว' : 'ขายแล้ว') : 
+                             'จองแล้ว'}
                           </span>
                         </td>
 

@@ -583,6 +583,75 @@ function PropertyDetail() {
                   <img key={i} src={getImgSrc(img)} alt={i === 0 ? property.title : ''} draggable={false} />
                 ))}
               </div>
+              {property.sale_status && property.sale_status !== 'available' && (
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 20,
+                  background: 'rgba(15, 23, 18, 0.88)',
+                  backdropFilter: 'grayscale(1) brightness(0.5) contrast(1.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '40px',
+                  textAlign: 'center',
+                  pointerEvents: 'none',
+                  fontFamily: "'Playfair Display', 'Cinzel', 'Georgia', serif",
+                  animation: 'luxuryFadeInDetail 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards'
+                }}>
+                  <div style={{ 
+                    border: '1px solid rgba(197, 160, 89, 0.3)', 
+                    padding: '60px 40px', 
+                    maxWidth: 500,
+                    width: '100%',
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center' 
+                  }}>
+                    <div style={{
+                      fontSize: '3.2rem',
+                      fontWeight: 400,
+                      color: '#fff',
+                      letterSpacing: '8px',
+                      textTransform: 'uppercase',
+                      fontStyle: 'italic',
+                      lineHeight: 1.1,
+                      marginBottom: '20px',
+                      textShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                    }}>
+                      {property.sale_status === 'sold' 
+                        ? (property.listing_type === 'rent' ? 'Exclusive\nChapter' : 'Legacy\nAcquired') 
+                        : 'Future\nSecured'}
+                    </div>
+                    
+                    <div style={{ 
+                      width: '80px', 
+                      height: '1px', 
+                      background: '#c5a059', 
+                      margin: '30px 0' 
+                    }} />
+                    
+                    <div style={{
+                      fontSize: '0.85rem',
+                      color: 'rgba(255,255,255,0.8)',
+                      letterSpacing: '5px',
+                      textTransform: 'uppercase',
+                      fontWeight: 600
+                    }}>
+                      {property.district || property.province} • {property.sale_status === 'sold' ? (property.listing_type === 'rent' ? 'RENTED' : 'SOLD') : 'RESERVED'}
+                    </div>
+                  </div>
+                  
+                  <style>{`
+                    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&family=Cinzel:wght@400;700&display=swap');
+                    @keyframes luxuryFadeInDetail {
+                      from { opacity: 0; transform: scale(1.1); }
+                      to { opacity: 1; transform: scale(1); }
+                    }
+                  `}</style>
+                </div>
+              )}
               {allImages.length > 1 && (
                 <>
                   {activeImg > 0 && (
