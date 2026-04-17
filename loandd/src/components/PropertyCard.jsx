@@ -359,61 +359,7 @@ function PropertyCard({ property, className = '' }) {
           <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', background: listing_type === 'rent' ? 'rgba(99,102,241,0.12)' : 'rgba(0,0,0,0.22)' }} />
         )}
 
-        {/* --- Professional Status Banner --- */}
-        {sale_status !== 'available' && (
-          <>
-            {/* Soft dark overlay to make text pop */}
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.25)', zIndex: 4, pointerEvents: 'none' }} />
-            
-            {/* Luxury Status Label */}
-            <div style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 10,
-              minWidth: 160,
-              textAlign: 'center',
-              pointerEvents: 'none',
-              animation: 'fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards'
-            }}>
-              <div style={{
-                background: '#fff',
-                padding: '12px 24px',
-                borderRadius: '0px',
-                boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
-                display: 'inline-block',
-                borderBottom: `5px solid ${sale_status === 'sold' ? (listing_type === 'rent' ? '#3b82f6' : '#dc2626') : '#f59e0b'}`,
-              }}>
-                <div style={{ 
-                  color: '#888', 
-                  fontSize: '0.65rem', 
-                  fontWeight: 900, 
-                  letterSpacing: '2.5px', 
-                  marginBottom: 4,
-                  textTransform: 'uppercase'
-                }}>
-                  Official Status
-                </div>
-                <div style={{
-                  color: sale_status === 'sold' ? (listing_type === 'rent' ? '#3b82f6' : '#b91c1c') : '#d97706',
-                  fontSize: '1.4rem',
-                  fontWeight: 900,
-                  letterSpacing: '1px'
-                }}>
-                  {sale_status === 'sold' ? (listing_type === 'rent' ? 'ติดเช่าแล้ว' : 'ขายแล้ว') : 'จองแล้ว'}
-                </div>
-              </div>
-            </div>
-            
-            <style>{`
-              @keyframes fadeInUp {
-                from { opacity: 0; transform: translate(-50%, -40%); }
-                to { opacity: 1; transform: translate(-50%, -50%); }
-              }
-            `}</style>
-          </>
-        )}
+        {/* === Bottom overlay info (Century 21 style) === */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 3, padding: '14px 14px 12px' }}>
           {/* Price */}
           <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#fff', fontFamily: "'Manrope', sans-serif", lineHeight: 1.1, textShadow: '0 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.4)' }}>
