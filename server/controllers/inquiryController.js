@@ -1,4 +1,4 @@
-const db  = require('../config/db');
+const db = require('../config/db');
 const sse = require('../utils/sseManager');
 
 // ==========================================
@@ -9,18 +9,10 @@ exports.createInquiry = (req, res) => {
     const { property_id, name, phone, email, message } = req.body;
 
     // Validation
-    if (!property_id) return res.status(400).json({ error: 'กรุณาระบุรหัสทรัพย์สิน' });
     if (!name || name.trim().length < 2) return res.status(400).json({ error: 'กรุณาระบุชื่อของคุณ' });
     if (!phone || phone.replace(/\D/g, '').length < 9) return res.status(400).json({ error: 'กรุณาระบุเบอร์โทรศัพท์ที่ถูกต้อง' });
 
-    // เช็คว่า property นั้นมีอยู่จริง
-    db.query('SELECT id, title FROM properties WHERE id = ? AND is_active = 1', [property_id], (err, rows) => {
-        if (err) {
-            console.error('Inquiry property check error:', err);
-            return res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
-        }
-        if (rows.length === 0) return res.status(404).json({ error: 'ไม่พบทรัพย์สินนี้' });
-
+    const insertInquiry = (propId, propTitle = 'ทั่วไป (หน้าติดต่อเรา)') => {
         const sql = `
             INSERT INTO property_inquiries
                 (property_id, name, phone, email, message, status, created_at)
@@ -28,7 +20,7 @@ exports.createInquiry = (req, res) => {
         `;
 
         db.query(sql, [
-            property_id,
+            propId || null,
             name.trim(),
             phone.trim(),
             email ? email.trim() : null,
@@ -39,12 +31,12 @@ exports.createInquiry = (req, res) => {
                 return res.status(500).json({ error: 'ไม่สามารถบันทึกข้อมูลได้' });
             }
 
-            // แจ้ง admin แบบ real-time ว่ามี inquiry ใหม่
+            // แจ้ง admin แบบ real-time
             sse.pushToAdmins('new_inquiry', {
-                inquiryId:      result.insertId,
+                inquiryId: result.insertId,
                 name,
-                property_title: rows[0].title,
-                property_id,
+                property_title: propTitle,
+                property_id: propId || null,
             });
 
             res.status(201).json({
@@ -52,7 +44,21 @@ exports.createInquiry = (req, res) => {
                 inquiryId: result.insertId
             });
         });
-    });
+    };
+
+    if (property_id) {
+        // เช็คว่า property นั้นมีอยู่จริง
+        db.query('SELECT id, title FROM properties WHERE id = ? AND is_active = 1', [property_id], (err, rows) => {
+            if (err) {
+                console.error('Inquiry property check error:', err);
+                return res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
+            }
+            if (rows.length === 0) return res.status(404).json({ error: 'ไม่พบทรัพย์สินนี้' });
+            insertInquiry(property_id, rows[0].title);
+        });
+    } else {
+        insertInquiry(null);
+    }
 };
 
 // ==========================================
@@ -60,13 +66,13 @@ exports.createInquiry = (req, res) => {
 // GET /api/inquiries
 // ==========================================
 exports.getAllInquiries = (req, res) => {
-    const page   = parseInt(req.query.page)  || 1;
-    const limit  = parseInt(req.query.limit) || 50;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
     const offset = (page - 1) * limit;
     const status = req.query.status || null;
     const search = req.query.search ? req.query.search.trim() : null;
 
-    let where  = [];
+    let where = [];
     let params = [];
     if (status) { where.push('qi.status = ?'); params.push(status); }
     if (search) {
