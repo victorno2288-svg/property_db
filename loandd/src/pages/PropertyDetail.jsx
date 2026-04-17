@@ -415,7 +415,7 @@ function PropertyDetail() {
   const locationText = [property.sub_district, property.district, property.province].filter(Boolean).join(', ');
 
   return (
-    <div className="detail-page-wrapper" style={{ minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+    <div className="detail-page-wrapper" style={{ minHeight: '100vh', background: T.bg, fontFamily: T.fontBody, paddingTop: '75px' }}>
       <Navbar />
 
       {/* ===== LIGHTBOX with swipe ===== */}
@@ -506,7 +506,7 @@ function PropertyDetail() {
           .photo-no-img { height: 300px; border-radius: 0; }
         }
       `}</style>
-      <div id="detail-info" style={{ padding: '0 16px' }}>
+      <div id="detail-info" style={{ padding: '0 16px', marginTop: '15px' }}>
         {allImages.length === 0 ? (
           <div className="photo-no-img"><i className="fas fa-home" /></div>
         ) : (
