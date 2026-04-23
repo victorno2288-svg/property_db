@@ -311,3 +311,99 @@ exports.setAutoApprove = (req, res) => {
     }
   );
 };
+
+// ==========================================
+// Admin Users Management (admin_users table)
+// ==========================================
+
+// GET /api/admin/admins — ดึง admin users ทั้งหมด
+exports.getAllAdminUsers = (req, res) => {
+    const sql = `SELECT id, username, full_name, display_name, email, phone, department, is_active, created_at
+                 FROM admin_users ORDER BY created_at DESC`;
+    db.query(sql, (err, rows) => {
+        if (err) { console.error(err); return res.status(500).json({ error: 'Server Error' }); }
+        res.json({ data: rows });
+    });
+};
+
+// PUT /api/admin/admins/:id — แก้ไข admin user
+exports.updateAdminUser = (req, res) => {
+    const { id } = req.params;
+    const { username, full_name, display_name, email, phone, is_active } = req.body;
+
+    // ห้ามแก้ตัวเอง
+    if (String(req.admin?.id) === String(id)) {
+        return res.status(400).json({ error: 'ไม่สามารถแก้ไขบัญชีของตัวเองได้' });
+    }
+
+    const sql = `UPDATE admin_users SET username=?, full_name=?, display_name=?, email=?, phone=?, is_active=?
+                 WHERE id=?`;
+    db.query(sql, [username, full_name, display_name || null, email, phone || null,
+                   is_active !== undefined ? is_active : 1, id], (err, result) => {
+        if (err) {
+            if (err.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: 'Username หรือ Email ซ้ำ' });
+            console.error(err); return res.status(500).json({ error: 'Server Error' });
+        }
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'ไม่พบแอดมิน' });
+        res.json({ message: 'แก้ไขสำเร็จ' });
+    });
+};
+
+// DELETE /api/admin/admins/:id — ลบ admin user
+exports.deleteAdminUser = (req, res) => {
+    const { id } = req.params;
+
+    // ห้ามลบตัวเอง
+    if (String(req.admin?.id) === String(id)) {
+        return res.status(400).json({ error: 'ไม่สามารถลบบัญชีของตัวเองได้' });
+    }
+
+    db.query('DELETE FROM admin_users WHERE id = ?', [id], (err, result) => {
+        if (err) { console.error(err); return res.status(500).json({ error: 'Server Error' }); }
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'ไม่พบแอดมิน' });
+        res.json({ message: 'ลบสำเร็จ' });
+    });
+};
+
+// POST /api/admin/admins — สร้าง admin user ใหม่
+exports.createAdminUser = (req, res) => {
+    const { username, password, email, full_name, display_name, phone, department } = req.body;
+    if (!username?.trim() || !password || !email?.trim()) {
+        return res.status(400).json({ error: 'กรุณากรอก username, password และ email' });
+    }
+    if (password.length < 6) {
+        return res.status(400).json({ error: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' });
+    }
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) return res.status(500).json({ error: 'Server Error' });
+        const sql = `INSERT INTO admin_users (username, password_hash, email, full_name, display_name, phone, department, is_active, created_at)
+                     VALUES (?,?,?,?,?,?,?,1,NOW())`;
+        db.query(sql,
+            [username.trim(), hash, email.trim(), full_name||null, display_name||null, phone||null, department||'property_manager'],
+            (err2, result) => {
+                if (err2) {
+                    if (err2.code === 'ER_DUP_ENTRY') return res.status(409).json({ error: 'Username หรือ Email ซ้ำในระบบแล้ว' });
+                    console.error(err2); return res.status(500).json({ error: 'Server Error' });
+                }
+                res.status(201).json({ message: 'สร้างแอดมินสำเร็จ', id: result.insertId });
+            }
+        );
+    });
+};
+
+// PUT /api/admin/admins/:id/password — เปลี่ยนรหัสผ่าน admin
+exports.changeAdminPassword = (req, res) => {
+    const { id } = req.params;
+    const { newPassword } = req.body;
+    if (!newPassword || newPassword.length < 6) {
+        return res.status(400).json({ error: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' });
+    }
+    bcrypt.hash(newPassword, 10, (err, hash) => {
+        if (err) return res.status(500).json({ error: 'Server Error' });
+        db.query('UPDATE admin_users SET password_hash=? WHERE id=?', [hash, id], (err2, result) => {
+            if (err2) { console.error(err2); return res.status(500).json({ error: 'Server Error' }); }
+            if (result.affectedRows === 0) return res.status(404).json({ error: 'ไม่พบแอดมิน' });
+            res.json({ message: 'เปลี่ยนรหัสผ่านสำเร็จ' });
+        });
+    });
+};

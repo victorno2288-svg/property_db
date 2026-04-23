@@ -454,6 +454,85 @@ lond/add_audit_trail.sql     — เพิ่ม column created_by_admin, update
 
 ---
 
+---
+
+## ✅ Session Updates — 2026-04-20
+
+### Contact Messages System (ข้อความติดต่อทั่วไป) ✅
+- **ปัญหาเดิม**: `POST /api/inquiries` ส่งข้อมูลจาก ContactPage โดยไม่มี `property_id` → ระบบพยายาม INSERT ลง `property_inquiries` ที่มี NOT NULL constraint → 500 error
+
+#### SQL — ตารางใหม่ที่ต้องรันใน phpMyAdmin
+```
+สรุป/create_contact_messages.sql      → สร้างตาราง contact_messages
+สรุป/alter_contact_messages_add_topic.sql → เพิ่ม column topic (รันหลังสร้างตาราง)
+```
+
+#### ตาราง contact_messages
+```sql
+id, name, phone, email, topic(VARCHAR 255), message, created_at
+```
+
+#### inquiryController.js — แก้ `createInquiry` + เพิ่ม endpoints ใหม่
+- `createInquiry`: ถ้าไม่มี `property_id` → INSERT ลง `contact_messages` (แทน property_inquiries)
+  ถ้ามี `property_id` → INSERT ลง `property_inquiries` (เดิม)
+- เพิ่ม `getContactMessages`: `GET /api/inquiries/contact-messages` (verifyAdmin)
+- เพิ่ม `deleteContactMessage`: `DELETE /api/inquiries/contact-messages/:id` (verifyAdmin)
+
+#### inquiryRoutes.js — route ใหม่
+```javascript
+router.get('/contact-messages', verifyAdmin, inquiryController.getContactMessages);
+router.delete('/contact-messages/:id', verifyAdmin, inquiryController.deleteContactMessage);
+```
+
+#### ContactPage.jsx — เพิ่มช่อง "คำถามของคุณ"
+- เพิ่ม field `topic` ในฟอร์ม (ไม่บังคับ)
+- ส่ง `topic` และ `message` แยกกันใน request body
+- แก้ `API_BASE = ''` (เดิม `'http://localhost:3001'`)
+
+#### AdminInquiries.jsx — เพิ่ม Sub-tab สำหรับ Contact Messages ✅
+- เพิ่ม `mainTab` state ('property' | 'contact')
+- เพิ่ม Sub-tab switcher UI: "ข้อความจากอสังหา" vs "ข้อความติดต่อทั่วไป"
+- **Contact list**: แสดง name, phone, email, topic (highlighted สีเหลือง), message preview, date, ปุ่มลบ
+- **Contact detail panel**: แสดง topic ใน box เด่น (สี amber), phone, email, message, ปุ่มโทร/email, ปุ่มลบ
+- เพิ่ม `DeleteContactModal` component → เรียก `DELETE /api/inquiries/contact-messages/:id`
+- Property status filter pills ซ่อนเมื่ออยู่ใน contact tab
+
+---
+
+### Admin User Management ✅
+
+#### adminUserController.js — เพิ่ม endpoints
+- `getAllAdminUsers`: GET — query `department` (ไม่ใช่ `role`) จาก `admin_users`
+- `updateAdminUser`: PUT — แก้ username, full_name, display_name, email, phone, is_active (บล็อก self-edit)
+- `deleteAdminUser`: DELETE — บล็อก self-delete
+
+#### adminRoutes.js — route ใหม่
+```javascript
+router.get   ('/admins',     userCtrl.getAllAdminUsers);
+router.put   ('/admins/:id', userCtrl.updateAdminUser);
+router.delete('/admins/:id', userCtrl.deleteAdminUser);
+```
+
+#### UsersPanel.jsx — เพิ่ม subtab "แอดมิน"
+- เพิ่ม subtab ที่ 3: "แอดมิน" ใน Users Panel (เดิมมี users | requests)
+- `EditAdminModal`: แก้ username, full_name, display_name, email, phone, department (dropdown), is_active
+- `DeleteAdminModal`: confirm + call DELETE /api/admin/admins/:id
+- `department` dropdown: super_admin, property_manager, sales, content, viewer
+- ⚠️ `admin_users` ใช้ `department` (enum) ไม่ใช่ `role`
+
+---
+
+### dist-upload — ไฟล์ที่ copy ไปแล้ว (server side)
+```
+dist-upload/server/controllers/inquiryController.js  ✅
+dist-upload/server/controllers/adminUserController.js ✅
+dist-upload/server/routes/inquiryRoutes.js            ✅
+dist-upload/server/routes/adminRoutes.js              ✅
+```
+⚠️ **React frontend (AdminInquiries.jsx, ContactPage.jsx, UsersPanel.jsx) ต้อง `npm run build` ก่อน copy assets/**
+
+---
+
 ## 🌐 baand.loandd.co.th — PHP API Production Site
 
 _อัพเดท: 2026-04-17_
@@ -519,3 +598,39 @@ route('GET', '/properties/featured-random', function() {
 
 ### แก้ไฟล์ผ่าน Plesk
 - File Manager → `/baand.loandd.co.th/api/` → ดับเบิลคลิก `index.php` → แก้ → Save
+
+---
+
+## 🚀 วิธีอัพโหลดไฟล์ขึ้น Production (lond project)
+
+_อัพเดท: 2026-04-20_
+
+### ⚠️ แยกให้ชัด: phpMyAdmin ≠ File Manager
+- **phpMyAdmin** (`thsv88.hostatom.com:8443/phpMyAdmin`) → SQL เท่านั้น (ALTER TABLE, CREATE TABLE)
+- **Plesk File Manager** (`thsv88.hostatom.com:8443`) → อัพไฟล์ JS/HTML/Node.js
+
+### ขั้นตอนอัพโหลด
+
+1. **Build React ใหม่** (ทุกครั้งที่แก้ JSX):
+   ```
+   cd C:\Users\User\Downloads\สรุป\lond\loandd
+   npm run build
+   ```
+
+2. **Copy dist → dist-upload**:
+   ```
+   xcopy /E /Y C:\Users\User\Downloads\สรุป\lond\loandd\dist\* C:\Users\User\Downloads\dist-upload\
+   ```
+
+3. **อัพผ่าน Plesk File Manager**:
+   - `dist-upload/assets/` + `dist-upload/index.html` → web root
+   - `dist-upload/server/controllers/*.js` → Node.js server/controllers/
+   - `dist-upload/server/routes/*.js` → Node.js server/routes/
+
+4. **รัน SQL** (ถ้ามี migration ใหม่) ใน phpMyAdmin → `loanddco_property_db` → SQL tab
+
+5. **Restart Node.js** ใน Plesk → Node.js App → Restart
+
+### SQL Migrations ที่รันบน Production แล้ว ✅
+- `create_contact_messages.sql` — สร้างตาราง contact_messages ✅
+- `alter_contact_messages_add_topic.sql` — เพิ่ม column topic ✅

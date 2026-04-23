@@ -320,13 +320,13 @@ img { max-width: 100%; height: auto; }
   100% { background-position: 200% center; }
 }
 
-/* -- Page transition overlay (Sotheby's style) -- */
+/* -- Page transition overlay (Elegant dark) -- */
 .page-transition-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
   pointer-events: none;
-  background: linear-gradient(135deg, #A1D99B 0%, #8BC683 100%);
+  background: radial-gradient(ellipse at center, #1f2a1e 0%, #0f1410 100%);
   opacity: 0;
   transition: opacity 0.35s var(--ease-luxury);
 }
@@ -339,7 +339,7 @@ img { max-width: 100%; height: auto; }
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: #1a3a18;
+  color: rgba(255,255,255,0.9);
   opacity: 0;
   transition: opacity 0.25s ease 0.1s;
 }
@@ -347,14 +347,57 @@ img { max-width: 100%; height: auto; }
   opacity: 1;
 }
 .page-transition-overlay .transition-logo {
-  width: 48px; height: 48px;
-  border: 2px solid rgba(255,255,255,0.2);
-  border-top-color: #C9A84C;
+  width: 56px; height: 56px;
+  margin: 0 auto 22px;
+  position: relative;
+}
+.page-transition-overlay .transition-logo::before,
+.page-transition-overlay .transition-logo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin: 0 auto 16px;
+  border: 1.5px solid transparent;
+}
+.page-transition-overlay .transition-logo::before {
+  border-top-color: #C9A84C;
+  border-right-color: rgba(201,168,76,0.35);
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+.page-transition-overlay .transition-logo::after {
+  inset: 10px;
+  border-top-color: rgba(161,217,155,0.7);
+  animation: spin 1.8s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
+}
+.page-transition-overlay .transition-divider {
+  width: 32px; height: 1px;
+  background: rgba(201,168,76,0.6);
+  margin: 14px auto 0;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* Hero search input — white placeholder on dark bg */
+.hero-search-input::placeholder { color: rgba(255,255,255,0.55) !important; }
+.hero-search-input::-webkit-input-placeholder { color: rgba(255,255,255,0.55) !important; }
+.hero-search-input-light::placeholder { color: #888 !important; }
+.hero-search-input-light::-webkit-input-placeholder { color: #888 !important; }
+
+/* "ดูทั้งหมด" see-all button — responsive */
+.see-all-btn {
+  white-space: nowrap !important;
+  padding: 6px 18px !important;
+  font-size: 0.85rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+@media (max-width: 540px) {
+  .see-all-btn {
+    padding: 5px 12px !important;
+    font-size: 0.75rem !important;
+  }
+  .see-all-btn i { font-size: 0.7rem !important; }
+}
 
 /* -- Stagger animation for grid children -- */
 .stagger-in > * {

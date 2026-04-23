@@ -68,8 +68,10 @@ useEffect(() => {
   ];
 
   const moreItems = [
+    { icon: 'fa-info-circle', label: 'เกี่ยวกับเรา', link: '/guide' },
     { icon: 'fa-question-circle', label: 'คำถามที่พบบ่อย', link: '/faq' },
     { icon: 'fa-phone-alt', label: 'ติดต่อเรา', link: '/contact' },
+    { icon: 'fa-line', label: 'แชทกับเราผ่าน LINE', link: 'https://line.me/R/ti/p/@loan_dd', external: true },
   ];
 
   // ========== Auth ==========
@@ -187,7 +189,8 @@ useEffect(() => {
 
   const isMoreOpen = activeMega === 'more';
   const moreBtnRect = (isMoreOpen && moreTriggerRef.current) ? moreTriggerRef.current.getBoundingClientRect() : null;
-  const moreDdLeft = moreBtnRect ? Math.max(0, moreBtnRect.left + moreBtnRect.width - 240) : 0;
+  const moreDdLeft = moreBtnRect ? Math.max(12, moreBtnRect.left) : 0;
+  const moreDdTop = moreBtnRect ? moreBtnRect.bottom + 10 : 80;
 
   const userBtnRef = useRef(null);
   const isUserOpen = activeMega === 'user';
@@ -224,18 +227,20 @@ useEffect(() => {
 
   // ========== RENDER ==========
   return (
+    <>
     <nav className="navbar navbar-expand-lg shadow-sm fixed-top py-0 loandd-navbar">
-      <div className="container" ref={megaRef}>
+      <div className="navbar-inner-wrap" ref={megaRef}>
 
-        <Link className="navbar-brand d-flex align-items-center me-0 me-lg-3 py-2" to="/" onClick={closeAll}>
+        {/* ===== LEFT: Logo ===== */}
+        <Link className="navbar-brand d-flex align-items-center py-2 navbar-logo-left" to="/" onClick={closeAll}>
           <img src={bigLogo} alt="บ้าน D มีเชง" className="navbar-brand-logo" />
         </Link>
 
         {/* มือถือ: bell + avatar + hamburger (ขวา) */}
-        <div className="d-flex align-items-center order-lg-2 ms-auto d-lg-none gap-2">
+        <div className="d-flex align-items-center ms-auto d-lg-none gap-2">
           {user && <UserNotificationBell />}
           {!user ? (
-            <Link to="/login" className="btn btn-sm rounded-pill fw-bold d-flex align-items-center mobile-login-btn" style={{ color: '#1a3a18', border: '2px solid #1a3a18' }}>
+            <Link to="/login" className="btn btn-sm rounded-pill fw-bold d-flex align-items-center mobile-login-btn">
               <i className="fas fa-user me-1"></i> เข้าสู่ระบบ
             </Link>
           ) : (
@@ -252,9 +257,59 @@ useEffect(() => {
           </button>
         </div>
 
-        {/* ===== Desktop Mega Nav ===== */}
-        <div className="d-none d-lg-flex align-items-center flex-grow-1">
-          <div className="d-flex align-items-center gap-1 ms-2">
+        {/* ===== CENTER: Desktop Nav Links ===== */}
+        <div className="d-none d-lg-flex align-items-center navbar-center-links">
+
+          {/* Sticky search bar — collapse width when hidden so nav links stick to logo */}
+          <div className="navbar-sticky-search" style={{
+            opacity: showStickySearchBar ? 1 : 0,
+            transform: showStickySearchBar ? 'translateY(0) scaleX(1)' : 'translateY(-4px) scaleX(0.95)',
+            transition: 'opacity 0.25s ease, transform 0.25s ease, width 0.25s ease, margin 0.25s ease',
+            pointerEvents: showStickySearchBar ? 'auto' : 'none',
+            position: 'relative',
+            width: showStickySearchBar ? 260 : 0,
+            overflow: 'hidden',
+            margin: showStickySearchBar ? undefined : 0,
+          }}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                const q = stickySearch.trim();
+                navigate(q ? `/search?search=${encodeURIComponent(q)}&page=1` : '/search?page=1');
+                setStickySearch('');
+                setShowNavSuggest(false);
+                closeAll();
+              }}
+              className="navbar-search-form"
+            >
+              <i className="fas fa-search navbar-search-icon" />
+              <input
+                type="text"
+                value={stickySearch}
+                onChange={e => setStickySearch(e.target.value)}
+                onFocus={() => setShowNavSuggest(true)}
+                onBlur={() => setTimeout(() => setShowNavSuggest(false), 150)}
+                placeholder="ค้นหา ทรัพย์ ทำเล สถานี..."
+                className="navbar-search-input"
+              />
+              {stickySearch && (
+                <button type="button" onClick={() => setStickySearch('')} className="navbar-search-clear">
+                  <i className="fas fa-times" />
+                </button>
+              )}
+              <button type="submit" className="navbar-search-submit">
+                <i className="fas fa-arrow-right" />
+              </button>
+            </form>
+            <SearchSuggestBox
+              visible={showNavSuggest}
+              inputValue={stickySearch}
+              onSelect={val => setStickySearch(val)}
+              onClose={() => setShowNavSuggest(false)}
+            />
+          </div>
+
+          <div className="d-flex align-items-center gap-1">
             <Link to="/" className="mega-nav-link text-decoration-none" onClick={closeAll}>
               <i className="fas fa-home menu-icon"></i> หน้าแรก
             </Link>
@@ -283,131 +338,74 @@ useEffect(() => {
                 <i className={`fas fa-chevron-${activeMega === 'more' ? 'up' : 'down'} chevron`}></i>
               </button>
               {isMoreOpen && createPortal(
-                <div className="more-dropdown" style={{ position: 'fixed', top: 64, left: moreDdLeft, zIndex: 99999 }} onMouseDown={stopMd}>
+                <div className="more-dropdown" style={{ position: 'fixed', top: moreDdTop, left: moreDdLeft, zIndex: 99999 }} onMouseDown={stopMd}>
+                  <div className="more-dropdown-header">
+                    <i className="fas fa-ellipsis-h" /> เมนูเพิ่มเติม
+                  </div>
                   {moreItems.map((item, i) => (
-                    <Link key={i} to={item.link} className="more-dropdown-item" onClick={closeAll}>
-                      <i className={`fas ${item.icon}`}></i>
-                      <span>{item.label}</span>
-                    </Link>
+                    item.external ? (
+                      <a key={i} href={item.link} target="_blank" rel="noopener noreferrer" className="more-dropdown-item" onClick={closeAll}>
+                        <i className={`${item.icon === 'fa-line' ? 'fab' : 'fas'} ${item.icon}`}></i>
+                        <span>{item.label}</span>
+                      </a>
+                    ) : (
+                      <Link key={i} to={item.link} className="more-dropdown-item" onClick={closeAll}>
+                        <i className={`fas ${item.icon}`}></i>
+                        <span>{item.label}</span>
+                      </Link>
+                    )
                   ))}
                 </div>,
                 document.body
               )}
             </div>
           </div>
+        </div>
 
-          {/* ===== STICKY SEARCH BAR (desktop) ===== */}
-          <div style={{
-            flex: 1, maxWidth: 340, margin: '0 12px',
-            opacity: showStickySearchBar ? 1 : 0,
-            transform: showStickySearchBar ? 'translateY(0) scaleX(1)' : 'translateY(-4px) scaleX(0.95)',
-            transition: 'opacity 0.25s ease, transform 0.25s ease',
-            pointerEvents: showStickySearchBar ? 'auto' : 'none',
-            position: 'relative',
-          }}>
-            <form
-              onSubmit={e => {
-                e.preventDefault();
-                const q = stickySearch.trim();
-                navigate(q ? `/search?search=${encodeURIComponent(q)}&page=1` : '/search?page=1');
-                setStickySearch('');
-                setShowNavSuggest(false);
-                closeAll();
-              }}
-              style={{
-                display: 'flex', alignItems: 'center',
-                background: '#fff',
-                borderRadius: 50, padding: '4px 4px 4px 16px',
-                border: showNavSuggest ? '2px solid #3d7a3a' : '2px solid transparent',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-                transition: 'border-color 0.15s',
-              }}
-            >
-              <i className="fas fa-search" style={{ color: '#aaa', fontSize: '0.85rem', marginRight: 8 }} />
-              <input
-                type="text"
-                value={stickySearch}
-                onChange={e => setStickySearch(e.target.value)}
-                onFocus={() => setShowNavSuggest(true)}
-                onBlur={() => setTimeout(() => setShowNavSuggest(false), 150)}
-                placeholder="ค้นหา ทรัพย์ ทำเล สถานี..."
-                style={{
-                  flex: 1, border: 'none', background: 'transparent', outline: 'none',
-                  color: '#3d7a3a', fontSize: '0.85rem', fontFamily: 'inherit',
-                  minWidth: 0,
-                }}
-              />
-              {stickySearch && (
-                <button type="button" onClick={() => setStickySearch('')}
-                  style={{ background: 'none', border: 'none', color: '#ccc', cursor: 'pointer', padding: '0 6px', fontSize: '0.8rem' }}>
-                  <i className="fas fa-times" />
-                </button>
-              )}
-              <button type="submit"
-                style={{
-                  background: '#3d7a3a', color: '#fff', border: 'none',
-                  borderRadius: 50, width: 32, height: 32, cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 700, fontSize: '0.8rem', flexShrink: 0,
-                }}>
-                <i className="fas fa-arrow-right" />
+        {/* ===== RIGHT: Account / Auth (Desktop) ===== */}
+        <div className="d-none d-lg-flex align-items-center gap-2 navbar-right-zone">
+          {user && <UserNotificationBell />}
+
+          {user ? (
+            <div style={{ position: 'relative' }}>
+              <button
+                ref={userBtnRef}
+                className={`btn d-flex align-items-center gap-2 rounded-pill px-3 py-1 user-btn ${isUserOpen ? 'active-mega' : ''}`}
+                onMouseDown={stopMd}
+                onClick={() => setActiveMega(isUserOpen ? null : 'user')}
+              >
+                <div className="user-avatar">
+                  {user?.username?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+                <div className="text-start">
+                  <div className="user-name">{user?.username || 'User'}</div>
+                </div>
+                <i className={`fas fa-chevron-${isUserOpen ? 'up' : 'down'} chevron`}></i>
               </button>
-            </form>
-
-            {/* Suggestion dropdown */}
-            <SearchSuggestBox
-              visible={showNavSuggest}
-              inputValue={stickySearch}
-              onSelect={val => setStickySearch(val)}
-              onClose={() => setShowNavSuggest(false)}
-            />
-          </div>
-
-          <div className="d-flex align-items-center gap-2 ms-auto">
-            {user && <UserNotificationBell />}
-
-            {user ? (
-              <div style={{ position: 'relative' }}>
-                <button
-                  ref={userBtnRef}
-                  className={`btn d-flex align-items-center gap-2 rounded-pill px-3 py-1 user-btn ${isUserOpen ? 'active-mega' : ''}`}
-                  onMouseDown={stopMd}
-                  onClick={() => setActiveMega(isUserOpen ? null : 'user')}
-                >
-                  <div className="user-avatar">
-                    {user?.username?.charAt(0)?.toUpperCase() || 'U'}
-                  </div>
-                  <div className="text-start">
-                    <div className="user-name">{user?.username || 'User'}</div>
-                  </div>
-                  <i className={`fas fa-chevron-${isUserOpen ? 'up' : 'down'} chevron`}></i>
-                </button>
-                {isUserOpen && createPortal(
-                  <div className="user-dropdown desktop" style={userDdStyle} onMouseDown={stopMd}>
-                    {renderUserDropdownContent()}
-                  </div>,
-                  document.body
-                )}
-              </div>
-            ) : (
-              <>
-                <Link to="/login" className="btn fw-bold px-3 rounded-pill auth-login-btn">เข้าสู่ระบบ</Link>
-                <Link to="/register" className="btn fw-bold px-3 rounded-pill auth-register-btn" onClick={closeAll}>สมัครสมาชิก</Link>
-              </>
-            )}
-          </div>
+              {isUserOpen && createPortal(
+                <div className="user-dropdown desktop" style={userDdStyle} onMouseDown={stopMd}>
+                  {renderUserDropdownContent()}
+                </div>,
+                document.body
+              )}
+            </div>
+          ) : (
+            <>
+              <Link to="/login" className="btn fw-bold px-3 rounded-pill auth-login-btn">เข้าสู่ระบบ</Link>
+              <Link to="/register" className="btn fw-bold px-3 rounded-pill auth-register-btn" onClick={closeAll}>สมัครสมาชิก</Link>
+            </>
+          )}
         </div>
 
       </div>
 
-      {/* ===== Mobile Drawer (new design — slide from right) ===== */}
-      {/* Backdrop */}
-      <div
-        className={`mob-backdrop ${isOpen ? 'mob-backdrop--on' : ''}`}
-        onClick={() => setIsOpen(false)}
-      />
-
-      {/* Drawer */}
+      {/* ===== Mobile Drawer (rendered via Portal to escape backdrop-filter containing block) ===== */}
+      {createPortal(
+        <>
+        <div
+          className={`mob-backdrop ${isOpen ? 'mob-backdrop--on' : ''}`}
+          onClick={() => setIsOpen(false)}
+        />
       <div className={`mob-drawer ${isOpen ? 'mob-drawer--open' : ''}`}>
 
         {/* ── Green Header ── */}
@@ -504,12 +502,21 @@ useEffect(() => {
             <span>คู่มือซื้อขาย</span>
           </Link>
 
-          {moreItems.map((item, i) => (
-            <Link key={i} to={item.link} className="mob-nav-item" onClick={closeAll}>
-              <div className="mob-nav-icon mob-icon-more"><i className={`fas ${item.icon}`} /></div>
-              <span>{item.label}</span>
-            </Link>
-          ))}
+          {moreItems.map((item, i) => {
+            const iconPrefix = item.icon === 'fa-line' ? 'fab' : 'fas';
+            const iconNode = <div className="mob-nav-icon mob-icon-more"><i className={`${iconPrefix} ${item.icon}`} /></div>;
+            return item.external ? (
+              <a key={i} href={item.link} target="_blank" rel="noopener noreferrer" className="mob-nav-item" onClick={closeAll}>
+                {iconNode}
+                <span>{item.label}</span>
+              </a>
+            ) : (
+              <Link key={i} to={item.link} className="mob-nav-item" onClick={closeAll}>
+                {iconNode}
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </div>
 
         {/* ── Bottom: Auth / User links ── */}
@@ -535,8 +542,35 @@ useEffect(() => {
             </div>
           )}
         </div>
+
       </div>
+        </>,
+        document.body
+      )}
     </nav>
+
+    {/* ===== Mobile Bottom Tab Bar (also via Portal) ===== */}
+    {createPortal(
+    <div className="mob-bottom-bar">
+      <Link to="/" className="mob-bbar-item" onClick={closeAll}>
+        <i className="fas fa-home" /><span>หน้าแรก</span>
+      </Link>
+      <Link to="/search?listing_type=sale" className="mob-bbar-item" onClick={closeAll}>
+        <i className="fas fa-tag" /><span>ซื้อ</span>
+      </Link>
+      <button type="button" className="mob-bbar-search" onClick={() => { setIsOpen(true); setMobileSubmenu(null); }}>
+        <i className="fas fa-search" />
+      </button>
+      <Link to="/search?listing_type=rent" className="mob-bbar-item" onClick={closeAll}>
+        <i className="fas fa-key" /><span>เช่า</span>
+      </Link>
+      <Link to="/guide" className="mob-bbar-item" onClick={closeAll}>
+        <i className="fas fa-ellipsis-h" /><span>เพิ่มเติม</span>
+      </Link>
+    </div>,
+    document.body
+    )}
+    </>
   );
 };
 

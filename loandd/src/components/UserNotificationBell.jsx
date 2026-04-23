@@ -11,7 +11,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 function formatTime(d) {
   if (!d) return '';
@@ -153,19 +153,19 @@ export default function UserNotificationBell() {
       <button
         onClick={handleOpen}
         style={{
-          background: open ? 'rgba(26,58,24,0.15)' : 'rgba(26,58,24,0.08)',
-          border: '1px solid rgba(26,58,24,0.15)',
-          borderRadius: 8,
+          background: open ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.12)',
+          border: '1.5px solid rgba(255,255,255,0.35)',
+          borderRadius: 999,
           width: 38, height: 38,
           cursor: 'pointer',
           position: 'relative',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transition: 'background 0.15s',
+          transition: 'all 0.15s',
           lineHeight: 1,
         }}
         title="การแจ้งเตือน"
       >
-        <i className="fas fa-bell" style={{ fontSize: '1rem', color: '#1a3a18' }} />
+        <i className="fas fa-bell" style={{ fontSize: '1rem', color: '#fff' }} />
         {unread > 0 && (
           <span style={{
             position: 'absolute', top: 0, right: 0,

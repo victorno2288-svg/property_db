@@ -207,7 +207,22 @@
       "Bash(sed -i 's|http://localhost:3001||g' dist/assets/index-*.js)",
       "Bash(rm -rf \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload\"/*)",
       "Bash(sed -i 's|http://localhost:3001||g' \"C:\\\\Users\\\\User\\\\Downloads\\\\สรุป\\\\lond\\\\loandd\\\\dist\\\\assets\\\\index-BkiPRyTO.js\")",
-      "Bash(ls dist/assets/index-*)"
+      "Bash(ls dist/assets/index-*)",
+      "Bash(grep -A 1 \"CREATE TABLE \\\\`contact_messages\\\\`\\\\|CREATE TABLE \\\\`property_inquiries\\\\`\\\\|CREATE TABLE \\\\`nearby_places\\\\`\" \"C:\\\\Users\\\\User\\\\Downloads\\\\loanddco_property_db \\(4\\).sql\")",
+      "Bash(awk '/CREATE TABLE `property_inquiries`/,/^\\\\\\)/' \"C:\\\\Users\\\\User\\\\Downloads\\\\loanddco_property_db \\(4\\).sql\")",
+      "Bash(awk '/CREATE TABLE `contact_messages`/,/^\\\\\\)/' \"C:\\\\Users\\\\User\\\\Downloads\\\\loanddco_property_db \\(4\\).sql\")",
+      "Bash(awk '/CREATE TABLE `nearby_places`/,/^\\\\\\)/' \"C:\\\\Users\\\\User\\\\Downloads\\\\loanddco_property_db \\(4\\).sql\")",
+      "Bash(awk -F: '{print $4}')",
+      "Bash(node -e ' *)",
+      "Bash(grep -E \"^index-.*\\\\.\\(js|css\\)$\")",
+      "Bash(rm \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/index.html\" \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/assets/index-\"*.js)",
+      "Bash(cp dist/index.html \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/\")",
+      "Bash(cp dist/assets/index-*.js \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/assets/\")",
+      "Bash(rm \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/index.html\" \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/assets/index-\"*.js \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/assets/index-\"*.css)",
+      "Bash(cp dist/assets/index-*.js dist/assets/index-*.css \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/assets/\")",
+      "Bash(awk '/CREATE TABLE `properties`/,/^\\\\\\)/' \"C:\\\\Users\\\\User\\\\Downloads\\\\loanddco_property_db \\(4\\).sql\")",
+      "Bash(grep -E \"^-.*\\\\.\\(js|css|php\\)$|index-\")",
+      "Bash(grep -E \"index-.*\\\\.js$\")"
     ]
   }
 }

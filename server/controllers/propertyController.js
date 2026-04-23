@@ -20,7 +20,7 @@ exports.getAllProperties = (req, res) => {
     if (min_price) { where.push('p.price_requested >= ?'); params.push(min_price); }
     if (max_price) { where.push('p.price_requested <= ?'); params.push(max_price); }
     if (bedrooms) { where.push('p.bedrooms >= ?'); params.push(bedrooms); }
-    if (search) { where.push('(p.title LIKE ? OR p.address LIKE ? OR p.project_name LIKE ? OR p.province LIKE ? OR p.district LIKE ? OR p.sub_district LIKE ?)'); params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`); }
+    if (search) { where.push('(p.title LIKE ? OR p.address LIKE ? OR p.project_name LIKE ? OR p.province LIKE ? OR p.district LIKE ? OR p.sub_district LIKE ? OR p.bts_station LIKE ? OR p.mrt_station LIKE ?)'); params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`); }
     if (bts_station) { where.push('(p.bts_station LIKE ? OR p.mrt_station LIKE ?)'); params.push(`%${bts_station}%`, `%${bts_station}%`); }
 
     const whereClause = where.join(' AND ');

@@ -24,7 +24,6 @@ import FaqPage from './FaqPage';            // หน้าคำถามที
 import ContactPage from './pages/ContactPage'; // หน้าติดต่อเรา
 import LineFloatingButton from './components/LineFloatingButton'; // ปุ่ม Line ลอย
 import SaveToast from './components/SaveToast'; // Global toast สำหรับกดหัวใจ
-// WelcomePopup ถูกเอาออกแล้ว — แทนด้วย skeleton loading
 
 // --- Component ตรวจสอบสิทธิ์ (User Route) ---
 // ใช้สำหรับหน้าที่ต้องล็อกอินด้วยบัญชีผู้ใช้ทั่วไป
@@ -92,8 +91,12 @@ function PageTransition() {
     <div className={`page-transition-overlay${active ? ' active' : ''}`}>
       <div className="transition-content">
         <div className="transition-logo" />
-        <div style={{ fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontFamily: "'Manrope', sans-serif", opacity: 0.7 }}>
-          กำลังโหลด...
+        <div style={{ fontSize: '0.72rem', letterSpacing: '0.28em', textTransform: 'uppercase', fontFamily: "'Manrope', sans-serif", opacity: 0.85, color: '#C9A84C', fontWeight: 600 }}>
+          LOAN<span style={{ color: 'rgba(255,255,255,0.9)' }}>DD</span>
+        </div>
+        <div className="transition-divider" />
+        <div style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', fontFamily: "'Manrope', sans-serif", opacity: 0.5, marginTop: 10, color: '#fff' }}>
+          Loading
         </div>
       </div>
     </div>

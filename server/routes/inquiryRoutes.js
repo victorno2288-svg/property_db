@@ -7,7 +7,9 @@ const { verifyAdmin } = require('../middleware/verifyAdmin');
 router.post('/', inquiryController.createInquiry);
 
 // Protected — Admin เท่านั้น
-router.get('/timeline', verifyAdmin, inquiryController.getTimeline);   // ← ต้องอยู่ก่อน /:id
+router.get('/timeline', verifyAdmin, inquiryController.getTimeline);            // ← ต้องอยู่ก่อน /:id
+router.get('/contact-messages', verifyAdmin, inquiryController.getContactMessages); // ← general contact form
+router.delete('/contact-messages/:id', verifyAdmin, inquiryController.deleteContactMessage);
 router.get('/', verifyAdmin, inquiryController.getAllInquiries);
 router.put('/:id/status', verifyAdmin, inquiryController.updateInquiryStatus);
 router.put('/:id', verifyAdmin, inquiryController.updateInquiry);

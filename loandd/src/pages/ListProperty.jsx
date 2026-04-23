@@ -134,7 +134,7 @@ function ListProperty() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/api/investment-properties/create', {
+      const response = await fetch('/api/investment-properties/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -6,58 +6,55 @@ const sse = require('../utils/sseManager');
 // POST /api/inquiries
 // ==========================================
 exports.createInquiry = (req, res) => {
-    const { property_id, name, phone, email, message } = req.body;
+    try {
+    const body = req.body || {};
+    const { property_id, name, phone, email, message, topic } = body;
 
     // Validation
     if (!name || name.trim().length < 2) return res.status(400).json({ error: 'กรุณาระบุชื่อของคุณ' });
     if (!phone || phone.replace(/\D/g, '').length < 9) return res.status(400).json({ error: 'กรุณาระบุเบอร์โทรศัพท์ที่ถูกต้อง' });
 
-    const insertInquiry = (propId, propTitle = 'ทั่วไป (หน้าติดต่อเรา)') => {
-        const sql = `
-            INSERT INTO property_inquiries
-                (property_id, name, phone, email, message, status, created_at)
-            VALUES (?, ?, ?, ?, ?, 'new', NOW())
-        `;
-
+    // ── ไม่มี property_id → บันทึกลง contact_messages (หน้าติดต่อเรา) ──
+    if (!property_id) {
+        const sql = `INSERT INTO contact_messages (name, phone, email, topic, message, created_at)
+                     VALUES (?, ?, ?, ?, ?, NOW())`;
         db.query(sql, [
-            propId || null,
             name.trim(),
             phone.trim(),
             email ? email.trim() : null,
-            message ? message.trim() : null
-        ], (err2, result) => {
-            if (err2) {
-                console.error('Create inquiry error:', err2);
-                return res.status(500).json({ error: 'ไม่สามารถบันทึกข้อมูลได้' });
-            }
-
-            // แจ้ง admin แบบ real-time
-            sse.pushToAdmins('new_inquiry', {
-                inquiryId: result.insertId,
-                name,
-                property_title: propTitle,
-                property_id: propId || null,
-            });
-
-            res.status(201).json({
-                message: 'ส่งข้อความติดต่อเรียบร้อยแล้ว ทีมงานจะติดต่อกลับโดยเร็ว',
-                inquiryId: result.insertId
-            });
-        });
-    };
-
-    if (property_id) {
-        // เช็คว่า property นั้นมีอยู่จริง
-        db.query('SELECT id, title FROM properties WHERE id = ? AND is_active = 1', [property_id], (err, rows) => {
+            topic ? topic.trim() : null,
+            message ? message.trim() : null,
+        ], (err, result) => {
             if (err) {
-                console.error('Inquiry property check error:', err);
-                return res.status(500).json({ error: 'เกิดข้อผิดพลาด กรุณาลองใหม่' });
+                console.error('contact_messages insert error:', err);
+                return res.status(500).json({ error: 'ไม่สามารถบันทึกข้อมูลได้', debug: err.message, code: err.code });
             }
-            if (rows.length === 0) return res.status(404).json({ error: 'ไม่พบทรัพย์สินนี้' });
-            insertInquiry(property_id, rows[0].title);
+            sse.pushToAdmins('new_inquiry', { inquiryId: result.insertId, name, property_title: 'ติดต่อทั่วไป', property_id: null });
+            res.status(201).json({ message: 'ส่งข้อความติดต่อเรียบร้อยแล้ว ทีมงานจะติดต่อกลับโดยเร็ว', inquiryId: result.insertId });
         });
-    } else {
-        insertInquiry(null);
+        return;
+    }
+
+    // ── มี property_id → บันทึกลง property_inquiries ──
+    db.query('SELECT id, title FROM properties WHERE id = ? AND is_active = 1', [property_id], (err, rows) => {
+        if (err) { console.error(err); return res.status(500).json({ error: 'เกิดข้อผิดพลาด', debug: err.message, code: err.code }); }
+        if (rows.length === 0) return res.status(404).json({ error: 'ไม่พบทรัพย์สินนี้' });
+
+        const propTitle = rows[0].title;
+        db.query(
+            `INSERT INTO property_inquiries (property_id, name, phone, email, message, status, created_at)
+             VALUES (?, ?, ?, ?, ?, 'new', NOW())`,
+            [property_id, name.trim(), phone.trim(), email ? email.trim() : null, message ? message.trim() : null],
+            (err2, result) => {
+                if (err2) { console.error(err2); return res.status(500).json({ error: 'ไม่สามารถบันทึกข้อมูลได้', debug: err2.message, code: err2.code }); }
+                sse.pushToAdmins('new_inquiry', { inquiryId: result.insertId, name, property_title: propTitle, property_id });
+                res.status(201).json({ message: 'ส่งข้อความติดต่อเรียบร้อยแล้ว ทีมงานจะติดต่อกลับโดยเร็ว', inquiryId: result.insertId });
+            }
+        );
+    });
+    } catch (syncErr) {
+        console.error('createInquiry sync crash:', syncErr);
+        if (!res.headersSent) return res.status(500).json({ error: 'server crash', debug: syncErr.message });
     }
 };
 
@@ -219,4 +216,47 @@ exports.updateInquiryStatus = (req, res) => {
             res.json({ message: 'อัพเดทสถานะสำเร็จ' });
         }
     );
+};
+
+// ==========================================
+// 6. ดึง Contact Messages (Admin)
+// GET /api/inquiries/contact-messages
+// ==========================================
+exports.getContactMessages = (req, res) => {
+    const { search = '', limit = 50, offset = 0 } = req.query;
+    let sql = `SELECT id, name, phone, email, topic, message, created_at FROM contact_messages`;
+    const params = [];
+
+    if (search) {
+        sql += ` WHERE (name LIKE ? OR phone LIKE ? OR email LIKE ? OR message LIKE ?)`;
+        const s = `%${search}%`;
+        params.push(s, s, s, s);
+    }
+
+    sql += ` ORDER BY created_at DESC LIMIT ? OFFSET ?`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    db.query(sql, params, (err, rows) => {
+        if (err) {
+            console.error('getContactMessages error:', err);
+            return res.status(500).json({ error: 'Server Error' });
+        }
+        res.json({ data: rows, total: rows.length });
+    });
+};
+
+// ==========================================
+// 7. ลบ Contact Message (Admin)
+// DELETE /api/inquiries/contact-messages/:id
+// ==========================================
+exports.deleteContactMessage = (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM contact_messages WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.error('deleteContactMessage error:', err);
+            return res.status(500).json({ error: 'Server Error' });
+        }
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'ไม่พบข้อมูล' });
+        res.json({ message: 'ลบสำเร็จ' });
+    });
 };

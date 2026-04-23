@@ -42,6 +42,13 @@ router.get   ('/properties/:id/deeds',           ctrl.listDeeds);
 router.post  ('/properties/:id/deeds',           uploadDeed.single('deed_image'), ctrl.addDeed);
 router.delete('/properties/:id/deeds/:deedId',   ctrl.deleteDeed);
 
+// ===== Admin Users Management =====
+router.get   ('/admins',                         userCtrl.getAllAdminUsers);
+router.post  ('/admins',                         userCtrl.createAdminUser);
+router.put   ('/admins/:id',                     userCtrl.updateAdminUser);
+router.put   ('/admins/:id/password',            userCtrl.changeAdminPassword);
+router.delete('/admins/:id',                     userCtrl.deleteAdminUser);
+
 // ===== User Management =====
 router.get   ('/users',                          userCtrl.getAllUsers);
 router.put   ('/users/:id',                      userCtrl.updateUser);

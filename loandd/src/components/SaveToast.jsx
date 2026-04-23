@@ -87,34 +87,20 @@ function SaveToast() {
           position: 'relative',
           overflow: 'hidden',
         }}>
-          {/* Thumbnail or Heart Icon */}
+          {/* Heart Icon only (no thumbnail — avoids localhost URL issues) */}
           <div style={{
             width: 46, height: 46, flexShrink: 0,
-            borderRadius: 3, overflow: 'hidden',
-            background: toast.saved ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.06)',
+            borderRadius: '50%',
+            background: toast.saved ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.08)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            position: 'relative',
           }}>
-            {toast.thumbnail ? (
-              <img src={toast.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
-              <i className={toast.saved ? 'fas fa-heart' : 'far fa-heart'}
-                style={{
-                  fontSize: '1.2rem',
-                  color: toast.saved ? '#e53e3e' : 'rgba(255,255,255,0.5)',
-                  animation: 'toast-heart-pop 0.5s ease-out',
-                }}
-              />
-            )}
-            {/* Sparkle overlay for save */}
-            {toast.saved && (
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
-                <i className="fas fa-heart" style={{
-                  fontSize: '1.2rem', color: '#e53e3e',
-                  animation: 'toast-heart-pop 0.5s ease-out',
-                }} />
-              </div>
-            )}
+            <i className={toast.saved ? 'fas fa-heart' : 'far fa-heart'}
+              style={{
+                fontSize: '1.35rem',
+                color: toast.saved ? '#e53e3e' : 'rgba(255,255,255,0.6)',
+                animation: 'toast-heart-pop 0.5s ease-out',
+              }}
+            />
           </div>
 
           {/* Text */}
@@ -138,7 +124,8 @@ function SaveToast() {
               )}
             </div>
             <div style={{
-              fontSize: '0.72rem', color: 'rgba(255,255,255,0.55)',
+              fontSize: '0.72rem',
+              color: toast.saved ? 'rgba(26,58,24,0.7)' : 'rgba(255,255,255,0.55)',
               overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
             }}>
               {toast.title}

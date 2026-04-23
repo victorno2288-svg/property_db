@@ -5,7 +5,7 @@
  * - ถ้า server ตอบ 401 หรือ 403 → ล้าง token แล้ว redirect ไป /admin ทันที (auto-logout)
  */
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = '';
 
 const adminFetch = async (path, options = {}) => {
   const token = localStorage.getItem('adminToken');

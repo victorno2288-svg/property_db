@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import bigLogo from './pic/big-logo.png';
 
-const API = 'http://localhost:3001';
+const API = '';
 
 
 export default function AdminLogin() {
