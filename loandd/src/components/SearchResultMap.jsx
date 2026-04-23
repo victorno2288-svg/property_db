@@ -21,37 +21,47 @@ function fmtPrice(p) {
 }
 
 function makePinIcon(priceLabel, active = false) {
-  const bg = active ? '#1a3a18' : '#2d5e2b';
-  const border = active ? '#C9A84C' : '#fff';
+  // Dark bubble with white text — pops off any map color
+  // Active = gold brand accent for selected
+  const bg = active ? '#C9A84C' : '#1a2b22';
+  const color = active ? '#1a2b22' : '#ffffff';
+  const haloColor = active ? 'rgba(201,168,76,0.4)' : 'rgba(255,255,255,0.95)';
+  // estimate width: ~10px per char + 26px padding + 4px border
+  const estWidth = Math.max(60, `฿${priceLabel}`.length * 8 + 30);
   return L.divIcon({
     className: 'search-pin',
     html: `
       <div style="
-        background: ${bg}; color: #fff;
-        border: 2.5px solid ${border};
+        position: absolute;
+        left: 50%; bottom: 0;
+        transform: translateX(-50%) ${active ? 'scale(1.18)' : 'scale(1)'};
+        transform-origin: bottom center;
+        background: ${bg}; color: ${color};
+        border: 2px solid #ffffff;
         border-radius: 999px;
-        padding: 5px 12px;
-        font-weight: 800; font-size: 12px;
+        padding: 6px 13px;
+        font-weight: 800; font-size: 12.5px;
         font-family: 'Manrope', system-ui, sans-serif;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+        box-shadow: 0 0 0 3px ${haloColor}, 0 4px 12px rgba(0,0,0,0.3);
         white-space: nowrap;
-        position: relative;
-        transform: ${active ? 'scale(1.15)' : 'scale(1)'};
+        letter-spacing: -0.01em;
         transition: transform 0.2s;
+        z-index: ${active ? 1000 : 1};
       ">
         ฿${priceLabel}
         <div style="
-          position: absolute; bottom: -6px; left: 50%;
+          position: absolute; bottom: -7px; left: 50%;
           width: 0; height: 0;
           border-left: 6px solid transparent;
           border-right: 6px solid transparent;
-          border-top: 7px solid ${bg};
+          border-top: 8px solid ${bg};
           transform: translateX(-50%);
+          filter: drop-shadow(0 2px 2px rgba(0,0,0,0.18));
         "></div>
       </div>
     `,
-    iconSize: [0, 0],
-    iconAnchor: [40, 30],
+    iconSize: [estWidth, 40],
+    iconAnchor: [estWidth / 2, 40],
   });
 }
 
@@ -107,21 +117,21 @@ export default function SearchResultMap({ properties = [], onSelect, activeId, h
       const marker = L.marker([lat, lng], { icon }).addTo(map);
 
       const popup = `
-        <div style="font-family: 'Prompt', sans-serif; min-width: 180px;">
-          <div style="font-weight: 700; color: #1a3a18; margin-bottom: 4px; font-size: 14px;">
+        <div style="font-family: 'Prompt', 'Sarabun', sans-serif; min-width: 200px; padding: 4px;">
+          <div style="font-weight: 800; color: #1f3a2e; font-size: 17px; font-family: 'Manrope', sans-serif; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px;">
+            ฿${priceLabel}${p.listing_type === 'rent' ? '<span style="font-size:11px;font-weight:600;color:#6b7a86;margin-left:3px;">/เดือน</span>' : ''}
+          </div>
+          <div style="font-weight: 700; color: #1a2b22; font-size: 13px; line-height: 1.3; margin-bottom: 4px;">
             ${p.title || 'ทรัพย์สิน'}
           </div>
-          <div style="font-size: 12px; color: #666; margin-bottom: 6px;">
-            ${[p.district, p.province].filter(Boolean).join(', ') || ''}
-          </div>
-          <div style="font-weight: 800; color: #2d5e2b; font-size: 15px;">
-            ฿${priceLabel}${p.listing_type === 'rent' ? '/เดือน' : ''}
+          <div style="font-size: 12px; color: #6a737d; margin-bottom: 10px; display: flex; align-items: center; gap: 4px;">
+            <span style="color:#3d7a3a;">📍</span> ${[p.district, p.province].filter(Boolean).join(', ') || ''}
           </div>
           <a href="/property/${p.id}" style="
-            display: inline-block; margin-top: 8px;
-            padding: 5px 12px; background: #1a3a18; color: #fff !important;
+            display: inline-block;
+            padding: 6px 14px; background: #1a3a18; color: #fff !important;
             border-radius: 999px; font-size: 11px; font-weight: 700;
-            text-decoration: none; letter-spacing: 0.05em;
+            text-decoration: none; letter-spacing: 0.04em;
           ">ดูรายละเอียด →</a>
         </div>
       `;
@@ -156,6 +166,10 @@ export default function SearchResultMap({ properties = [], onSelect, activeId, h
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: height }}>
+      <style>{`
+        .search-pin { background: transparent !important; border: none !important; overflow: visible !important; }
+        .search-pin > div { overflow: visible !important; }
+      `}</style>
       <div ref={mapRef} style={{ width: '100%', height: '100%', minHeight: height, borderRadius: 0 }} />
       {geoProps.length === 0 && properties.length > 0 && (
         <div style={{

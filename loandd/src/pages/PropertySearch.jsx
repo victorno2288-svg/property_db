@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
+import { formatPrice } from '../utils/propertyUtils';
 import SearchResultMap from '../components/SearchResultMap';
 import Navbar from '../Navbar';
 import SearchSuggestBox from '../components/SearchSuggestBox';
@@ -760,11 +761,12 @@ function PropertySearch() {
  <div className="map-split">
  <div className="map-split-list">
  {properties.map(p => (
- <div key={p.id} className={`map-card-item ${activeMapId === p.id ? 'active' : ''}`}
- onMouseEnter={() => setActiveMapId(p.id)}
- >
- <PropertyCard property={p} />
- </div>
+ <MapMiniCard key={p.id} property={p} active={activeMapId === p.id}
+ onHover={() => setActiveMapId(p.id)}
+ onClick={() => {
+ window.dispatchEvent(new CustomEvent('page-transition', { detail: { to: `/property/${p.id}` } }));
+ }}
+ />
  ))}
  </div>
  <div className="map-split-map">
@@ -968,6 +970,71 @@ function FilterGroup({ label, children }) {
  <div style={{ marginBottom: 18 }}>
  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1a2b22', marginBottom: 8, letterSpacing: '0.01em', fontFamily: "'Prompt','Sarabun',sans-serif" }}>{label}</div>
  {children}
+ </div>
+ );
+}
+
+// Compact horizontal card for map-split view
+function MapMiniCard({ property, active, onHover, onClick }) {
+ const { id, title, listing_type, price_requested, monthly_rent, bedrooms, bathrooms,
+ land_area_rai, land_area_ngan, land_area_wah, district, province, thumbnail_url } = property;
+ const imgSrc = thumbnail_url
+ ? (thumbnail_url.startsWith('http') ? thumbnail_url : `/${thumbnail_url.replace(/^\/+/, '')}`)
+ : null;
+ const priceStr = listing_type === 'rent'
+ ? (monthly_rent ? `฿${formatPrice(monthly_rent)}/ด.` : '—')
+ : (price_requested ? `฿${formatPrice(price_requested)}` : '—');
+ const areaText = [
+ Number(land_area_rai) > 0 && `${land_area_rai} ไร่`,
+ Number(land_area_ngan) > 0 && `${land_area_ngan} งาน`,
+ Number(land_area_wah) > 0 && `${land_area_wah} ตร.ว.`,
+ ].filter(Boolean).join(' ');
+ const specs = [
+ bedrooms > 0 && `${bedrooms} ห้องนอน`,
+ bathrooms > 0 && `${bathrooms} ห้องน้ำ`,
+ areaText,
+ ].filter(Boolean).join(' · ');
+
+ return (
+ <div onMouseEnter={onHover} onClick={onClick}
+ style={{
+ display: 'flex', gap: 12, padding: 10, marginBottom: 12,
+ background: '#fff', borderRadius: 14,
+ border: `1px solid ${active ? '#A1D99B' : '#eceff3'}`,
+ boxShadow: active ? '0 6px 18px rgba(26,58,24,0.14)' : 'none',
+ cursor: 'pointer', transition: 'all 0.2s',
+ transform: active ? 'translateY(-1px)' : 'none',
+ }}>
+ <div style={{ width: 120, height: 94, flexShrink: 0, borderRadius: 10, overflow: 'hidden', background: '#e8edf2' }}>
+ {imgSrc ? (
+ <img src={imgSrc} alt={title || ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
+ ) : (
+ <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aab', fontSize: '1.5rem' }}>
+ <i className="fas fa-home" />
+ </div>
+ )}
+ </div>
+ <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '2px 2px 2px 0', gap: 4 }}>
+ <div>
+ <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#1f3a2e', fontFamily: "'Manrope',sans-serif", lineHeight: 1, letterSpacing: '-0.02em', marginBottom: 5 }}>
+ {priceStr}
+ </div>
+ <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1a2b22', lineHeight: 1.25, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }}>
+ {title || 'ไม่ระบุชื่อ'}
+ </div>
+ </div>
+ <div>
+ {specs && <div style={{ fontSize: '0.82rem', color: '#2f3a45', fontWeight: 600, lineHeight: 1.3 }}>{specs}</div>}
+ {(district || province) && (
+ <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: '0.8rem', color: '#6a737d', fontWeight: 600, marginTop: 3 }}>
+ <i className="fas fa-location-dot" style={{ color: '#3d7a3a', fontSize: '0.78rem' }} />
+ <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+ {[district, province].filter(Boolean).join(', ')}
+ </span>
+ </div>
+ )}
+ </div>
+ </div>
  </div>
  );
 }
