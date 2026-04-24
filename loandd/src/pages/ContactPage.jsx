@@ -225,7 +225,7 @@ const ContactPage = () => {
  <div>
  <label style={{ ...labelStyle, fontSize: '0.75rem', fontWeight: 700 }}>คำถามของคุณ (ไม่บังคับ)</label>
  <input name="topic" value={inquiryForm.topic} onChange={handleChange}
- placeholder="เช่น อยากทราบวงเงินขายฝากสำหรับที่ดิน 2 ไร่"
+ placeholder="เช่น อยากนัดชมบ้านหลังนี้ หรือสอบถามรายละเอียดเพิ่มเติม"
  style={lightInputStyleSync}
  onFocus={e => { e.target.style.borderColor = navy; e.target.style.boxShadow = `0 0 0 3px rgba(61,122,58,0.08)`; }}
  onBlur={e => { e.target.style.borderColor = '#e5e5e5'; e.target.style.boxShadow = 'none'; }}

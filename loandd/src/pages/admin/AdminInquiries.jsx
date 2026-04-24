@@ -300,6 +300,29 @@ export default function AdminInquiries() {
   const newCount = inquiries.filter(i => i.status === 'new').length;
   const adminUser = (() => { try { return JSON.parse(localStorage.getItem('adminUser') || '{}'); } catch { return {}; } })();
 
+  // Track closed contact messages in localStorage (no backend status field)
+  const [closedContactIds, setClosedContactIds] = useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('closedContactIds') || '[]')); }
+    catch { return new Set(); }
+  });
+  const closeContactCase = (id) => {
+    setClosedContactIds(prev => {
+      const next = new Set(prev);
+      next.add(id);
+      try { localStorage.setItem('closedContactIds', JSON.stringify([...next])); } catch {}
+      return next;
+    });
+  };
+  const reopenContactCase = (id) => {
+    setClosedContactIds(prev => {
+      const next = new Set(prev);
+      next.delete(id);
+      try { localStorage.setItem('closedContactIds', JSON.stringify([...next])); } catch {}
+      return next;
+    });
+  };
+  const unreadContactCount = contacts.filter(c => !closedContactIds.has(c.id)).length;
+
   // filtered contact list
   const filteredContacts = contactSearch
     ? contacts.filter(c =>
@@ -450,8 +473,8 @@ export default function AdminInquiries() {
             }}>
             <i className="fas fa-comments" style={{ fontSize:'0.8rem' }} />
             ข้อความติดต่อทั่วไป
-            {contacts.length > 0 && (
-              <span style={{ background:'#6aab62', color:'#fff', borderRadius:20, padding:'1px 6px', fontSize:'0.6rem', fontWeight:900 }}>{contacts.length}</span>
+            {unreadContactCount > 0 && (
+              <span style={{ background:'#6aab62', color:'#fff', borderRadius:20, padding:'1px 6px', fontSize:'0.6rem', fontWeight:900 }}>{unreadContactCount}</span>
             )}
           </button>
         </div>
@@ -668,21 +691,25 @@ export default function AdminInquiries() {
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
                   {pagedContacts.map(c => {
                     const isSelected = selectedContact?.id === c.id;
+                    const isClosed = closedContactIds.has(c.id);
                     return (
                       <div key={c.id}
-                        onClick={() => setSelectedContact(c)}
+                        onClick={() => { setSelectedContact(c); if (!isClosed) closeContactCase(c.id); }}
                         style={{
-                          background:  isSelected ? '#f0faf6' : '#fff',
+                          background:  isSelected ? '#f0faf6' : (isClosed ? '#fafafa' : '#fff'),
                           border:      `1.5px solid ${isSelected ? G : '#e8edf2'}`,
                           borderRadius:10, padding:'12px 14px', cursor:'pointer',
                           boxShadow:'0 1px 6px rgba(0,0,0,0.05)', transition:'all 0.15s',
                           display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:10,
+                          opacity: isClosed ? 0.72 : 1,
                         }}>
                         <div style={{ flex:1, minWidth:0 }}>
                           {/* Name */}
                           <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:4, flexWrap:'wrap' }}>
                             <strong style={{ fontSize:'0.92rem', color:N }}>{c.name}</strong>
-                            <span style={{ background:'#eafaf0', color:'#27ae60', border:'1px solid #a8e0b8', padding:'1px 7px', borderRadius:20, fontSize:'0.7rem', fontWeight:700 }}>ติดต่อทั่วไป</span>
+                            <span style={{ background: isClosed ? '#f0f0f0' : '#eafaf0', color: isClosed ? '#888' : '#27ae60', border: `1px solid ${isClosed ? '#ddd' : '#a8e0b8'}`, padding:'1px 7px', borderRadius:20, fontSize:'0.7rem', fontWeight:700 }}>
+                              {isClosed ? 'ปิดแล้ว' : 'ติดต่อทั่วไป'}
+                            </span>
                           </div>
                           {/* Phone + Email */}
                           <div style={{ fontSize:'0.8rem', color:'#555', display:'flex', gap:10, flexWrap:'wrap', marginBottom:4 }}>
@@ -710,7 +737,18 @@ export default function AdminInquiries() {
                           <div style={{ fontSize:'0.65rem', color:'#bbb' }}>
                             {new Date(c.created_at).toLocaleTimeString('th-TH', { hour:'2-digit', minute:'2-digit' })}
                           </div>
-                          <div style={{ display:'flex', gap:4, marginTop:4, justifyContent:'flex-end' }}>
+                          <div style={{ display:'flex', gap:4, marginTop:4, justifyContent:'flex-end', flexWrap:'wrap' }}>
+                            {isClosed ? (
+                              <button onClick={e => { e.stopPropagation(); reopenContactCase(c.id); }} title="เปิดเคสใหม่"
+                                style={{ background:'#fff8e1', border:'1px solid #ffe082', color:'#92400e', borderRadius:6, padding:'3px 8px', cursor:'pointer', fontSize:'0.7rem', fontWeight:700, fontFamily:"'Sarabun',sans-serif" }}>
+                                <i className="fas fa-rotate-left" style={{ marginRight:3, fontSize:'0.62rem' }} />เปิดใหม่
+                              </button>
+                            ) : (
+                              <button onClick={e => { e.stopPropagation(); closeContactCase(c.id); }} title="ปิดเคส"
+                                style={{ background:'#f0f4f8', border:'1px solid #dde3ea', color:'#555', borderRadius:6, padding:'3px 8px', cursor:'pointer', fontSize:'0.7rem', fontWeight:700, fontFamily:"'Sarabun',sans-serif" }}>
+                                <i className="fas fa-check" style={{ marginRight:3, fontSize:'0.62rem' }} />ปิดเคส
+                              </button>
+                            )}
                             <button onClick={e => { e.stopPropagation(); setDeleteContactTarget(c); }} title="ลบ"
                               style={{ background:'#fff0f0', border:'none', color:'#c0392b', borderRadius:6, padding:'3px 7px', cursor:'pointer', fontSize:'0.75rem' }}>
                               🗑

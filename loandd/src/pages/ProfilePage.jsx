@@ -11,6 +11,8 @@ export default function ProfilePage() {
  const [profile, setProfile] = useState(null);
  const [tab, setTab] = useState('profile'); // 'profile' | 'saved' | 'password'
  const [saved, setSaved] = useState([]);
+ const [savedPage, setSavedPage] = useState(1);
+ const SAVED_PAGE_SIZE = 8;
  const [pwReq, setPwReq] = useState(null); // password_change_request สถานะล่าสุด
  const [loading, setLoading] = useState(true);
  const [saving, setSaving] = useState(false);
@@ -327,11 +329,37 @@ export default function ProfilePage() {
  เริ่มค้นหาทรัพย์
  </Link>
  </div>
- ) : (
- <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 16 }}>
- {saved.map(p => <PropertyCard key={p.id} property={p} />)}
+ ) : (() => {
+ const totalPages = Math.max(1, Math.ceil(saved.length / SAVED_PAGE_SIZE));
+ const curPage = Math.min(savedPage, totalPages);
+ const pagedSaved = saved.slice((curPage - 1) * SAVED_PAGE_SIZE, curPage * SAVED_PAGE_SIZE);
+ const canPrev = curPage > 1;
+ const canNext = curPage < totalPages;
+ const ab = (icon, enabled, onClick) => (
+ <button onClick={enabled ? onClick : undefined} disabled={!enabled}
+ style={{ width: 40, height: 40, borderRadius: '50%', border: '1px solid #e3e9ef', background: enabled ? '#fff' : '#f5f7fa', color: enabled ? G : '#ccc', cursor: enabled ? 'pointer' : 'not-allowed', fontSize: '0.85rem', boxShadow: enabled ? '0 1px 4px rgba(0,0,0,0.05)' : 'none' }}>
+ <i className={`fas ${icon}`} />
+ </button>
+ );
+ return (
+ <>
+ <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+ {pagedSaved.map(p => <PropertyCard key={p.id} property={p} />)}
+ </div>
+ {saved.length > 0 && (
+ <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, padding: '18px 0 6px' }}>
+ {ab('fa-arrow-left', canPrev, () => setSavedPage(curPage - 1))}
+ <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1a3a18', minWidth: 70, textAlign: 'center', fontFamily: "'Manrope', sans-serif", letterSpacing: '0.08em' }}>
+ <span>{String(curPage).padStart(2, '0')}</span>
+ <span style={{ opacity: 0.55 }}> / </span>
+ <span style={{ opacity: 0.55 }}>{String(totalPages).padStart(2, '0')}</span>
+ </div>
+ {ab('fa-arrow-right', canNext, () => setSavedPage(curPage + 1))}
  </div>
  )}
+ </>
+ );
+ })()}
  </div>
  )}
 

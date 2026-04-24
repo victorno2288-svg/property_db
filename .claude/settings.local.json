@@ -229,7 +229,17 @@
       "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-BjyGv9LZ.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
       "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-DKXx3wLT.js\")",
       "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-BxM9rtUB.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
-      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-BjyGv9LZ.js\")"
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-BjyGv9LZ.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-bgHX1yoX.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-BxM9rtUB.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-DI6g7WQv.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-bgHX1yoX.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-DWJXjxup.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-DI6g7WQv.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-HNhR8P8p.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-DWJXjxup.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-DjaoS398.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-HNhR8P8p.js\")"
     ]
   }
 }

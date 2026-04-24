@@ -143,9 +143,13 @@ const [showHomeSuggest, setShowHomeSuggest] = useState(false);
  const featuredList = Array.isArray(featured) ? featured : [];
  const latestList = Array.isArray(latest) ? latest : [];
 
- setFeaturedProperties(featuredList);
+ // เรียงทรัพย์: available → reserved → sold (ที่ขายแล้วไปท้ายสุด)
+ const saleOrder = (s) => (s === 'sold' ? 2 : s === 'reserved' ? 1 : 0);
+ const sortBySaleStatus = (arr) => [...arr].sort((a, b) => saleOrder(a.sale_status) - saleOrder(b.sale_status));
+
+ setFeaturedProperties(sortBySaleStatus(featuredList));
  // "ทรัพย์ทั้งหมด" — แสดงทุกรายการ รวมถึงทรัพย์แนะนำด้วย (เจ้านายอยากเห็นทั้งหมดจริงๆ)
- setLatestProperties(latestList);
+ setLatestProperties(sortBySaleStatus(latestList));
  if (statsData && statsData.total != null) setStats(statsData);
 
  // Hero slides — slide 0 = cover branding, slides 1+ = random featured from API

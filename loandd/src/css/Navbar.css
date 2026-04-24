@@ -372,7 +372,7 @@
 
 .mega-search-btn {
   background: var(--brand-green);
-  color: #1a3a18;
+  color: #ffffff;
   border-radius: 20px;
   border: none;
   padding: 4px 16px;
@@ -381,7 +381,7 @@
 
 .mega-search-btn:hover {
   background: var(--brand-green-dark);
-  color: #1a3a18;
+  color: #ffffff;
 }
 
 /* ---------- "เพิ่มเติม" Dropdown ---------- */

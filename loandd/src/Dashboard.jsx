@@ -481,8 +481,23 @@ export default function Dashboard() {
  useEffect(() => { if (activeTab === 1) fetchProperties(1); }, [activeTab]); // eslint-disable-line
  useEffect(() => { if (activeTab === 1) fetchProperties(1); }, [fetchProperties]); // re-fetch when search/filter changes
 
+ // Track "closed" contact message IDs in localStorage (no backend status field)
+ const [closedContactIds, setClosedContactIds] = useState(() => {
+ try { return new Set(JSON.parse(localStorage.getItem('closedContactIds') || '[]')); }
+ catch { return new Set(); }
+ });
+ const closeContactCase = (id) => {
+ setClosedContactIds(prev => {
+ const next = new Set(prev);
+ next.add(id);
+ try { localStorage.setItem('closedContactIds', JSON.stringify([...next])); } catch {}
+ return next;
+ });
+ };
+ const unreadContacts = contacts.filter(c => !closedContactIds.has(c.id));
+
  const newCount = inquiries.filter(i => i.status === 'new').length;
- const totalMsgBadge = newCount + contacts.length; // property new + all contacts
+ const totalMsgBadge = newCount + unreadContacts.length; // property new + unread contacts
  const filteredInq = msgFilter ? inquiries.filter(i => i.status === msgFilter) : inquiries;
  const inqTotalPages = Math.max(1, Math.ceil(filteredInq.length / MSG_PAGE_SIZE));
  const inqCurPage = Math.min(inqPage, inqTotalPages);
@@ -593,7 +608,7 @@ export default function Dashboard() {
  </div>
  <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.8rem', display: 'flex', gap: 10, flexWrap: 'wrap' }}>
  {newCount > 0 && <span> อสังหา {newCount} ใหม่</span>}
- {contacts.length > 0 && <span> ติดต่อทั่วไป {contacts.length} รายการ</span>}
+ {unreadContacts.length > 0 && <span> ติดต่อทั่วไป {unreadContacts.length} รายการ</span>}
  </div>
  </div>
  </div>
@@ -950,7 +965,7 @@ export default function Dashboard() {
  <div style={{ fontWeight: 800, fontSize: '1rem', color: N }}><i className="fas fa-envelope" style={{ color: G, marginRight: 8 }} />ข้อความทั้งหมด</div>
  <div style={{ fontSize: '0.74rem', color: '#888', marginTop: 2 }}>
  {newCount > 0 && <span style={{ color: '#e74c3c', fontWeight: 700, marginRight: 10 }}><i className="fas fa-circle" style={{ fontSize: '0.5rem', marginRight: 4 }} />{newCount} อสังหาใหม่</span>}
- {contacts.length > 0 && <span style={{ color: '#27ae60', fontWeight: 700 }}> {contacts.length} ติดต่อทั่วไป</span>}
+ {unreadContacts.length > 0 && <span style={{ color: '#27ae60', fontWeight: 700 }}> {unreadContacts.length} ติดต่อทั่วไป</span>}
  </div>
  </div>
  {/* Sub-tab switcher */}
@@ -963,7 +978,7 @@ export default function Dashboard() {
  <button onClick={() => setMsgMainTab('contact')}
  style={{ padding: '5px 14px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: '0.78rem', background: msgMainTab === 'contact' ? '#fff' : 'transparent', color: msgMainTab === 'contact' ? N : '#94a3b8', fontWeight: msgMainTab === 'contact' ? 800 : 500, fontFamily: "'Sarabun',sans-serif", boxShadow: msgMainTab === 'contact' ? '0 1px 4px rgba(0,0,0,0.10)' : 'none', transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: 5 }}>
  ติดต่อ
- {contacts.length > 0 && <span style={{ background: '#27ae60', color: '#fff', borderRadius: 20, padding: '0 5px', fontSize: '0.6rem', fontWeight: 900 }}>{contacts.length}</span>}
+ {unreadContacts.length > 0 && <span style={{ background: '#27ae60', color: '#fff', borderRadius: 20, padding: '0 5px', fontSize: '0.6rem', fontWeight: 900 }}>{unreadContacts.length}</span>}
  </button>
  </div>
  </div>
@@ -1058,21 +1073,25 @@ export default function Dashboard() {
  <p style={{ margin: 0 }}>ยังไม่มีข้อความติดต่อทั่วไป</p>
  </div>
  ) : (
- pagedContacts.map((c, i) => (
- <Link key={c.id} to="/admin/inquiries" style={{ textDecoration: 'none' }}>
- <div style={{ display: 'flex', gap: 13, padding: '13px 20px', borderBottom: i < pagedContacts.length - 1 ? '1px solid #f5f7fa' : 'none', alignItems: 'flex-start', background: '#f9fff9', transition: 'background 0.15s' }}
+ pagedContacts.map((c, i) => {
+ const isClosed = closedContactIds.has(c.id);
+ const rowBg = isClosed ? '#fafafa' : '#f9fff9';
+ return (
+ <div key={c.id} style={{ display: 'flex', gap: 13, padding: '13px 20px', borderBottom: i < pagedContacts.length - 1 ? '1px solid #f5f7fa' : 'none', alignItems: 'flex-start', background: rowBg, transition: 'background 0.15s', opacity: isClosed ? 0.72 : 1 }}
  onMouseEnter={e => e.currentTarget.style.background = '#f0faf6'}
- onMouseLeave={e => e.currentTarget.style.background = '#f9fff9'}>
+ onMouseLeave={e => e.currentTarget.style.background = rowBg}>
+ <Link to="/admin/inquiries" onClick={() => { if (!isClosed) closeContactCase(c.id); }} style={{ display: 'flex', gap: 13, flex: 1, minWidth: 0, textDecoration: 'none', color: 'inherit', alignItems: 'flex-start' }}>
  <div style={{ width: 38, height: 38, borderRadius: '50%', flexShrink: 0, background: '#e8f8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.85rem', color: '#27ae60' }}>
  {(c.name || '?').charAt(0).toUpperCase()}
  </div>
  <div style={{ flex: 1, minWidth: 0 }}>
  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3, flexWrap: 'wrap' }}>
  <span style={{ fontWeight: 700, fontSize: '0.88rem', color: N }}>{c.name}</span>
- <span style={{ background: '#eafaf0', color: '#27ae60', fontSize: '0.68rem', fontWeight: 700, padding: '1px 7px', borderRadius: 20, border: '1px solid #a8e0b8' }}>ติดต่อทั่วไป</span>
+ <span style={{ background: isClosed ? '#f0f0f0' : '#eafaf0', color: isClosed ? '#888' : '#27ae60', fontSize: '0.68rem', fontWeight: 700, padding: '1px 7px', borderRadius: 20, border: `1px solid ${isClosed ? '#ddd' : '#a8e0b8'}` }}>
+ {isClosed ? 'ปิดแล้ว' : 'ติดต่อทั่วไป'}
+ </span>
  </div>
  <div style={{ fontSize: '0.78rem', color: G, fontWeight: 700, marginBottom: 2 }}><i className="fas fa-phone" style={{ marginRight: 4, fontSize: '0.7rem' }} />{c.phone}</div>
- {/* Topic — คำถาม */}
  {c.topic && (
  <div style={{ fontSize: '0.75rem', background: '#fff8e1', border: '1px solid #ffe082', borderRadius: 5, padding: '2px 7px', display: 'inline-flex', alignItems: 'center', gap: 4, marginBottom: 2 }}>
  <i className="fas fa-question-circle" style={{ color: '#f59e0b', fontSize: '0.65rem' }} />
@@ -1081,14 +1100,20 @@ export default function Dashboard() {
  )}
  {c.message && <div style={{ fontSize: '0.75rem', color: '#aaa', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 2 }}>"{c.message}"</div>}
  </div>
- <div style={{ flexShrink: 0, textAlign: 'right' }}>
+ </Link>
+ <div style={{ flexShrink: 0, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
  <div style={{ fontSize: '0.7rem', color: '#bbb' }}>{new Date(c.created_at).toLocaleDateString('th-TH', { day: 'numeric', month: 'short' })}</div>
  <div style={{ fontSize: '0.68rem', color: '#ccc' }}>{new Date(c.created_at).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })}</div>
- <i className="fas fa-chevron-right" style={{ color: '#ddd', fontSize: '0.6rem', marginTop: 4, display: 'block' }} />
+ {!isClosed && (
+ <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); closeContactCase(c.id); }}
+ style={{ background: '#f0f4f8', border: '1px solid #dde3ea', color: '#555', borderRadius: 6, padding: '3px 8px', fontSize: '0.68rem', fontWeight: 700, cursor: 'pointer', fontFamily: "'Sarabun',sans-serif", marginTop: 2 }}>
+ <i className="fas fa-check" style={{ marginRight: 3, fontSize: '0.6rem' }} />ปิดเคส
+ </button>
+ )}
  </div>
  </div>
- </Link>
- ))
+ );
+ })
  )}
  {contacts.length > 0 && (() => {
  const canPrev = contactCurPage > 1;

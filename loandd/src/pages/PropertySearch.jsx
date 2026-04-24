@@ -184,6 +184,10 @@ function PropertySearch() {
  }
  }
 
+ // เลื่อนทรัพย์ sold/reserved ไปท้ายสุดเสมอ (เก็บ sort เดิมไว้ภายในแต่ละกลุ่ม)
+ const saleOrder = (s) => (s === 'sold' ? 2 : s === 'reserved' ? 1 : 0);
+ items.sort((a, b) => saleOrder(a.sale_status) - saleOrder(b.sale_status));
+
  setProperties(items);
  setPagination(
  isProxSearch
