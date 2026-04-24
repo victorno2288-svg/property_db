@@ -1044,13 +1044,6 @@ export default function Dashboard() {
  </div>
  );
  })()}
- {filteredInq.length > 0 && (
- <div style={{ padding: '12px 20px', background: '#f8fffe', borderTop: '1px solid #f0f4f8', textAlign: 'center' }}>
- <Link to="/admin/inquiries" style={{ color: G, fontWeight: 700, fontSize: '0.82rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
- <i className="fas fa-external-link-alt" style={{ fontSize: '0.7rem' }} /> เปิดหน้าจัดการข้อความเต็ม
- </Link>
- </div>
- )}
  </>
  )}
 
@@ -1118,13 +1111,6 @@ export default function Dashboard() {
  </div>
  );
  })()}
- {contacts.length > 0 && (
- <div style={{ padding: '12px 20px', background: '#f8fffe', borderTop: '1px solid #f0f4f8', textAlign: 'center' }}>
- <Link to="/admin/inquiries" style={{ color: '#27ae60', fontWeight: 700, fontSize: '0.82rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
- <i className="fas fa-external-link-alt" style={{ fontSize: '0.7rem' }} /> เปิดหน้าจัดการข้อความเต็ม
- </Link>
- </div>
- )}
  </>
  )}
  </div>

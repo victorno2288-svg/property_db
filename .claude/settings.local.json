@@ -222,7 +222,14 @@
       "Bash(cp dist/assets/index-*.js dist/assets/index-*.css \"C:\\\\Users\\\\User\\\\Downloads\\\\dist-upload/assets/\")",
       "Bash(awk '/CREATE TABLE `properties`/,/^\\\\\\)/' \"C:\\\\Users\\\\User\\\\Downloads\\\\loanddco_property_db \\(4\\).sql\")",
       "Bash(grep -E \"^-.*\\\\.\\(js|css|php\\)$|index-\")",
-      "Bash(grep -E \"index-.*\\\\.js$\")"
+      "Bash(grep -E \"index-.*\\\\.js$\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-DKXx3wLT.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-C0D61P1Z.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/index.html\" \"/c/Users/User/Downloads/dist-upload/index.html\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-BjyGv9LZ.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-DKXx3wLT.js\")",
+      "Bash(cp \"/c/Users/User/Downloads/สรุป/lond/loandd/dist/assets/index-BxM9rtUB.js\" \"/c/Users/User/Downloads/dist-upload/assets/\")",
+      "Bash(rm \"/c/Users/User/Downloads/dist-upload/assets/index-BjyGv9LZ.js\")"
     ]
   }
 }

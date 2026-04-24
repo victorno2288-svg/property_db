@@ -553,13 +553,13 @@ function PropertyCard({ property, className = '' }) {
  {bedrooms > 0 && (
  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f4f6f8', color: '#2f3a45', borderRadius: 999, padding: '5px 11px', fontSize: '0.8rem', fontWeight: 600 }}>
  <i className="fas fa-bed" style={{ color: '#6b7a86', fontSize: '0.78rem' }} />
- <strong style={{ fontWeight: 800, color: '#1a2b22' }}>{bedrooms}</strong> นอน
+ <strong style={{ fontWeight: 800, color: '#1a2b22' }}>{bedrooms}</strong> ห้องนอน
  </span>
  )}
  {bathrooms > 0 && (
  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: '#f4f6f8', color: '#2f3a45', borderRadius: 999, padding: '5px 11px', fontSize: '0.8rem', fontWeight: 600 }}>
  <i className="fas fa-bath" style={{ color: '#6b7a86', fontSize: '0.78rem' }} />
- <strong style={{ fontWeight: 800, color: '#1a2b22' }}>{bathrooms}</strong> น้ำ
+ <strong style={{ fontWeight: 800, color: '#1a2b22' }}>{bathrooms}</strong> ห้องน้ำ
  </span>
  )}
  {areaText && (

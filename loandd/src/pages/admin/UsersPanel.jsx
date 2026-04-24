@@ -472,7 +472,10 @@ export default function UsersPanel() {
  const [adminSearch, setAdminSearch] = useState('');
  const [statusFilter, setStatusFilter] = useState('');
  const [usersPage, setUsersPage] = useState(1);
+ const [adminsPage, setAdminsPage] = useState(1);
+ const [requestsPage, setRequestsPage] = useState(1);
  const USERS_PAGE_SIZE = 15;
+ const ADMINS_PAGE_SIZE = 10;
 
  const [editAdmin, setEditAdmin] = useState(null);
  const [deleteAdmin, setDeleteAdmin] = useState(null);
@@ -560,6 +563,41 @@ export default function UsersPanel() {
  const usersTotalPages = Math.max(1, Math.ceil(filteredUsers.length / USERS_PAGE_SIZE));
  const usersCurPage = Math.min(usersPage, usersTotalPages);
  const pagedUsers = filteredUsers.slice((usersCurPage - 1) * USERS_PAGE_SIZE, usersCurPage * USERS_PAGE_SIZE);
+
+ const filteredAdmins = adminUsers.filter(a => {
+ const q = adminSearch.toLowerCase();
+ return !q || (a.username||'').toLowerCase().includes(q) || (a.email||'').toLowerCase().includes(q) || (a.full_name||'').toLowerCase().includes(q);
+ });
+ const adminsTotalPages = Math.max(1, Math.ceil(filteredAdmins.length / ADMINS_PAGE_SIZE));
+ const adminsCurPage = Math.min(adminsPage, adminsTotalPages);
+ const pagedAdmins = filteredAdmins.slice((adminsCurPage - 1) * ADMINS_PAGE_SIZE, adminsCurPage * ADMINS_PAGE_SIZE);
+
+ const requestsTotalPages = Math.max(1, Math.ceil(requests.length / ADMINS_PAGE_SIZE));
+ const requestsCurPage = Math.min(requestsPage, requestsTotalPages);
+ const pagedRequests = requests.slice((requestsCurPage - 1) * ADMINS_PAGE_SIZE, requestsCurPage * ADMINS_PAGE_SIZE);
+
+ // Pagination arrows helper
+ const PagArrows = ({ curPage, totalPages, setPage }) => {
+ const canPrev = curPage > 1;
+ const canNext = curPage < totalPages;
+ const ab = (icon, enabled, onClick) => (
+ <button onClick={enabled ? onClick : undefined} disabled={!enabled}
+ style={{ width: 38, height: 38, borderRadius: '50%', border: '1px solid #e3e9ef', background: enabled ? '#fff' : '#f5f7fa', color: enabled ? G : '#ccc', cursor: enabled ? 'pointer' : 'not-allowed', fontSize: '0.82rem' }}>
+ <i className={`fas ${icon}`} />
+ </button>
+ );
+ return (
+ <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14, padding: '12px 20px', borderTop: '1px solid #f0f0f0' }}>
+ {ab('fa-arrow-left', canPrev, () => setPage(curPage - 1))}
+ <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#333', minWidth: 70, textAlign: 'center' }}>
+ <span>{String(curPage).padStart(2, '0')}</span>
+ <span style={{ opacity: 0.55 }}> / </span>
+ <span style={{ opacity: 0.55 }}>{String(totalPages).padStart(2, '0')}</span>
+ </div>
+ {ab('fa-arrow-right', canNext, () => setPage(curPage + 1))}
+ </div>
+ );
+ };
 
  const formatDate = (d) => d ? new Date(d).toLocaleDateString('th-TH', { day:'2-digit', month:'short', year:'2-digit' }) : '-';
  const formatDateFull = (d) => d ? new Date(d).toLocaleString('th-TH', { day:'2-digit', month:'short', year:'2-digit', hour:'2-digit', minute:'2-digit' }) : '-';
@@ -747,12 +785,7 @@ export default function UsersPanel() {
  </tr>
  </thead>
  <tbody>
- {adminUsers
- .filter(a => {
- const q = adminSearch.toLowerCase();
- return !q || (a.username||'').toLowerCase().includes(q) || (a.email||'').toLowerCase().includes(q) || (a.full_name||'').toLowerCase().includes(q);
- })
- .map((a, i) => (
+ {pagedAdmins.map((a, i) => (
  <tr key={a.id} style={{ borderBottom:'1px solid #f0f0f0', background: i%2===0 ? '#fff' : '#fafafa' }}>
  <td style={{ padding:'10px 14px' }}>
  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
@@ -796,10 +829,13 @@ export default function UsersPanel() {
  ))}
  </tbody>
  </table>
- {adminUsers.length === 0 && (
+ {filteredAdmins.length === 0 && (
  <div style={{ textAlign:'center', padding:'48px 0', color:'#aaa' }}>
  <div style={{ fontSize:'2.2rem', marginBottom:8 }}></div><div>ไม่พบแอดมิน</div>
  </div>
+ )}
+ {filteredAdmins.length > 0 && (
+ <PagArrows curPage={adminsCurPage} totalPages={adminsTotalPages} setPage={setAdminsPage} />
  )}
  </div>
  )}
@@ -866,7 +902,7 @@ export default function UsersPanel() {
  </div>
  ) : (
  <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
- {requests.map(req => {
+ {pagedRequests.map(req => {
  const sc = reqStatusConf[req.status] || reqStatusConf.pending;
  const userObj = { id: req.user_id, username: req.username, email: req.email, phone: req.phone };
  return (
@@ -929,6 +965,9 @@ export default function UsersPanel() {
  </div>
  );
  })}
+ {requests.length > ADMINS_PAGE_SIZE && (
+ <PagArrows curPage={requestsCurPage} totalPages={requestsTotalPages} setPage={setRequestsPage} />
+ )}
  </div>
  )}
  </>
